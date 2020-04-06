@@ -21,7 +21,7 @@ import './App.css';
 import Background from './components/Background';
 import ConnectionManager from './connection/ConnectionManager';
 import Header from './header/Header';
-import { Demo, Route as RoutePage, Vehicles, Visits } from './pages';
+import { Demo, Route as RoutePage, TimelinePage, Vehicles, Visits } from './pages';
 
 const App: React.FC = () => (
   <>
@@ -51,6 +51,11 @@ const App: React.FC = () => (
             path="/route"
             exact
             component={RoutePage}
+          />
+          <Route
+            path="/timeline"
+            exact
+            component={TimelinePage}
           />
           <Route
             path="/demo"
