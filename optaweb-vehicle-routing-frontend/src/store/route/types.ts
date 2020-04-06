@@ -54,6 +54,10 @@ export interface RoutingPlan {
   readonly depot: Location | null;
   readonly visits: Location[];
   readonly routes: RouteWithTrack[];
+  readonly groups: any[],
+  readonly items: any[],
+  readonly defaultTimeStart: any,
+  readonly defaultTimeEnd: any
 }
 
 export enum ActionType {

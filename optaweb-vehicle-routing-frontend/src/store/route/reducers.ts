@@ -15,19 +15,36 @@
  */
 
 import { ActionType, RouteAction, RoutingPlan } from './types';
-
+import moment from "moment";
+import generateTimelineData from './timelineData/generateTimelineData';
 export const initialRouteState: RoutingPlan = {
   distance: 'no data',
   vehicles: [],
   depot: null,
   visits: [],
   routes: [],
+  groups: [],
+  items: [],
+  defaultTimeStart: moment()
+      .startOf("day")
+      .toDate(),
+  defaultTimeEnd: moment()
+      .startOf("day")
+      .add(1, "day")
+      .toDate(),
 };
 
 const routeReducer = (state = initialRouteState, action: RouteAction): RoutingPlan => {
   switch (action.type) {
     case ActionType.UPDATE_ROUTING_PLAN: {
-      return action.plan;
+
+      const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(action.plan.routes);
+      const timelineGroups = timelineGroupsAndItems.groups;
+      const timelineItems = timelineGroupsAndItems.items;
+      return {...action.plan,
+        groups: timelineGroups,
+        items: timelineItems,
+    };
     }
     default:
       return state;
