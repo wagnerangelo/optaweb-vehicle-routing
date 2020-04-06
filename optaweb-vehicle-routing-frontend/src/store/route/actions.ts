@@ -26,6 +26,7 @@ import {
   RoutingPlan,
   UpdateRouteAction,
 } from './types';
+import generateTimelineData from './timelineData/generateTimelineData';
 
 export const addVehicle: ActionFactory<void, AddVehicleAction> = () => ({
   type: ActionType.ADD_VEHICLE,
@@ -50,7 +51,15 @@ export const clearRoute: ActionFactory<void, ClearRouteAction> = () => ({
   type: ActionType.CLEAR_SOLUTION,
 });
 
-export const updateRoute: ActionFactory<RoutingPlan, UpdateRouteAction> = plan => ({
-  plan,
-  type: ActionType.UPDATE_ROUTING_PLAN,
-});
+export const updateRoute: ActionFactory<RoutingPlan, UpdateRouteAction> = plan => {
+  const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(plan.routes);
+  const timelineGroups = timelineGroupsAndItems.groups;
+  const timelineItems = timelineGroupsAndItems.items;
+  const planWithGroupsAndItems =  {...plan, groups: timelineGroups, items: timelineItems};
+  console.log("action updateRoute newPlan");
+  console.log(planWithGroupsAndItems);
+  return {
+    plan: planWithGroupsAndItems,
+    type: ActionType.UPDATE_ROUTING_PLAN
+  }
+};
