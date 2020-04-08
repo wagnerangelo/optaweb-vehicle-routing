@@ -15,9 +15,8 @@
  */
 
 import {
-  Form,
-  FormSelect,
-  FormSelectOption,
+  Button,
+  DataList,
   GutterSize,
   Split,
   SplitItem,
@@ -27,146 +26,137 @@ import {
 } from '@patternfly/react-core';
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { clientOperations } from 'store/client';
-import { UserViewport } from 'store/client/types';
 import { routeOperations } from 'store/route';
-import { LatLng, Location, RouteWithTrack } from 'store/route/types';
+import { Vehicle } from 'store/route/types';
 import { AppState } from 'store/types';
-import LocationList from 'ui/components/LocationList';
-import RouteMap from 'ui/components/RouteMap';
+import TimelineChart from 'ui/components/TimelineChart';
+import "./chartStyleSticky/chartStyleSticky.css";
 
-export interface StateProps {
-  depot: Location | null;
-  visits: Location[];
-  routes: RouteWithTrack[];
-  boundingBox: [LatLng, LatLng] | null;
-  userViewport: UserViewport;
+interface StateProps {
+  vehicles: Vehicle[];
+  groups: any[];
+  items: any[]
 }
 
-export interface DispatchProps {
-  addHandler: typeof routeOperations.addLocation;
-  removeHandler: typeof routeOperations.deleteLocation;
-  updateViewport: typeof clientOperations.updateViewport;
+interface DispatchProps {
+  addVehicleHandler: typeof routeOperations.addVehicle;
+  removeVehicleHandler: typeof routeOperations.deleteVehicle;
+  changeVehicleCapacityHandler: typeof routeOperations.changeVehicleCapacity;
 }
 
-const mapStateToProps = ({ plan, serverInfo, userViewport }: AppState): StateProps => ({
-  depot: plan.depot,
-  visits: plan.visits,
-  routes: plan.routes,
-  boundingBox: serverInfo.boundingBox,
-  userViewport,
+export type Props = StateProps & DispatchProps;
+
+const mapStateToProps = ({ plan }: AppState): StateProps => ({
+  vehicles: plan.vehicles,
+  groups: plan.groups,
+  items: plan.items
+
 });
 
 const mapDispatchToProps: DispatchProps = {
-  addHandler: routeOperations.addLocation,
-  removeHandler: routeOperations.deleteLocation,
-  updateViewport: clientOperations.updateViewport,
+  addVehicleHandler: routeOperations.addVehicle,
+  removeVehicleHandler: routeOperations.deleteVehicle,
+  changeVehicleCapacityHandler: routeOperations.changeVehicleCapacity,
 };
 
-export type RouteProps = DispatchProps & StateProps;
-
-export interface RouteState {
-  selectedId: number;
-  selectedRouteId: number;
-}
-
-export class Route extends React.Component<RouteProps, RouteState> {
-  constructor(props: RouteProps) {
-    super(props);
-
-    this.state = {
-      selectedId: NaN,
-      selectedRouteId: 0,
-    };
-    this.onSelectLocation = this.onSelectLocation.bind(this);
-    this.handleMapClick = this.handleMapClick.bind(this);
-  }
-
-  handleMapClick(e: any) {
-    this.props.addHandler({ ...e.latlng, description: '' });
-  }
-
-  onSelectLocation(id: number) {
-    this.setState({ selectedId: id });
-  }
-
-  render() {
-    const { selectedId, selectedRouteId } = this.state;
-    const {
-      boundingBox,
-      userViewport,
-      depot,
-      visits,
-      routes,
-      removeHandler,
-      updateViewport,
-    } = this.props;
-
-    // FIXME quick hack to preserve route color by keeping its index
-    const filteredRoutes = (
-      routes.map((value, index) => (index === selectedRouteId ? value : { visits: [], track: [] }))
-    );
-    const filteredVisits: Location[] = routes.length > 0 ? routes[selectedRouteId].visits : [];
-    return (
-      <>
+export const TimelinePage: React.FC<Props> = ({
+  vehicles, groups, items, addVehicleHandler, removeVehicleHandler, changeVehicleCapacityHandler,
+}) => (
+  <>
         <TextContent>
-          <Text component={TextVariants.h1}>Route</Text>
+          <Text component={TextVariants.h1}>Timeline</Text>
+         
         </TextContent>
-        <Split gutter={GutterSize.md}>
+        <Button>
+           buttontext
+        </Button>
+        <Split gutter={GutterSize.md}>         
+          <SplitItem isFilled style={{
+            overflowY: 'auto',
+            overflowX: 'auto',
+            height: '100%',
+            width: '100%'
+          }}>
+            <TimelineChart/>
+          </SplitItem>
           <SplitItem
             isFilled={false}
             style={{ display: 'flex', flexDirection: 'column' }}
           >
-            <Form>
-              <FormSelect
-                style={{ backgroundColor: 'white', marginBottom: 10 }}
-                isDisabled={routes.length === 0}
-                value={selectedRouteId}
-                onChange={(e) => {
-                  this.setState({ selectedRouteId: parseInt(e as unknown as string, 10) });
-                }}
-                aria-label="FormSelect Input"
-              >
-                {routes.map(
-                  (route, index) => (
-                    <FormSelectOption
-                      isDisabled={false}
-                      // eslint-disable-next-line react/no-array-index-key
-                      key={index}
-                      value={index}
-                      label={route.vehicle.name}
-                    />
-                  ),
-                )}
-              </FormSelect>
-            </Form>
-            <LocationList
-              depot={depot}
-              visits={filteredVisits}
-              removeHandler={removeHandler}
-              selectHandler={this.onSelectLocation}
-            />
           </SplitItem>
-          <SplitItem isFilled>
-            <RouteMap
-              boundingBox={boundingBox}
-              userViewport={userViewport}
-              updateViewport={updateViewport}
-              selectedId={selectedId}
-              clickHandler={this.handleMapClick}
-              removeHandler={removeHandler}
-              depot={depot}
-              visits={visits}
-              routes={filteredRoutes}
-            />
-          </SplitItem>
+          TESTE
+          <TextContent>
+
+            <Text component={TextVariants.h1}>Groups: {groups.length}</Text>
+            <Text component={TextVariants.h1}>items: {items.length}</Text>
+          </TextContent>
+          
         </Split>
       </>
-    );
-  }
+);
+
+export default connect(mapStateToProps, mapDispatchToProps)(TimelinePage);
+
+
+
+/* 
+
+
+import {
+  GutterSize,
+  Split,
+  SplitItem,
+  Text,
+  TextContent,
+  TextVariants,
+} from '@patternfly/react-core';
+import * as React from 'react';
+import { RouteWithTrack } from 'store/route/types';
+
+
+export interface TimelineProps {
+  
+  routes: RouteWithTrack[];
+  groups: any[];
+  items: any[];
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(Route);
+const TimelinePage: React.FC<TimelineProps> = ({
+  routes,
+  groups,
+  items
+}) => {
+  const [clicked, setClicked] = React.useState(false);
+  console.log("TimelinePage Render this.props.groups");
+  console.log(groups);
+  return (
+    <div>
+        <TextContent>
+          <Text component={TextVariants.h1}>Timeline</Text>
+        </TextContent>
+        <Split gutter={GutterSize.md}>
+          <SplitItem isFilled style={{
+            overflowY: 'auto',
+            overflowX: 'auto',
+            height: '100%',
+            width: '100%'
+          }}>
+            {console.log("groups inside the return of render of timeline page")}>
+            {console.log(groups)}
+            <p>Groups: {groups}</p>
+            {/* <TimelineChart/>             }
+          </SplitItem>
+          <SplitItem
+            isFilled={false}
+            style={{ display: 'flex', flexDirection: 'column' }}
+          >
+          </SplitItem>
+        </Split>
+      </div>
+  );
+};
+
+export default TimelinePage;
+
+
+ */

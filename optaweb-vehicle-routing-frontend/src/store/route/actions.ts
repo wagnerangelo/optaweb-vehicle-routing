@@ -27,6 +27,8 @@ import {
   UpdateRouteAction,
 } from './types';
 import generateTimelineData from './timelineData/generateTimelineData';
+import generateFakeData from './timelinefakeData/generateFakeData';
+import moment from "moment";
 
 export const addVehicle: ActionFactory<void, AddVehicleAction> = () => ({
   type: ActionType.ADD_VEHICLE,
@@ -52,9 +54,23 @@ export const clearRoute: ActionFactory<void, ClearRouteAction> = () => ({
 });
 
 export const updateRoute: ActionFactory<RoutingPlan, UpdateRouteAction> = plan => {
-  const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(plan.routes);
+  //const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(plan.routes);
+  const timelineGroupsAndItems: { groups:any[], items: any[]} = generateFakeData();
   const timelineGroups = timelineGroupsAndItems.groups;
   const timelineItems = timelineGroupsAndItems.items;
+
+  const defaultTimeStartVar = moment()
+    .startOf('day')
+    .toDate();
+  console.log("Route Actions timeline - defaultTimeStart:"+defaultTimeStartVar);
+  const defaultTimeEndVar = moment()
+    .startOf('day')
+    .add(1, 'day')
+    .toDate();
+  console.log("Route Actions timeline - defaultTimend:"+defaultTimeEndVar);
+  //console.log("Route Actions timeline - defaultTimend:"+defaultTimeEndVar);
+
+
   const planWithGroupsAndItems =  {...plan, groups: timelineGroups, items: timelineItems};
   console.log("action updateRoute newPlan");
   console.log(planWithGroupsAndItems);
