@@ -5,14 +5,27 @@ import { clientOperations } from 'store/client';
 import { routeOperations } from 'store/route';
 import { AppState } from 'store/types';
 
+
+import Timeline, {
+  TimelineMarkers,
+  TodayMarker,
+  CustomMarker,
+  CursorMarker,
+  SidebarHeader,
+  CustomHeader,
+  TimelineHeaders,
+  DateHeader
+} from 'react-calendar-timeline/lib'
+
+/* 
+
 import Timeline, {
   TimelineHeaders,
   SidebarHeader,
   DateHeader
-} from "react-calendar-timeline/lib";
-import generateTimelineData from "store/route/timelineData/generateTimelineData";
+} from "react-calendar-timeline/lib"; */
 
-var keys = {
+/* var keys = {
   groupIdKey: "id",
   groupTitleKey: "title",
   groupRightTitleKey: "rightTitle",
@@ -24,13 +37,29 @@ var keys = {
   itemTimeEndKey: "end",
   groupLabelKey: "title"
 };
-
+ */
+var keys = {
+  groupIdKey: 'id',
+  groupTitleKey: 'title',
+  groupRightTitleKey: 'rightTitle',
+  itemIdKey: 'id',
+  itemTitleKey: 'title',
+  itemDivTitleKey: 'title',
+  itemGroupKey: 'group',
+  itemTimeStartKey: 'start',
+  itemTimeEndKey: 'end'
+}
 
 interface StateProps {
     groups: any[];
     items: any[],
     defaultTimeStart: any,
-    defaultTimeEnd: any
+    defaultTimeEnd: any,    
+}
+
+interface StateInterface {
+  format: boolean,
+  showHeaders: boolean
 }
   
 interface DispatchProps {
@@ -58,23 +87,30 @@ export interface Iprops {
   getRootProps: any
 }
 
-const defaultTimeStartVar = moment()
-      .startOf('day')
-      .toDate();
-console.log("Contructor timeline - defaultTimeStart:"+defaultTimeStartVar);
-const defaultTimeEndVar = moment()
-      .startOf('day')
-      .add(1, 'day')
-      .toDate();
-console.log("Contructor timeline - defaultTimend:"+defaultTimeEndVar);
+export class TimelineChart extends React.Component<Props,StateInterface> {
+  constructor(props: Props) {
+    super(props)
 
-export const TimelineChart: React.FC<Props> = ({
-     groups = [], items = [],  defaultTimeStart =defaultTimeStartVar, defaultTimeEnd=defaultTimeEndVar, 
-  }) => (
+    const defaultTimeStartVar = moment()
+    .startOf('day')
+    .toDate();
+    console.log("Contructor timeline - defaultTimeStart:"+defaultTimeStartVar);
+    const defaultTimeEndVar = moment()
+    .startOf('day')
+    .add(1, 'day')
+    .toDate();
+    console.log("Contructor timeline - defaultTimend:"+defaultTimeEndVar);
 
+    this.state = {
+      format: false,
+      showHeaders: false
+    }
+  }
+  render() {
+    return (
       <Timeline
-        groups={groups}
-        items={items}
+        groups={this.props.groups}
+        items={this.props.items}
         keys={keys}
         sidebarContent={<div>Above The Left</div>}
         itemsSorted
@@ -84,8 +120,8 @@ export const TimelineChart: React.FC<Props> = ({
         showCursorLine
         canMove={false}
         canResize={false}
-        defaultTimeStart={defaultTimeStart}
-        defaultTimeEnd={defaultTimeEnd}
+        defaultTimeStart={this.props.defaultTimeStart}
+        defaultTimeEnd={this.props.defaultTimeEnd}
       >
         <TimelineHeaders className="sticky">
           <SidebarHeader>
@@ -97,7 +133,9 @@ export const TimelineChart: React.FC<Props> = ({
           <DateHeader />
         </TimelineHeaders>
       </Timeline>
-);  
+    );     
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimelineChart);
 
