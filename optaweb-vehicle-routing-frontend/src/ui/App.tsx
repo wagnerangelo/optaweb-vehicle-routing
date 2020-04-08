@@ -30,9 +30,9 @@ const App: React.FC = () => (
       <Background />
       <PageSection
         style={{
-          display: 'inline',
+          display: 'flex',
           flexDirection: 'column',
-          overflowY: 'clip',
+          overflowY: 'auto',
           height: '100%',
         }}
       >

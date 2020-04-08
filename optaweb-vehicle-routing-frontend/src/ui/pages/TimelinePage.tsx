@@ -30,6 +30,9 @@ import { routeOperations } from 'store/route';
 import { Vehicle } from 'store/route/types';
 import { AppState } from 'store/types';
 import TimelineChart from 'ui/components/TimelineChart';
+//import "./timelineCss/styless.scss";
+//import "react-calendar-timeline/lib/Timeline.css";
+import "./timelineCss/Timeline.css"
 import "./chartStyleSticky/chartStyleSticky.css";
 
 interface StateProps {
@@ -62,37 +65,14 @@ const mapDispatchToProps: DispatchProps = {
 export const TimelinePage: React.FC<Props> = ({
   vehicles, groups, items, addVehicleHandler, removeVehicleHandler, changeVehicleCapacityHandler,
 }) => (
-  <>
-        <TextContent>
-          <Text component={TextVariants.h1}>Timeline</Text>
-         
-        </TextContent>
-        <Button>
-           buttontext
-        </Button>
-        <Split gutter={GutterSize.md}>         
-          <SplitItem isFilled style={{
-            overflowY: 'auto',
-            overflowX: 'auto',
-            height: '100%',
-            width: '100%'
-          }}>
+  <div style={{
+    overflowY: 'auto',
+    overflowX: 'auto',
+    height: '100%',
+    width: '100%'
+  }}>
             <TimelineChart/>
-          </SplitItem>
-          <SplitItem
-            isFilled={false}
-            style={{ display: 'flex', flexDirection: 'column' }}
-          >
-          </SplitItem>
-          TESTE
-          <TextContent>
-
-            <Text component={TextVariants.h1}>Groups: {groups.length}</Text>
-            <Text component={TextVariants.h1}>items: {items.length}</Text>
-          </TextContent>
-          
-        </Split>
-      </>
+      </div>
 );
 
 export default connect(mapStateToProps, mapDispatchToProps)(TimelinePage);

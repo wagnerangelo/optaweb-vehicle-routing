@@ -11,6 +11,7 @@
     "interactjs": "^1.9.9",
     "leaflet": "^1.5.1",
     "leaflet-geosearch": "^2.7.0",
+    "node-sass": "^4.13.1",
     "randomcolor": "^0.5.4",
     "react": "^16.8.6",
     "react-calendar-timeline": "^0.26.7",
