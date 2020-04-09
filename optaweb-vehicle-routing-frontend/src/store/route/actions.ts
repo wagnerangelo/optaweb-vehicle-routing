@@ -54,20 +54,33 @@ export const clearRoute: ActionFactory<void, ClearRouteAction> = () => ({
 });
 
 export const updateRoute: ActionFactory<RoutingPlan, UpdateRouteAction> = plan => {
-  //const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(plan.routes);
-  const timelineGroupsAndItems: { groups:any[], items: any[]} = generateFakeData();
+  const timelineGroupsAndItems: { groups:any[], items: any[]} = generateTimelineData(plan.routes);
+ //const timelineGroupsAndItems: { groups:any[], items: any[]} = generateFakeData();
   const timelineGroups = timelineGroupsAndItems.groups;
   const timelineItems = timelineGroupsAndItems.items;
 
   const defaultTimeStartVar = moment()
     .startOf('day')
     .toDate();
-  console.log("Route Actions timeline - defaultTimeStart:"+defaultTimeStartVar);
+  console.log("Route Actions timeline - defaultTimeStart:"+defaultTimeStartVar.valueOf);
   const defaultTimeEndVar = moment()
     .startOf('day')
-    .add(1, 'day')
+    .add(360, 'day')
     .toDate();
-  console.log("Route Actions timeline - defaultTimend:"+defaultTimeEndVar);
+  console.log("Route Actions timeline - defaultTimend:"+defaultTimeEndVar.valueOf);
+
+    //Plot dates  
+    const day = 1000 * 60 * 60 * 24;
+    timelineItems.forEach(function(visitItem, j: any) {
+      const nowDate = moment().startOf('day').toDate();
+      const nowValue = Math.floor(moment(nowDate).valueOf() / (1000*60*60*2)) * (1000*60*60*2);
+      const startDate = nowValue + day*(j*30);
+      const startValue = Math.floor(moment(startDate).valueOf() / (1000*60*60*2)) * (1000*60*60*2);
+      console.log("Actions Itemdates- startValue:"+ startValue.toString);
+    });
+
+    
+
   //console.log("Route Actions timeline - defaultTimend:"+defaultTimeEndVar);
 
 

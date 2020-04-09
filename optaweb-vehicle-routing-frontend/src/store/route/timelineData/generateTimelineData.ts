@@ -1,15 +1,17 @@
 import moment from 'moment'
 import { RouteWithTrack } from 'store/route/types';
+import randomColor from 'randomcolor'
 
 const day = 1000 * 60 * 60 * 24;
 
 export default function (routes: RouteWithTrack[] = []) {
+  let randomSeed = Math.floor(Math.random() * 1000)
   var groups: { id: string; title: string; rightTitle: string; label: string; route: RouteWithTrack}[] = [];
   let items: any[] = [];
   routes.forEach(function(routeItem, i:any) {
     console.log("generateTimeline for each route working"+routeItem)
     return groups.push({      
-      id: `${i + 1}`,
+      id: `${i*10000 + 10000}`,
       title: 'Title:' + routeItem.vehicle.name,
       rightTitle: 'Right Title:' + routeItem.vehicle.name,
       label: 'Label: ' + routeItem.vehicle.name,
@@ -19,21 +21,24 @@ export default function (routes: RouteWithTrack[] = []) {
   }); 
   groups.forEach(function(groupItem, i: any) {
     groupItem.route.visits.forEach(function(visitItem, j: any) {
-      const startDate = day*(j*30);
-      const startValue = Math.floor(moment(startDate).valueOf() / 10000000) * 10000000;
-      const endValue = day*((j+1)*30 -2);
+      const nowDate = moment().startOf('day').toDate();
+      const nowValue = Math.floor(moment(nowDate).valueOf() / (1000*60*60*2)) * (1000*60*60*2);
+      const startDate = nowValue + day*(j*30);
+      const startValue = Math.floor(moment(startDate).valueOf() / (1000*60*60*2)) * (1000*60*60*2);
+      console.log("Generate FAke data - startValue:"+ startValue.toString);
+      const endValue = nowValue + day*((j+1)*30 -2);
       return items.push({
-        id: j + '',
-        group: groupItem,
-        title: 'Title Item: ' + visitItem.description,
+        id: `${i*10000 + 10000 + j + 1}`,
+        group: groupItem.id + '',
+        title: visitItem.description,
         start: startValue,
         end: endValue,
         //canMove: startValue > new Date().getTime(),
         //canResize: startValue > new Date().getTime() ? (endValue > new Date().getTime() ? 'both' : 'left') : (endValue > new Date().getTime() ? 'right' : false),
         className: (moment(startDate).day() === 6 || moment(startDate).day() === 0) ? 'item-weekend' : '',
-      // bgColor: randomColor({ luminosity: 'light', seed: randomSeed + i, format:'rgba', alpha:0.6 }),
-        //selectedBgColor: randomColor({ luminosity: 'light', seed: randomSeed + i, format:'rgba', alpha:1 }),
-        //color: randomColor({ luminosity: 'dark', seed: randomSeed + i }),
+        bgColor: randomColor({ luminosity: 'light', seed: randomSeed + i, format:'rgba', alpha:0.6 }),
+        selectedBgColor: randomColor({ luminosity: 'light', seed: randomSeed + i, format:'rgba', alpha:1 }),
+        color: randomColor({ luminosity: 'dark', seed: randomSeed + i }),
       // itemProps: {
       //   'data-tip': faker.hacker.phrase(),
       //   
