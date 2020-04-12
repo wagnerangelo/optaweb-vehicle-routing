@@ -17,7 +17,8 @@
     "strictFunctionTypes": false,
     "forceConsistentCasingInFileNames": true,
     "noEmit": true,
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "noImplicitAny":false
   },
   "include": [
     "src"
