@@ -81,9 +81,9 @@ const imgAvatar = "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGl
 
 
 interface StateProps {
-  vehicles: Vehicle[];
-  groups: any[];
-  items: any[]
+  vehicles: Vehicle[],
+  groups: any[],
+  items: any[],
 }
 
 interface DispatchProps {
