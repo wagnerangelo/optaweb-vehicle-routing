@@ -50,15 +50,18 @@ const Location: React.FC<LocationProps> = ({
       aria-labelledby={`location-${id}`}
       onMouseEnter={() => selectHandler(id)}
       onMouseLeave={() => selectHandler(NaN)}
-    >
-      <DataListItemRow>
+    >      
+      <DataListItemRow>        
         <DataListCell isFilled>
-          {(description && (
-            <Tooltip content={description}>
-              <span id={`location-${id}`}>{shorten(description)}</span>
-            </Tooltip>
-          ))
-          || <span id={`location-${id}`}>{`Location ${id}`}</span>}
+          <p><i className="fas fa-map-marker-alt"></i>
+            &nbsp;
+            {(description && (
+              <Tooltip content="Tolltip:{description}">
+                <span id={`location-${id}`}>{shorten(description)}</span>
+              </Tooltip>
+            ))
+            || <span id={`location-${id}`}>{`Location ${id}`}</span>}
+          </p>                    
         </DataListCell>
         <DataListCell isFilled={false}>
           <Button

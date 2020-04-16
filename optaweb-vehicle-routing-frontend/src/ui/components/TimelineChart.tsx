@@ -71,11 +71,11 @@ interface DispatchProps {
 
 export type Props = StateProps & DispatchProps;
 
-const mapStateToProps = ({ plan }: AppState): StateProps => ({
+const mapStateToProps = ({ plan, userViewport }: AppState): StateProps => ({
     groups: plan.groups,
     items: plan.items,
-    defaultTimeStart: plan.defaultTimeStart,
-    defaultTimeEnd: plan.defaultTimeEnd
+    defaultTimeStart: userViewport.userTimelineViewPort.defaultTimeStart,
+    defaultTimeEnd: userViewport.userTimelineViewPort.defaultTimeEnd
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -110,17 +110,7 @@ export interface CustomMakerStyleInput {
 export class TimelineChart extends React.Component<Props,StateInterface> {
   constructor(props: Props) {
     super(props)
-
-    const defaultTimeStartVar = moment()
-    .startOf('day')
-    .toDate();
-    console.log("Contructor timeline - defaultTimeStart:"+defaultTimeStartVar);
-    const defaultTimeEndVar = moment()
-    .startOf('day')
-    .add(1, 'day')
-    .toDate();
-    console.log("Contructor timeline - defaultTimend:"+defaultTimeEndVar);
-
+    console.log("timelineChartProps - constructor - timestart:"+ this.props.defaultTimeStart)
     this.state = {
       format: false,
       showHeaders: false
@@ -229,7 +219,8 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
   render() {
     const { groups, items, defaultTimeStart, defaultTimeEnd } = this.props;
     const { format, showHeaders } = this.state;
-
+    console.log("timelineChartProps - render - this.props.timestart:"+ this.props.defaultTimeStart);
+    console.log("timelineChartProps - render - timestart:"+ defaultTimeStart);
     return (
     
           

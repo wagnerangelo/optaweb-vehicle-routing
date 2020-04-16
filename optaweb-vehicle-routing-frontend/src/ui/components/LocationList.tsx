@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-import { Bullseye, DataList } from '@patternfly/react-core';
+import { Bullseye, DataList, DataListItem, DataListItemRow, DataListCell, Tooltip } from '@patternfly/react-core';
 import * as React from 'react';
 import { Location } from 'store/route/types';
 import LocationItem from './Location';
 import './LocationList.css';
-
+import { HomeIcon } from '@patternfly/react-icons'
 export interface LocationListProps {
   removeHandler: (id: number) => void;
   selectHandler: (id: number) => void;
@@ -43,16 +43,24 @@ const renderLocationList: React.FC<LocationListProps> = ({
     <DataList
       aria-label="List of locations"
     >
-      {depot && (
-        <LocationItem
-          key={depot.id}
-          id={depot.id}
-          description={depot.description || null}
-          removeDisabled={visits.length > 0}
-          removeHandler={removeHandler}
-          selectHandler={selectHandler}
-        />
-      )}
+      <DataListItem
+       isExpanded={false}
+       aria-labelledby={`Depot`}          
+      >
+        <DataListItemRow>
+          <DataListCell isFilled>
+            <HomeIcon/>
+            {(depot && (depot.description && (
+                                                <Tooltip content="Depot Tolltip">
+                                                  <span id={`location-${depot.id}`}> Descrição: {depot.description}</span>
+                                                </Tooltip>
+                                             ) ||  
+                                              <span> Descrição: {`Location ${depot.id}`}</span>
+                        )
+            )}
+            </DataListCell>
+          </DataListItemRow>
+        </DataListItem>      
       {visits
         .slice(0) // clone the array because
         // sort is done in place (that would affect the route)
