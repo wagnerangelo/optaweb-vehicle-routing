@@ -16,12 +16,20 @@
 
 import { Viewport } from 'react-leaflet';
 import { ActionFactory } from '../types';
-import { ActionType, ResetViewportAction, UpdateViewportAction } from './types';
+import { ActionType, ResetViewportAction, UpdateViewportAction, UserViewport } from './types';
+import moment from "moment";
 
-export const updateViewport: ActionFactory<Viewport, UpdateViewportAction> = viewport => ({
-  type: ActionType.UPDATE_VIEWPORT,
-  value: viewport,
-});
+export const updateViewport: ActionFactory<UserViewport, UpdateViewportAction> = userviewport => {
+  const userTimelineViewPortVar =  {
+    defaultTimeStart: moment().startOf("day").toDate(),
+    defaultTimeEnd: moment().startOf("day").add(1, "day").toDate(),
+  }
+  const userviewportAnddefaultTime =  {...userviewport, userTimelineViewPort: userTimelineViewPortVar};
+  return {
+    type: ActionType.UPDATE_VIEWPORT,
+    value: userviewportAnddefaultTime,
+  };
+}
 
 export const resetViewport: ActionFactory<void, ResetViewportAction> = () => ({
   type: ActionType.RESET_VIEWPORT,

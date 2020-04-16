@@ -24,13 +24,6 @@ export const initialRouteState: RoutingPlan = {
   routes: [],
   groups: [],
   items: [],
-  defaultTimeStart: moment()
-      .startOf("day")
-      .toDate(),
-  defaultTimeEnd: moment()
-      .startOf("day")
-      .add(1, "day")
-      .toDate(),
 };
 
 const routeReducer = (state = initialRouteState, action: RouteAction): RoutingPlan => {

@@ -56,8 +56,6 @@ export interface RoutingPlan {
   readonly routes: RouteWithTrack[];
   readonly groups: any[],
   readonly items: any[],
-  readonly defaultTimeStart: any,
-  readonly defaultTimeEnd: any
 }
 
 export enum ActionType {

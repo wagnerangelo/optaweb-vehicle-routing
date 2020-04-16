@@ -15,18 +15,25 @@
  */
 
 import { ActionType, UserViewport, ViewportAction } from './types';
+import moment from "moment";
+
 
 export const initialViewportState: UserViewport = {
   isDirty: false,
   center: [0, 0],
   zoom: 2,
+  userTimelineViewPort: {
+    defaultTimeStart: moment().startOf("day").toDate(),
+    defaultTimeEnd: moment().startOf("day").add(1, "day").toDate(),
+  }
 };
 
 const clientReducer = (state = initialViewportState, action: ViewportAction): UserViewport => {
   switch (action.type) {
     case ActionType.UPDATE_VIEWPORT: {
-      if (!action.value || !action.value.zoom || !action.value.center) return state;
-      return { isDirty: true, zoom: action.value.zoom, center: action.value.center };
+     if (!action.value || !action.value.zoom || !action.value.center || !action.value.userTimelineViewPort) return state;
+     console.log("Client Reducer - UPDATE VIEWPORT - : "+action.value.userTimelineViewPort)
+      return { isDirty: true, zoom: action.value.zoom, center: action.value.center, userTimelineViewPort: action.value.userTimelineViewPort };
     }
     case ActionType.RESET_VIEWPORT: {
       return initialViewportState;
