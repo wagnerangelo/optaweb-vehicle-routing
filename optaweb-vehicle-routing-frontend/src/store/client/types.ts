@@ -23,7 +23,7 @@ export enum ActionType {
 }
 
 export interface UpdateViewportAction extends Action<ActionType.UPDATE_VIEWPORT> {
-  value: LeafletViewport;
+  value: UserViewport;
 }
 
 export interface ResetViewportAction extends Action<ActionType.RESET_VIEWPORT> {
@@ -33,6 +33,12 @@ export interface UserViewport {
   isDirty: boolean;
   center: [number, number];
   zoom: number;
+  userTimelineViewPort: UserTimelineViewPort;
+}
+
+export interface UserTimelineViewPort {
+  defaultTimeStart: Object | null | undefined;
+  defaultTimeEnd:Object | null | undefined;
 }
 
 export type ViewportAction =
