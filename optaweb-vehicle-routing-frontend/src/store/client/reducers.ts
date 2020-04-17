@@ -24,7 +24,7 @@ export const initialViewportState: UserViewport = {
   zoom: 2,
   userTimelineViewPort: {
     defaultTimeStart: moment().startOf("day").toDate(),
-    defaultTimeEnd: moment().startOf("day").add(1, "day").toDate(),
+    defaultTimeEnd: moment().startOf("day").add(360, "day").toDate(),
   }
 };
 

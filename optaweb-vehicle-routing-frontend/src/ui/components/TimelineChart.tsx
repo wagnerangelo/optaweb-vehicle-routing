@@ -60,7 +60,9 @@ interface StateProps {
 
 interface StateInterface {
   format: boolean,
-  showHeaders: boolean
+  showHeaders: boolean,
+  visibleTimeStart: Number,
+  visibleTimeEnd: Number
 }
   
 interface DispatchProps {
@@ -105,7 +107,7 @@ export interface CustomMakerStyleInput {
   styles: any
 }
   //end of workaround 
-  
+
 
 export class TimelineChart extends React.Component<Props,StateInterface> {
   constructor(props: Props) {
@@ -113,9 +115,16 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
     console.log("timelineChartProps - constructor - timestart:"+ this.props.defaultTimeStart)
     this.state = {
       format: false,
-      showHeaders: false
+      showHeaders: false,
+      visibleTimeStart: Number(moment().startOf("day").toDate()),
+      visibleTimeEnd: Number( moment().startOf("day").add(360, "day").toDate()),        
     }
   }
+
+  handleTimeChange = (visibleTimeStart, visibleTimeEnd, updateScrollCanvas) => {
+    console.log("change timelineview", visibleTimeStart, visibleTimeEnd);
+    this.setState({ visibleTimeStart, visibleTimeEnd });
+  };
 
   handleCanvasClick = (groupId: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
     console.log('Canvas clicked', groupId, moment(time).format())
@@ -236,9 +245,7 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
         itemsSorted
         itemTouchSendsClick={false}
         stackItems
-        itemHeightRatio={0.75}
-        defaultTimeStart={defaultTimeStart}
-        defaultTimeEnd={defaultTimeEnd}
+        itemHeightRatio={0.75}        
         onCanvasClick={this.handleCanvasClick}
         onCanvasDoubleClick={this.handleCanvasDoubleClick}
         onCanvasContextMenu={this.handleCanvasContextMenu}
@@ -252,6 +259,9 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
         // moveResizeValidator={this.moveResizeValidator}
         /* rightSidebarWidth={150}
         rightSidebarContent={<div>Above The Right</div>} */
+        visibleTimeStart={this.state.visibleTimeStart}
+        visibleTimeEnd={this.state.visibleTimeEnd}
+        onTimeChange={this.handleTimeChange}
       >
        <TimelineHeaders className="sticky">
           <SidebarHeader>
