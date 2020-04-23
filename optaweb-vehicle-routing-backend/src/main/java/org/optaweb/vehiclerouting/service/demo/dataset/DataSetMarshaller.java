@@ -19,7 +19,6 @@ package org.optaweb.vehiclerouting.service.demo.dataset;
 import java.io.IOException;
 import java.io.Reader;
 import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -37,14 +36,16 @@ public class DataSetMarshaller {
     private final ObjectMapper mapper;
 
     /**
-     * Create marshaller using the default object mapper, which is set up to use YAML format.
+     * Create marshaller using the default object mapper, which is set up to use
+     * YAML format.
      */
-    DataSetMarshaller() {
+    DataSetMarshaller() {        
         mapper = new ObjectMapper(new YAMLFactory());
     }
 
     /**
      * Constructor for testing purposes.
+     * 
      * @param mapper usually a mock object mapper
      */
     DataSetMarshaller(ObjectMapper mapper) {
@@ -53,17 +54,20 @@ public class DataSetMarshaller {
 
     /**
      * Unmarshal routing problem from a reader.
+     * 
      * @param reader a reader
      * @return routing problem
      */
     public RoutingProblem unmarshal(Reader reader) {
-        // TODO throw a checked exception that will force the caller to handle the reading problem
-        //      (e.g. a bad format) and report it to the user or log an error
+        // TODO throw a checked exception that will force the caller to handle the
+        // reading problem
+        // (e.g. a bad format) and report it to the user or log an error
         return toDomain(unmarshalToDataSet(reader));
     }
 
     /**
      * Marshal routing problem to string.
+     * 
      * @param routingProblem routing problem
      * @return string containing the marshaled routing problem
      */
@@ -72,11 +76,42 @@ public class DataSetMarshaller {
     }
 
     DataSet unmarshalToDataSet(Reader reader) {
+        System.out.println("reader: " + reader.toString());
+        DataSet dataset = null;
         try {
-            return mapper.readValue(reader, DataSet.class);
-        } catch (IOException e) {
-            throw new IllegalStateException("Can't read demo data set", e);
+            System.out.println("tryiing");
+            dataset = mapper.readValue(reader, DataSet.class);
+        } catch (IOException je) {
+            System.out.println("catch ioexception" + je.getMessage());
+            // throw new IllegalStateException("Can't read demo data set Telb", e1);
+        } finally {
+            System.out.println("finaly trying dataset");
         }
+        if (dataset == null) {
+            System.out.println("dataset is null");                          
+        } else {
+            System.out.println("dataset:" + dataset.toString());
+        }
+        return dataset;
+    }
+
+    DataSetTelb unmarshalToDataSetTelb(Reader reader) {
+        DataSetTelb datasetTelb = null;
+        try {
+            System.out.println("trying datasetTelb");
+            datasetTelb = mapper.readValue(reader, DataSetTelb.class);
+        } catch (IOException e1) {
+            throw new IllegalStateException("Can't read demo data set Telb", e1);
+        } finally {
+            System.out.println("finaly trying datasetTelb");
+            if (datasetTelb == null) {
+                System.out.println("datasetTelb is null");
+            } else {
+                System.out.println("datasetTelb:" + datasetTelb.toString());
+            }
+        }
+        return datasetTelb;
+
     }
 
     String marshal(DataSet dataSet) {
@@ -92,33 +127,22 @@ public class DataSetMarshaller {
         dataSet.setName(routingProblem.name());
         dataSet.setDepot(routingProblem.depot().map(DataSetMarshaller::toDataSet).orElse(null));
         dataSet.setVisits(
-                routingProblem.visits().stream()
-                        .map(DataSetMarshaller::toDataSet)
-                        .collect(Collectors.toList())
-        );
+                routingProblem.visits().stream().map(DataSetMarshaller::toDataSet).collect(Collectors.toList()));
         return dataSet;
     }
 
     static DataSetLocation toDataSet(LocationData locationData) {
-        return new DataSetLocation(
-                locationData.description(),
-                locationData.coordinates().latitude().doubleValue(),
-                locationData.coordinates().longitude().doubleValue()
-        );
+        return new DataSetLocation(locationData.description(), locationData.coordinates().latitude().doubleValue(),
+                locationData.coordinates().longitude().doubleValue());
     }
 
     static RoutingProblem toDomain(DataSet dataSet) {
-        return new RoutingProblem(
-                dataSet.getName(),
-                toDomain(dataSet.getDepot()),
-                dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList())
-        );
+        return new RoutingProblem(dataSet.getName(), toDomain(dataSet.getDepot()),
+                dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()));
     }
 
     static LocationData toDomain(DataSetLocation dataSetLocation) {
-        return new LocationData(
-                Coordinates.valueOf(dataSetLocation.getLatitude(), dataSetLocation.getLongitude()),
-                dataSetLocation.getLabel()
-        );
+        return new LocationData(Coordinates.valueOf(dataSetLocation.getLatitude(), dataSetLocation.getLongitude()),
+                dataSetLocation.getLabel());
     }
 }

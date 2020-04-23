@@ -43,23 +43,63 @@ import static org.optaweb.vehiclerouting.service.demo.dataset.DataSetMarshaller.
 class DataSetMarshallerTest {
 
     @Test
-    void unmarshal_data_set() throws IOException {
-        DataSet dataSet;
+    void unmarshal_data_set_no_parameters() throws IOException {
+        DataSet dataSet = null;
         try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-belgium.yaml")) {
-            dataSet = new DataSetMarshaller().unmarshalToDataSet(
-                    new InputStreamReader(inputStream, StandardCharsets.UTF_8)
-            );
-        }
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }    
         assertThat(dataSet).isNotNull();
-
         assertThat(dataSet.getName()).isEqualTo("Belgium test");
         assertThat(dataSet.getDepot()).isNotNull();
         assertThat(dataSet.getDepot().getLabel()).isEqualTo("Brussels");
         assertThat(dataSet.getDepot().getLatitude()).isEqualTo(50.85);
         assertThat(dataSet.getDepot().getLongitude()).isEqualTo(4.35);
-        assertThat(dataSet.getVisits())
-                .extracting("label")
-                .containsExactlyInAnyOrder("Aalst", "Châtelet", "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getVisits()).extracting("label").containsExactlyInAnyOrder("Aalst", "Châtelet",
+                "La Louvière", "Sint-Niklaas", "Ypres");        
+    }
+
+    @Test
+    void unmarshal_data_set_with_parameters() throws IOException {
+        DataSet dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-belgium-plus-parameters.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }    
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Telb Belgium test with parameters");
+        assertThat(dataSet.getDepot()).isNotNull();
+        assertThat(dataSet.getDepot().getLabel()).isEqualTo("Brussels");
+        assertThat(dataSet.getDepot().getLatitude()).isEqualTo(50.85);
+        assertThat(dataSet.getDepot().getLongitude()).isEqualTo(4.35);
+        assertThat(dataSet.getVisits()).extracting("label").containsExactlyInAnyOrder("Aalst", "Châtelet",
+                "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getName().substring(0, 4)).isEqualTo("Telb");
+        assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoContext()).isEqualTo("PLSV");
+        assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoComplexity()).isEqualTo("Basic");        
+    }
+
+    
+    @Test
+    void unmarshal_data_set_with_parameters_1_1_1_1() throws IOException {
+        DataSet dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-telb-1-1-1-1 2P6O no travel Prod.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }    
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo");
+        assertThat(dataSet.getDepot()).isNotNull();
+        assertThat(dataSet.getDepot().getLabel()).isEqualTo("Brussels");
+        assertThat(dataSet.getDepot().getLatitude()).isEqualTo(50.85);
+        assertThat(dataSet.getDepot().getLongitude()).isEqualTo(4.35);
+        assertThat(dataSet.getVisits()).extracting("label").containsExactlyInAnyOrder("Aalst", "Châtelet",
+                "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getName().substring(0, 4)).isEqualTo("Telb");
+        assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoContext()).isEqualTo("PLSV");
+        assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoComplexity()).isEqualTo("Basic");
+        assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoInitialDate()).isEqualTo("01/01/2021");
+        System.out.println(((DataSetTelb) dataSet).getTelbParameters().getDemoElucidation());
     }
 
     @Test
@@ -73,22 +113,22 @@ class DataSetMarshallerTest {
         dataSet.setDepot(depot);
         dataSet.setVisits(Arrays.asList(location1, location2));
         String yaml = new DataSetMarshaller().marshal(dataSet);
-        assertThat(yaml)
-                .contains("name: \"" + name)
-                .contains(depot.getLabel(), location1.getLabel(), location2.getLabel());
+        assertThat(yaml).contains("name: \"" + name).contains(depot.getLabel(), location1.getLabel(),
+                location2.getLabel());
     }
 
+    //TODO marshal_dataSetTelb()
+    
     @Test
     void should_rethrow_exception_from_object_mapper() throws IOException {
         ObjectMapper objectMapper = mock(ObjectMapper.class);
-        when(objectMapper.readValue(any(Reader.class), eq(DataSet.class))).thenThrow(IOException.class);
+        when(objectMapper.readValue(any(Reader.class), eq(DataSetTelb.class))).thenThrow(IOException.class);
         assertThatIllegalStateException()
-                .isThrownBy(() -> new DataSetMarshaller(objectMapper).unmarshalToDataSet(mock(Reader.class)))
+                .isThrownBy(() -> new DataSetMarshaller(objectMapper).unmarshalToDataSetTelb(mock(Reader.class)))
                 .withRootCauseExactlyInstanceOf(IOException.class);
 
-        when(objectMapper.writeValueAsString(any(DataSet.class))).thenThrow(JsonProcessingException.class);
-        assertThatIllegalStateException()
-                .isThrownBy(() -> new DataSetMarshaller(objectMapper).marshal(new DataSet()))
+        when(objectMapper.writeValueAsString(any(DataSetTelb.class))).thenThrow(JsonProcessingException.class);
+        assertThatIllegalStateException().isThrownBy(() -> new DataSetMarshaller(objectMapper).marshal(new DataSetTelb()))
                 .withRootCauseExactlyInstanceOf(JsonProcessingException.class);
     }
 

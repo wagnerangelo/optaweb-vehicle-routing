@@ -1,0 +1,42 @@
+---
+name: "Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo"
+depot:
+  label: "Brussels"
+  lat: 50.85
+  lng: 4.35
+visits:
+  - label: "Aalst"
+    lat: 50.933333
+    lng: 4.033333
+  - label: "Châtelet"
+    lat: 50.4
+    lng: 4.516667
+  - label: "La Louvière"
+    lat: 50.466667
+    lng: 4.183333
+  - label: "Sint-Niklaas"
+    lat: 51.166667
+    lng: 4.133333
+  # random order
+  - lng: 2.883333
+    lat: 50.85
+    label: "Ypres"
+telbParameters:
+  context: "PLSV"
+  complexity: "Basic"
+  horizon: 1000
+  initialdate: "01/01/2021"
+  elucidation: |
+    Caso: 1.1.1.1 - 2 Poços, sem carregamento, sem navegação, sem data mais cedo\n
+    \n
+    \n
+    Caso básico com 2 poços, 6 operações, sem predecessora.\n
+    2 PLSVs, um poço tem potencial de 100 000 bpd e outro 50000 bpd.\n 
+    \n
+    A produção é avaliada num horizonte de 1000 dias.\n
+    \n
+    O solver deve alocar as 3 operações do poço de 100 000 bpd antes do de 50 000 bpd.\n
+    \n
+    A solução ótima espera 145450 000 barris.
+
+  
