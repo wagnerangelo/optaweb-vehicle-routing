@@ -29,6 +29,7 @@ public class RoutingProblem {
     private final String name;
     private final LocationData depot;
     private final List<LocationData> visits;
+    private final RoutingProblemParameters routingProblemParameters;
 
     /**
      * Create routing problem instance.
@@ -36,10 +37,12 @@ public class RoutingProblem {
      * @param depot the depot (may be {@code null} if there is no depot)
      * @param visits the visits (must not be {@code null})
      */
-    public RoutingProblem(String name, LocationData depot, List<? extends LocationData> visits) {
+    public RoutingProblem(final String name, final LocationData depot, final List<? extends LocationData> visits, RoutingProblemParameters routingProblemParameters ) { 
         this.name = Objects.requireNonNull(name);
         this.depot = depot;
         this.visits = new ArrayList<>(Objects.requireNonNull(visits));
+        this.routingProblemParameters = routingProblemParameters;
+
     }
 
     /**
@@ -64,5 +67,9 @@ public class RoutingProblem {
      */
     public List<LocationData> visits() {
         return visits;
+    }
+
+    public RoutingProblemParameters getRoutingProblemParameters() {
+        return routingProblemParameters;
     }
 }

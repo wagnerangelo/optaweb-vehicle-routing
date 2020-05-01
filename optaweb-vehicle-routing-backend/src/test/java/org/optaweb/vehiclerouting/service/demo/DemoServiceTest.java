@@ -63,7 +63,7 @@ class DemoServiceTest {
     private final Location depot = new Location(1, Coordinates.valueOf(1.0, 7), "Depot");
     private final List<Location> visits = Arrays.asList(new Location(2, Coordinates.valueOf(2.0, 9), "Visit"));
     private final String problemName = "Testing problem";
-    private final RoutingProblem routingProblem = new RoutingProblem(problemName, depot, visits);
+    private final RoutingProblem routingProblem = new RoutingProblem(problemName, depot, visits, null);
 
     @Test
     void demos_should_return_routing_problems() {
@@ -73,6 +73,7 @@ class DemoServiceTest {
         Collection<RoutingProblem> problems = demoService.demos();
         // assert
         assertThat(problems).containsExactly(routingProblem);
+        System.out.println("problems:"+problems.toString());
     }
 
     @Test

@@ -14,40 +14,34 @@
  * limitations under the License.
  */
 
-package org.optaweb.vehiclerouting.service.demo.dataset;
+package org.optaweb.vehiclerouting.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+/**
+ * Data set location.
+ */
+public class RoutingProblemParameters {
 
-  /**
-     * Create dataSet demo parameters.
+   
+    private String demoContext;
+    private String demoComplexity;
+    private int demoHorizon;
+    private String demoInitialDate;
+    private String demoElucidation;
+    
+    /**
+     * Create routing problem parameters.
      * @param demoContext business context , ie type of vehicle (PSLV, RSV)
      * @param democomplexity business complexity case, if is basic, advanced, multicriteria
      * @param demoHorizon horizon consider to calculate schedule quality parameters (days)
      * @param demoInitialDate initial date of schedule problem (string) ("dd/mm/yy")
      * @param demoElucidation explanation of business case
      */
-class DataSetParameters {
-
-    @JsonProperty(value = "context")
-    private String demoContext;
-    @JsonProperty(value = "complexity")
-    private String demoComplexity;
-    @JsonProperty(value = "horizon")
-    private int demoHorizon;
-    @JsonProperty(value = "initialdate")
-    private String demoInitialDate;
-    @JsonProperty(value = "elucidation")
-    private String demoElucidation;
-    
-    
-
-    private DataSetParameters() {
-        // for unmarshalling
-    }
-
-    DataSetParameters(final String demoContext, final String demoComplexity) {
+    public RoutingProblemParameters(final String demoContext, final String demoComplexity) {
         this.demoContext = demoContext;
         this.demoComplexity = demoComplexity;
+        this.demoHorizon = 90;
+        this.demoInitialDate = "01/01/2021";
+        this.demoElucidation = "explanation";
     }
 
     /**

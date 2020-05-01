@@ -25,6 +25,7 @@ import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
 import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.LocationData;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
+import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
 import org.springframework.stereotype.Component;
 
 /**
@@ -62,7 +63,12 @@ public class DataSetMarshaller {
         // TODO throw a checked exception that will force the caller to handle the
         // reading problem
         // (e.g. a bad format) and report it to the user or log an error
-        return toDomain(unmarshalToDataSet(reader));
+        try {
+            return toDomain(unmarshalToDataSet(reader));
+        } catch (Exception e) {  
+            System.out.println("cant unmarshal reader: " + reader.toString());         
+            throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);                      
+        }
     }
 
     /**
@@ -75,26 +81,17 @@ public class DataSetMarshaller {
         return marshal(toDataSet(routingProblem));
     }
 
-    DataSet unmarshalToDataSet(Reader reader) {
-        System.out.println("reader: " + reader.toString());
-        DataSet dataset = null;
-        try {
-            System.out.println("tryiing");
-            dataset = mapper.readValue(reader, DataSet.class);
-        } catch (IOException je) {
-            System.out.println("catch ioexception" + je.getMessage());
-            // throw new IllegalStateException("Can't read demo data set Telb", e1);
-        } finally {
-            System.out.println("finaly trying dataset");
-        }
-        if (dataset == null) {
-            System.out.println("dataset is null");                          
-        } else {
-            System.out.println("dataset:" + dataset.toString());
+    DataSetTelb unmarshalToDataSet(Reader reader) {
+        DataSetTelb dataset = null;
+        try {         
+            dataset = mapper.readValue(reader, DataSetTelb.class);
+        } catch (IOException e) {  
+          System.out.println("cant read reader: " + reader.toString());         
+          throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);          
         }
         return dataset;
     }
-
+/* 
     DataSetTelb unmarshalToDataSetTelb(Reader reader) {
         DataSetTelb datasetTelb = null;
         try {
@@ -112,7 +109,7 @@ public class DataSetMarshaller {
         }
         return datasetTelb;
 
-    }
+    } */
 
     String marshal(DataSet dataSet) {
         try {
@@ -122,8 +119,8 @@ public class DataSetMarshaller {
         }
     }
 
-    static DataSet toDataSet(RoutingProblem routingProblem) {
-        DataSet dataSet = new DataSet();
+    static DataSetTelb toDataSet(RoutingProblem routingProblem) {
+        DataSetTelb dataSet = new DataSetTelb();
         dataSet.setName(routingProblem.name());
         dataSet.setDepot(routingProblem.depot().map(DataSetMarshaller::toDataSet).orElse(null));
         dataSet.setVisits(
@@ -136,9 +133,15 @@ public class DataSetMarshaller {
                 locationData.coordinates().longitude().doubleValue());
     }
 
-    static RoutingProblem toDomain(DataSet dataSet) {
-        return new RoutingProblem(dataSet.getName(), toDomain(dataSet.getDepot()),
-                dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()));
+    static RoutingProblem toDomain(DataSetTelb dataSet) {
+        try {
+            return new RoutingProblem(dataSet.getName(), toDomain(dataSet.getDepot()),
+            dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),  new RoutingProblemParameters(dataSet.getTelbParameters().getDemoContext(), dataSet.getTelbParameters().getDemoComplexity()));
+        } catch (Exception e){
+            System.out.println("cant do to domain: ");
+            throw new IllegalStateException("Failed to do RoutingProblem toDomaim method (" + dataSet.getName() + ")", e);
+        }
+
     }
 
     static LocationData toDomain(DataSetLocation dataSetLocation) {

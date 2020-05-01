@@ -91,13 +91,23 @@ class RoutingProblemConfig {
                         try {
                             return new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8);
                         } catch (FileNotFoundException e) {
+                            System.out.println("Problem with dataset file: " + file.toString());
                             logger.error("Problem with dataset file {}", file, e);
                             return null;
                         }
                     })
                     .filter(Objects::nonNull)
                     // TODO make unmarshalling exception checked, catch it and ignore broken files
-                    .map(dataSetMarshaller::unmarshal)
+                    .map(reader -> {
+                        try {
+                            RoutingProblem routingProblem = dataSetMarshaller.unmarshal(reader);
+                            return routingProblem;
+                        } catch (Exception e1) {
+                            logger.error("cant read reader {}",reader.toString(), e1);
+                            return null;
+                        }                        
+                    })
+                    .filter(Objects::nonNull)
                     .collect(Collectors.toList());
         } catch (IOException e) {
             throw new IllegalStateException("Cannot list directory " + dataSetDirPath, e);

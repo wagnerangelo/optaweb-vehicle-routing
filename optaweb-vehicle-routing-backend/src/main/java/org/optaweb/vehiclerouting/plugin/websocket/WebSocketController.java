@@ -75,7 +75,8 @@ class WebSocketController {
         List<RoutingProblemInfo> demos = demoService.demos().stream()
                 .map(routingProblem -> new RoutingProblemInfo(
                         routingProblem.name(),
-                        routingProblem.visits().size()))
+                        routingProblem.visits().size(),
+                        routingProblem.getRoutingProblemParameters()))
                 .collect(Collectors.toList());
         return new ServerInfo(portableBoundingBox, regionService.countryCodes(), demos);
     }

@@ -43,8 +43,8 @@ class RoutingProblemListTest {
         String name1 = "Problem A";
         String name2 = "Problem B";
         RoutingProblemList routingProblemList = new RoutingProblemList(Arrays.asList(
-                new RoutingProblem(name1, depot, visits),
-                new RoutingProblem(name2, depot, visits)
+                new RoutingProblem(name1, depot, visits, null),
+                new RoutingProblem(name2, depot, visits, null)
         ));
 
         assertThat(routingProblemList.all()).extracting("name").containsExactlyInAnyOrder(name1, name2);

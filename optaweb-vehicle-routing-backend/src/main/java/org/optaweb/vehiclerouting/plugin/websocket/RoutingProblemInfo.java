@@ -19,6 +19,7 @@ package org.optaweb.vehiclerouting.plugin.websocket;
 import java.util.Objects;
 
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
+import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
 
 /**
  * Information about a {@link RoutingProblem routing problem instance}.
@@ -27,10 +28,12 @@ class RoutingProblemInfo {
 
     private final String name;
     private final int visits;
+    private final RoutingProblemParameters routingProblemParameters;
 
-    RoutingProblemInfo(String name, int visits) {
+    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters) {
         this.name = Objects.requireNonNull(name);
         this.visits = visits;
+        this.routingProblemParameters = routingProblemParameters;
     }
 
     /**
@@ -47,5 +50,9 @@ class RoutingProblemInfo {
      */
     public int getVisits() {
         return visits;
+    }
+
+    public RoutingProblemParameters getRoutingProblemParameters() {
+        return routingProblemParameters;
     }
 }

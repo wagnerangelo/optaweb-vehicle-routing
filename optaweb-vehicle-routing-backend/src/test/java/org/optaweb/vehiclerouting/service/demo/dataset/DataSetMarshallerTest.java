@@ -47,7 +47,7 @@ class DataSetMarshallerTest {
         DataSet dataSet = null;
         try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-belgium.yaml")) {
             dataSet = new DataSetMarshaller()
-                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         }    
         assertThat(dataSet).isNotNull();
         assertThat(dataSet.getName()).isEqualTo("Belgium test");
@@ -64,7 +64,7 @@ class DataSetMarshallerTest {
         DataSet dataSet = null;
         try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-belgium-plus-parameters.yaml")) {
             dataSet = new DataSetMarshaller()
-                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         }    
         assertThat(dataSet).isNotNull();
         assertThat(dataSet.getName()).isEqualTo("Telb Belgium test with parameters");
@@ -85,7 +85,7 @@ class DataSetMarshallerTest {
         DataSet dataSet = null;
         try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-telb-1-1-1-1 2P6O no travel Prod.yaml")) {
             dataSet = new DataSetMarshaller()
-                    .unmarshalToDataSetTelb(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         }    
         assertThat(dataSet).isNotNull();
         assertThat(dataSet.getName()).isEqualTo("Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo");
@@ -124,7 +124,7 @@ class DataSetMarshallerTest {
         ObjectMapper objectMapper = mock(ObjectMapper.class);
         when(objectMapper.readValue(any(Reader.class), eq(DataSetTelb.class))).thenThrow(IOException.class);
         assertThatIllegalStateException()
-                .isThrownBy(() -> new DataSetMarshaller(objectMapper).unmarshalToDataSetTelb(mock(Reader.class)))
+                .isThrownBy(() -> new DataSetMarshaller(objectMapper).unmarshalToDataSet(mock(Reader.class)))
                 .withRootCauseExactlyInstanceOf(IOException.class);
 
         when(objectMapper.writeValueAsString(any(DataSetTelb.class))).thenThrow(JsonProcessingException.class);
@@ -157,7 +157,7 @@ class DataSetMarshallerTest {
         String name = "some data set";
 
         // domain -> data set
-        DataSet dataSet = toDataSet(new RoutingProblem(name, depot, visits));
+        DataSetTelb dataSet = toDataSet(new RoutingProblem(name, depot, visits, null));
         assertThat(dataSet.getName()).isEqualTo(name);
         assertThat(toDomain(dataSet.getDepot())).isEqualTo(depot);
         assertThat(dataSet.getVisits()).hasSameSizeAs(visits);
