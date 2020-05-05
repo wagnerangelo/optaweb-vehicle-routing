@@ -22,7 +22,6 @@ import { CodeBranchIcon } from '@patternfly/react-icons';
 
 function mapStateToProps(state) {
     const { serverInfo } = state  
-    
     return { demoProblems: serverInfo.demos }
 }
 
@@ -35,9 +34,6 @@ export class ExpandableDataList extends React.Component {
       isOpen2: false,
       isOpen3: false
     };
-   
-    this.props.loadHandler(demoProblem.name)
-
 
     this.onToggle1 = isOpen1 => {
       this.setState({ isOpen1 });
@@ -130,13 +126,20 @@ export class ExpandableDataList extends React.Component {
                        
                       ]}
                     />
-                    <Button
-                      id={demoProblem.name +"Open"}                      
-                      style={{ marginBottom: 16, marginLeft: 16 }}
-                      onClick={}
-                    >
-                      Export
-                    </Button>
+                    <DataListAction aria-labelledby={demoProblem.name +"Action"} id={demoProblem.name +"Action"} aria-label={demoProblem.name +"Action"} >
+                      <Dropdown
+                        isPlain
+                        position={DropdownPosition.right}
+                        isOpen={this.state.isOpen1}
+                        onSelect={this.onSelect1}
+                        toggle={<KebabToggle onToggle={this.onToggle1} />}
+                        dropdownItems={[
+                          <DropdownItem key={demoProblem.name +"Action"} component="button">
+                            Open
+                          </DropdownItem>
+                        ]}
+                      />
+                    </DataListAction>
                   </DataListItemRow>
                   <DataListContent
                     aria-label="Primary Content Details"
