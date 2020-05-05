@@ -28,7 +28,16 @@ export interface ServerInfoAction extends Action<ActionType.SERVER_INFO> {
 export interface Demo {
   name: string;
   visits: number;
-  demoParameters: Object;
+  routingProblemParameters: RoutingProblemParameters;
+}
+
+export interface RoutingProblemParameters {
+  demoContext: string;
+  demoComplexity: string;
+  demoHorizon: number;
+  demoInitialDate: string;
+  demoElucidation: string;
+  
 }
 
 export interface ServerInfo {

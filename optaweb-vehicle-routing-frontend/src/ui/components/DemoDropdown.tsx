@@ -34,7 +34,7 @@ export const DemoDropdown: React.FC<Props> = ({ demos, onSelect }) => {
   return (
     <Dropdown
       style={{ marginBottom: 16, marginLeft: 16 }}
-      position={DropdownPosition.right}
+      position={DropdownPosition.left}
       isOpen={isOpen}
       dropdownItems={dropdownItems(demos)}
       onSelect={(e) => {

@@ -43,6 +43,13 @@ import { DemoDropdown } from 'ui/components/DemoDropdown';
 import LocationList from 'ui/components/LocationList';
 import RouteMap from 'ui/components/RouteMap';
 import SearchBox, { Result } from 'ui/components/SearchBox';
+import { PropertiesSidePanel, PropertyItem } from '@patternfly/react-catalog-view-extension';
+import { OkIcon, ExternalLinkAltIcon, GlobeIcon } from '@patternfly/react-icons';
+import { Demo as DemoProblem} from 'store/server/types';
+import { PropertiesSidePanelWithItemsTsx } from './demoPage/PropertiesSidePanelWithItemTsx';
+import { MockFilterSidePanelExample } from './demoPage/MockFilterSidePanelExample';
+import TimelineChart from 'ui/components/TimelineChart';
+import ExpandableDataList from './demoPage/ExpandableDataList';
 
 export const ID_CLEAR_BUTTON = 'clear-button';
 export const ID_EXPORT_BUTTON = 'export-button';
@@ -58,6 +65,8 @@ export interface StateProps {
   userViewport: UserViewport;
   countryCodeSearchFilter: string[];
   demoNames: string[];
+  demoProblems: DemoProblem[];
+  demoSelectedName: string | null ;
 }
 
 export interface DispatchProps {
@@ -83,6 +92,8 @@ const mapStateToProps = ({ plan, demo, serverInfo, userViewport }: AppState): St
   // TODO use selector
   // TODO sort demos alphabetically?
   demoNames: (serverInfo.demos && serverInfo.demos.map(value => value.name)) || [],
+  demoProblems: serverInfo.demos,
+  demoSelectedName: demo.demoName
 });
 
 const mapDispatchToProps: DispatchProps = {
@@ -148,6 +159,8 @@ export class Demo extends React.Component<DemoProps, DemoState> {
       removeLocationHandler,
       clearHandler,
       updateViewport,
+      demoProblems,
+      demoSelectedName
     } = this.props;
 
     const exportDataSet = () => {
@@ -155,110 +168,213 @@ export class Demo extends React.Component<DemoProps, DemoState> {
     };
 
     return (
-      // FIXME find a way to avoid these style customizations
-      <Split gutter={GutterSize.md} style={{ overflowY: 'auto' }}>
-        <SplitItem
-          isFilled={false}
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <TextContent>
-            <Text component={TextVariants.h1}>Demo</Text>
-          </TextContent>
-          <SearchBox
-            boundingBox={boundingBox}
-            countryCodeSearchFilter={countryCodeSearchFilter}
-            addHandler={this.handleSearchResultClick}
-          />
-          <LocationList
-            depot={depot}
-            visits={visits}
-            removeHandler={removeLocationHandler}
-            selectHandler={this.onSelectLocation}
-          />
-        </SplitItem>
-
-        <SplitItem
-          isFilled
-          style={{ display: 'flex', flexDirection: 'column' }}
-        >
-          <Split gutter={GutterSize.md}>
-            <SplitItem isFilled>
-              <Grid>
-                <GridItem span={8}>
-                  <Level gutter="sm">
-                    <LevelItem style={{ display: 'flex' }}>
-                      <Level gutter="sm">
-                        <LevelItem>
-                          <InputGroup>
-                            <Button
-                              variant={ButtonVariant.primary}
-                              isDisabled={vehicleCount === 0}
-                              onClick={removeVehicleHandler}
-                            >
-                              <MinusIcon />
-                            </Button>
-                            <InputGroupText readOnly>
-                              {vehicleCount}
-                            </InputGroupText>
-                            <Button
-                              variant={ButtonVariant.primary}
-                              onClick={addVehicleHandler}
-                              data-cy="demo-add-vehicle"
-                            >
-                              <PlusIcon />
-                            </Button>
-                          </InputGroup>
-                        </LevelItem>
-                        <LevelItem>vehicles</LevelItem>
-                      </Level>
-                    </LevelItem>
-                    <LevelItem>{`${visits.length} visits`}</LevelItem>
-                    <LevelItem>{`Total travel time: ${distance}`}</LevelItem>
-                  </Level>
+      <div>
+         {(depot === null && (
+           <div> 
+              <Grid gutter="md">
+                <GridItem span={2} >
+                  <MockFilterSidePanelExample demoProblems={demoProblems}/>
                 </GridItem>
-                <GridItem span={4} />
+                <GridItem span={10}>
+                  <Button
+                      id={ID_EXPORT_BUTTON}
+                      isDisabled={!depot || isDemoLoading}
+                      style={{ marginBottom: 16, marginLeft: 16 }}
+                      onClick={exportDataSet}
+                    >
+                      Export
+                    </Button>
+                    {(depot === null && (
+                      <DemoDropdown
+                        demos={demoNames}
+                        onSelect={this.handleDemoLoadClick}
+                      />
+                    )) || (
+                      <Button
+                        id={ID_CLEAR_BUTTON}
+                        isDisabled={isDemoLoading}
+                        style={{ marginBottom: 16, marginLeft: 16 }}
+                        onClick={clearHandler}
+                        data-cy="demo-clear-button"
+                      >
+                        Clear
+                      </Button>
+                    )}
+                  <ExpandableDataList/>
+                </GridItem>
               </Grid>
-            </SplitItem>
-            <SplitItem isFilled={false}>
-              <Button
-                id={ID_EXPORT_BUTTON}
-                isDisabled={!depot || isDemoLoading}
-                style={{ marginBottom: 16, marginLeft: 16 }}
-                onClick={exportDataSet}
-              >
-                Export
-              </Button>
-              {(depot === null && (
-                <DemoDropdown
-                  demos={demoNames}
-                  onSelect={this.handleDemoLoadClick}
-                />
-              )) || (
+           </div>
+          )) || (
+            <div> 
+            <Grid gutter="md">
+              <GridItem span={2} rowSpan={3}>
+
+                {(depot === null && (
+                <MockFilterSidePanelExample demoProblems={demoProblems}/>
+                )) || (
+                <PropertiesSidePanelWithItemsTsx demoProblems={demoProblems} demoSelectedName={demoSelectedName}/>     
+                )}
+              
+              </GridItem>
+              <GridItem span={6} rowSpan={3}>
                 <Button
-                  id={ID_CLEAR_BUTTON}
-                  isDisabled={isDemoLoading}
-                  style={{ marginBottom: 16, marginLeft: 16 }}
-                  onClick={clearHandler}
-                  data-cy="demo-clear-button"
-                >
-                  Clear
-                </Button>
-              )}
-            </SplitItem>
-          </Split>
-          <RouteMap
-            boundingBox={boundingBox}
-            userViewport={userViewport}
-            updateViewport={updateViewport}
-            selectedId={selectedId}
-            clickHandler={this.handleMapClick}
-            removeHandler={removeLocationHandler}
-            depot={depot}
-            routes={routes}
-            visits={visits}
-          />
-        </SplitItem>
-      </Split>
+                    id={ID_EXPORT_BUTTON}
+                    isDisabled={!depot || isDemoLoading}
+                    style={{ marginBottom: 16, marginLeft: 16 }}
+                    onClick={exportDataSet}
+                  >
+                    Export
+                  </Button>
+                  {(depot === null && (
+                    <DemoDropdown
+                      demos={demoNames}
+                      onSelect={this.handleDemoLoadClick}
+                    />
+                  )) || (
+                    <Button
+                      id={ID_CLEAR_BUTTON}
+                      isDisabled={isDemoLoading}
+                      style={{ marginBottom: 16, marginLeft: 16 }}
+                      onClick={clearHandler}
+                      data-cy="demo-clear-button"
+                    >
+                      Clear
+                    </Button>
+                  )}
+                <ExpandableDataList/>
+
+
+              </GridItem>
+              <GridItem span={4}>
+                <TimelineChart/>
+              </GridItem>
+              <GridItem span={4}>
+                <TimelineChart/>
+              </GridItem>
+              <GridItem span={4}>        
+                <Split gutter={GutterSize.md} style={{ overflowY: 'auto' }}>
+                  <SplitItem
+                    isFilled={false}
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <TextContent>
+                      <Text component={TextVariants.h1}>Demo</Text>
+                    </TextContent>
+                    <SearchBox
+                      boundingBox={boundingBox}
+                      countryCodeSearchFilter={countryCodeSearchFilter}
+                      addHandler={this.handleSearchResultClick}
+                    />
+                    <LocationList
+                      depot={depot}
+                      visits={visits}
+                      removeHandler={removeLocationHandler}
+                      selectHandler={this.onSelectLocation}
+                    />
+                  </SplitItem>
+                  <SplitItem
+                    isFilled
+                    style={{ display: 'flex', flexDirection: 'column' }}
+                  >
+                    <RouteMap
+                      boundingBox={boundingBox}
+                      userViewport={userViewport}
+                      updateViewport={updateViewport}
+                      selectedId={selectedId}
+                      clickHandler={this.handleMapClick}
+                      removeHandler={removeLocationHandler}
+                      depot={depot}
+                      routes={routes}
+                      visits={visits}
+                    />
+
+                  </SplitItem>
+                </Split>
+              </GridItem>
+              
+            
+            </Grid>
+            <Split gutter={GutterSize.md} style={{ overflowY: 'auto' }}>
+              <SplitItem
+                isFilled={false}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+            
+              </SplitItem>
+              <SplitItem
+                isFilled={false}
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <TextContent>
+                  <Text component={TextVariants.h1}>Demo</Text>
+                </TextContent>
+                <SearchBox
+                  boundingBox={boundingBox}
+                  countryCodeSearchFilter={countryCodeSearchFilter}
+                  addHandler={this.handleSearchResultClick}
+                />
+                <LocationList
+                  depot={depot}
+                  visits={visits}
+                  removeHandler={removeLocationHandler}
+                  selectHandler={this.onSelectLocation}
+                />
+              </SplitItem>
+
+              <SplitItem
+                isFilled
+                style={{ display: 'flex', flexDirection: 'column' }}
+              >
+                <Split gutter={GutterSize.md}>
+                  <SplitItem isFilled>
+                    <Grid>
+                      <GridItem span={8}>
+                        <Level gutter="sm">
+                          <LevelItem style={{ display: 'flex' }}>
+                            <Level gutter="sm">
+                              <LevelItem>
+                                <InputGroup>
+                                  <Button
+                                    variant={ButtonVariant.primary}
+                                    isDisabled={vehicleCount === 0}
+                                    onClick={removeVehicleHandler}
+                                  >
+                                    <MinusIcon />
+                                  </Button>
+                                  <InputGroupText readOnly>
+                                    {vehicleCount}
+                                  </InputGroupText>
+                                  <Button
+                                    variant={ButtonVariant.primary}
+                                    onClick={addVehicleHandler}
+                                    data-cy="demo-add-vehicle"
+                                  >
+                                    <PlusIcon />
+                                  </Button>
+                                </InputGroup>
+                              </LevelItem>
+                              <LevelItem>vehicles</LevelItem>
+                            </Level>
+                          </LevelItem>
+                          <LevelItem>{`${visits.length} visits`}</LevelItem>
+                          <LevelItem>{`Total travel time: ${distance}`}</LevelItem>
+                        </Level>
+                      </GridItem>
+                      <GridItem span={4} />
+                    </Grid>
+                  </SplitItem>
+                  <SplitItem isFilled={false}>
+      
+                  </SplitItem>
+                </Split>
+                
+              </SplitItem>
+            </Split>
+         </div>
+        )}
+   
+      </div>
+  
     );
   }
 }
