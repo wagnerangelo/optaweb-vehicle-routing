@@ -40,13 +40,13 @@ public class DataSetMarshaller {
      * Create marshaller using the default object mapper, which is set up to use
      * YAML format.
      */
-    DataSetMarshaller() {        
+    DataSetMarshaller() {
         mapper = new ObjectMapper(new YAMLFactory());
     }
 
     /**
      * Constructor for testing purposes.
-     * 
+     *
      * @param mapper usually a mock object mapper
      */
     DataSetMarshaller(ObjectMapper mapper) {
@@ -55,7 +55,7 @@ public class DataSetMarshaller {
 
     /**
      * Unmarshal routing problem from a reader.
-     * 
+     *
      * @param reader a reader
      * @return routing problem
      */
@@ -65,15 +65,15 @@ public class DataSetMarshaller {
         // (e.g. a bad format) and report it to the user or log an error
         try {
             return toDomain(unmarshalToDataSet(reader));
-        } catch (Exception e) {  
-            System.out.println("cant unmarshal reader: " + reader.toString());         
-            throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);                      
+        } catch (Exception e) {
+            System.out.println("cant unmarshal reader: " + reader.toString());
+            throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);
         }
     }
 
     /**
      * Marshal routing problem to string.
-     * 
+     *
      * @param routingProblem routing problem
      * @return string containing the marshaled routing problem
      */
@@ -83,15 +83,15 @@ public class DataSetMarshaller {
 
     DataSetTelb unmarshalToDataSet(Reader reader) {
         DataSetTelb dataset = null;
-        try {         
+        try {
             dataset = mapper.readValue(reader, DataSetTelb.class);
-        } catch (IOException e) {  
-          System.out.println("cant read reader: " + reader.toString());         
-          throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);          
+        } catch (IOException e) {
+          System.out.println("cant read reader: " + reader.toString());
+          throw new IllegalStateException("Can't  unmarshalToDataSet  demo data set Telb", e);
         }
         return dataset;
     }
-/* 
+/*
     DataSetTelb unmarshalToDataSetTelb(Reader reader) {
         DataSetTelb datasetTelb = null;
         try {
@@ -135,8 +135,9 @@ public class DataSetMarshaller {
 
     static RoutingProblem toDomain(DataSetTelb dataSet) {
         try {
+
             return new RoutingProblem(dataSet.getName(), toDomain(dataSet.getDepot()),
-            dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),  new RoutingProblemParameters(dataSet.getTelbParameters().getDemoContext(), dataSet.getTelbParameters().getDemoComplexity()));
+            dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),  new RoutingProblemParameters(dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoContext( ) : "contextDemo", dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoComplexity() : "conplexityDemo"));
         } catch (Exception e){
             System.out.println("cant do to domain: ");
             throw new IllegalStateException("Failed to do RoutingProblem toDomaim method (" + dataSet.getName() + ")", e);
