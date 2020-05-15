@@ -29,8 +29,6 @@ import org.optaplanner.core.api.score.buildin.hardsoftlong.HardSoftLongScore;
 public class VehicleRoutingSolution {
 
     @ProblemFactCollectionProperty
-    private List<PlanningLocation> locationList;
-    @ProblemFactCollectionProperty
     private List<PlanningDepot> depotList;
     @PlanningEntityCollectionProperty
     @ValueRangeProvider(id = "vehicleRange")
@@ -41,15 +39,8 @@ public class VehicleRoutingSolution {
     @PlanningScore
     private HardSoftLongScore score;
 
-    public VehicleRoutingSolution() {
-    }
-
-    public List<PlanningLocation> getLocationList() {
-        return this.locationList;
-    }
-
-    public void setLocationList(List<PlanningLocation> locationList) {
-        this.locationList = locationList;
+    VehicleRoutingSolution() {
+        // Hide public constructor in favor of the factory.
     }
 
     public List<PlanningDepot> getDepotList() {
@@ -87,8 +78,7 @@ public class VehicleRoutingSolution {
     @Override
     public String toString() {
         return "VehicleRoutingSolution{" +
-                "locationList=" + locationList +
-                ", depotList=" + depotList +
+                "depotList=" + depotList +
                 ", vehicleList=" + vehicleList +
                 ", visitList=" + visitList +
                 ", score=" + score +

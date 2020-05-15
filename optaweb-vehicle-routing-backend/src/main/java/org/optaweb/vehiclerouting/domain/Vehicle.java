@@ -21,16 +21,13 @@ import java.util.Objects;
 /**
  * Vehicle that can be used to deliver cargo to visits.
  */
-public class Vehicle {
+public class Vehicle extends VehicleData {
 
     private final long id;
-    private final String name;
-    private final int capacity;
 
     Vehicle(long id, String name, int capacity) {
+        super(name, capacity);
         this.id = id;
-        this.name = Objects.requireNonNull(name);
-        this.capacity = capacity;
     }
 
     /**
@@ -39,22 +36,6 @@ public class Vehicle {
      */
     public long id() {
         return id;
-    }
-
-    /**
-     * Vehicle's name (unique description).
-     * @return vehicle's name
-     */
-    public String name() {
-        return name;
-    }
-
-    /**
-     * Vehicle's capacity.
-     * @return vehicle's capacity
-     */
-    public int capacity() {
-        return capacity;
     }
 
     @Override
@@ -76,10 +57,8 @@ public class Vehicle {
 
     @Override
     public String toString() {
-        return "Vehicle{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", capacity=" + capacity +
-                '}';
+        return "Vehicle["
+                + id
+                + "]: '" + name() + "'";
     }
 }

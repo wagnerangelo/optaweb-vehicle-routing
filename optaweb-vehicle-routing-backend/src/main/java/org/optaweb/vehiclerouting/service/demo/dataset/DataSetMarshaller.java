@@ -18,6 +18,7 @@ package org.optaweb.vehiclerouting.service.demo.dataset;
 
 import java.io.IOException;
 import java.io.Reader;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,6 +27,8 @@ import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.LocationData;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
 import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
+import org.optaweb.vehiclerouting.domain.VehicleData;
+import org.optaweb.vehiclerouting.domain.VehicleFactory;
 import org.springframework.stereotype.Component;
 
 /**
@@ -123,8 +126,14 @@ public class DataSetMarshaller {
         DataSetTelb dataSet = new DataSetTelb();
         dataSet.setName(routingProblem.name());
         dataSet.setDepot(routingProblem.depot().map(DataSetMarshaller::toDataSet).orElse(null));
-        dataSet.setVisits(
-                routingProblem.visits().stream().map(DataSetMarshaller::toDataSet).collect(Collectors.toList()));
+        dataSet.setVehicles(routingProblem.vehicles().stream()
+                .map(DataSetMarshaller::toDataSet)
+                .collect(Collectors.toList())
+        );
+        dataSet.setVisits(routingProblem.visits().stream()
+                .map(DataSetMarshaller::toDataSet)
+                .collect(Collectors.toList())
+        );
         return dataSet;
     }
 
@@ -133,10 +142,15 @@ public class DataSetMarshaller {
                 locationData.coordinates().longitude().doubleValue());
     }
 
+    static DataSetVehicle toDataSet(VehicleData vehicleData) {
+        return new DataSetVehicle(vehicleData.name(), vehicleData.capacity());
+    }
+
     static RoutingProblem toDomain(DataSetTelb dataSet) {
         try {
 
-            return new RoutingProblem(dataSet.getName(), toDomain(dataSet.getDepot()),
+            return new RoutingProblem(Optional.ofNullable(dataSet.getName()).orElse(""),
+            dataSet.getVehicles().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),Optional.ofNullable(dataSet.getDepot()).map(DataSetMarshaller::toDomain).orElse(null),
             dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),  new RoutingProblemParameters(dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoContext( ) : "contextDemo", dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoComplexity() : "conplexityDemo"));
         } catch (Exception e){
             System.out.println("cant do to domain: ");
@@ -148,5 +162,9 @@ public class DataSetMarshaller {
     static LocationData toDomain(DataSetLocation dataSetLocation) {
         return new LocationData(Coordinates.valueOf(dataSetLocation.getLatitude(), dataSetLocation.getLongitude()),
                 dataSetLocation.getLabel());
+    }
+
+    static VehicleData toDomain(DataSetVehicle dataSetVehicle) {
+        return VehicleFactory.vehicleData(dataSetVehicle.name, dataSetVehicle.capacity);
     }
 }

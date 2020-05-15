@@ -29,10 +29,9 @@ import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.Distance;
 import org.optaweb.vehiclerouting.domain.Location;
 import org.optaweb.vehiclerouting.domain.Vehicle;
-import org.optaweb.vehiclerouting.plugin.planner.domain.AbstractPlanningObject;
 import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningDepot;
-import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningLocation;
 import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVehicle;
+import org.optaweb.vehiclerouting.plugin.planner.domain.PlanningVisit;
 import org.optaweb.vehiclerouting.plugin.planner.domain.VehicleRoutingSolution;
 import org.optaweb.vehiclerouting.service.location.DistanceMatrixRow;
 
@@ -85,7 +84,7 @@ class RouteOptimizerImplTest {
         verifyNoInteractions(solverManager);
         VehicleRoutingSolution solution = verifyPublishingPreliminarySolution();
         assertThat(solution.getVehicleList())
-                .extracting(AbstractPlanningObject::getId)
+                .extracting(PlanningVehicle::getId)
                 .containsExactlyInAnyOrder(vehicleIds);
         assertThat(solution.getDepotList()).extracting(PlanningDepot::getId).containsExactly(location1.id());
         assertThat(solution.getVisitList()).isEmpty();
@@ -104,7 +103,7 @@ class RouteOptimizerImplTest {
         verifyNoInteractions(solverManager);
         VehicleRoutingSolution solutionWithOneVehicle = verifyPublishingPreliminarySolution();
         assertThat(solutionWithOneVehicle.getVehicleList())
-                .extracting(AbstractPlanningObject::getId)
+                .extracting(PlanningVehicle::getId)
                 .containsExactly(vehicleId);
         assertThat(solutionWithOneVehicle.getDepotList()).isEmpty();
         assertThat(solutionWithOneVehicle.getVisitList()).isEmpty();
@@ -202,8 +201,7 @@ class RouteOptimizerImplTest {
 
         VehicleRoutingSolution solution = verifyPublishingPreliminarySolution();
         assertThat(solution.getDepotList()).hasSize(1);
-        assertThat(solution.getDepotList().get(0).getLocation().getDistanceTo(fromDomain(location2)))
-                .isEqualTo(millis);
+        assertThat(solution.getDepotList().get(0).getLocation().distanceTo(fromDomain(location2))).isEqualTo(millis);
     }
 
     @Test
@@ -234,7 +232,8 @@ class RouteOptimizerImplTest {
         // but preliminary solution is published
         VehicleRoutingSolution solution1 = verifyPublishingPreliminarySolution();
         assertThat(solution1.getVehicleList()).isEmpty();
-        assertThat(solution1.getLocationList()).hasSize(2);
+        assertThat(solution1.getDepotList()).hasSize(1);
+        assertThat(solution1.getVisitList()).hasSize(1);
 
         // add a third location and remove another one
         routeOptimizer.addLocation(location3, matrixRow);
@@ -247,7 +246,8 @@ class RouteOptimizerImplTest {
         // but preliminary solution is published
         VehicleRoutingSolution solution2 = verifyPublishingPreliminarySolution();
         assertThat(solution2.getVehicleList()).isEmpty();
-        assertThat(solution2.getLocationList()).hasSize(2);
+        assertThat(solution1.getDepotList()).hasSize(1);
+        assertThat(solution1.getVisitList()).hasSize(1);
     }
 
     @Test
@@ -281,7 +281,7 @@ class RouteOptimizerImplTest {
 
         VehicleRoutingSolution solution = verifyPublishingPreliminarySolution();
         assertThat(solution.getVisitList()).isEmpty();
-        assertThat(solution.getLocationList()).hasSize(1);
+        assertThat(solution.getDepotList()).hasSize(1);
         assertThat(solution.getVehicleList()).hasSize(1);
     }
 
@@ -313,10 +313,10 @@ class RouteOptimizerImplTest {
         // then all vehicles must be in the depot
         VehicleRoutingSolution solution1 = verifyPublishingPreliminarySolution();
         assertThat(solution1.getVehicleList())
-                .extracting(AbstractPlanningObject::getId)
+                .extracting(PlanningVehicle::getId)
                 .containsExactlyInAnyOrder(vehicleId1, vehicleId2);
         assertThat(solution1.getVehicleList()).allMatch(vehicle -> vehicle.getDepot().getId() == location1.id());
-        assertThat(solution1.getDepotList()).extracting(AbstractPlanningObject::getId).containsExactly(location1.id());
+        assertThat(solution1.getDepotList()).extracting(PlanningDepot::getId).containsExactly(location1.id());
 
         // if we remove the depot
         clearInvocations(solutionPublisher);
@@ -325,7 +325,7 @@ class RouteOptimizerImplTest {
         // then published solution's depot list is empty
         VehicleRoutingSolution solution2 = verifyPublishingPreliminarySolution();
         assertThat(solution2.getVehicleList())
-                .extracting(AbstractPlanningObject::getId)
+                .extracting(PlanningVehicle::getId)
                 .containsExactlyInAnyOrder(vehicleId1, vehicleId2);
         assertThat(solution2.getDepotList()).isEmpty();
 
@@ -343,7 +343,7 @@ class RouteOptimizerImplTest {
         // act
         routeOptimizer.addLocation(location3, matrixRow);
         // assert
-        verify(solverManager).addLocation(any(PlanningLocation.class));
+        verify(solverManager).addVisit(any(PlanningVisit.class));
     }
 
     @Test
@@ -357,15 +357,15 @@ class RouteOptimizerImplTest {
 
         // add second visit to avoid stopping solver manager after removing a visit below
         routeOptimizer.addLocation(location3, matrixRow);
-        verify(solverManager).addLocation(any(PlanningLocation.class));
+        verify(solverManager).addVisit(any(PlanningVisit.class));
 
         // act
         routeOptimizer.removeLocation(location2);
 
         // assert
-        ArgumentCaptor<PlanningLocation> locationArgumentCaptor = ArgumentCaptor.forClass(PlanningLocation.class);
-        verify(solverManager).removeLocation(locationArgumentCaptor.capture());
-        assertThat(locationArgumentCaptor.getValue().getId()).isEqualTo(location2.id());
+        ArgumentCaptor<PlanningVisit> visitArgumentCaptor = ArgumentCaptor.forClass(PlanningVisit.class);
+        verify(solverManager).removeVisit(visitArgumentCaptor.capture());
+        assertThat(visitArgumentCaptor.getValue().getId()).isEqualTo(location2.id());
         // solver still running
         verify(solverManager, never()).stopSolver();
     }
@@ -476,7 +476,6 @@ class RouteOptimizerImplTest {
         assertThat(solution.getVehicleList()).hasSize(1);
         assertThat(solution.getDepotList()).isEmpty();
         assertThat(solution.getVisitList()).isEmpty();
-        assertThat(solution.getLocationList()).isEmpty();
     }
 
     @Test
@@ -497,7 +496,6 @@ class RouteOptimizerImplTest {
         assertThat(solution.getVehicleList()).isEmpty();
         assertThat(solution.getDepotList()).hasSize(1);
         assertThat(solution.getVisitList()).hasSize(2);
-        assertThat(solution.getLocationList()).hasSize(3);
     }
 
     @Test

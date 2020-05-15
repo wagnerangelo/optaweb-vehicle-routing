@@ -17,18 +17,21 @@
 package org.optaweb.vehiclerouting.plugin.planner.domain;
 
 import org.optaplanner.core.api.domain.entity.PlanningEntity;
+import org.optaplanner.core.api.domain.lookup.PlanningId;
 import org.optaplanner.core.api.domain.variable.AnchorShadowVariable;
 import org.optaplanner.core.api.domain.variable.PlanningVariable;
 import org.optaplanner.core.api.domain.variable.PlanningVariableGraphType;
 import org.optaweb.vehiclerouting.plugin.planner.weight.DepotAngleVisitDifficultyWeightFactory;
 
 @PlanningEntity(difficultyWeightFactoryClass = DepotAngleVisitDifficultyWeightFactory.class)
-public class PlanningVisit extends AbstractPlanningObject implements Standstill {
+public class PlanningVisit implements Standstill {
 
+    @PlanningId
+    private long id;
     private PlanningLocation location;
     private int demand;
 
-    // Planning variables: changes during planning, between score calculations.
+    // Planning variable: changes during planning, between score calculations.
     @PlanningVariable(valueRangeProviderRefs = {"vehicleRange", "visitRange"},
             graphType = PlanningVariableGraphType.CHAINED)
     private Standstill previousStandstill;
@@ -37,6 +40,18 @@ public class PlanningVisit extends AbstractPlanningObject implements Standstill 
     private PlanningVisit nextVisit;
     @AnchorShadowVariable(sourceVariableName = "previousStandstill")
     private PlanningVehicle vehicle;
+
+    PlanningVisit() {
+        // Hide public constructor in favor of the factory.
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @Override
     public PlanningLocation getLocation() {
@@ -73,7 +88,6 @@ public class PlanningVisit extends AbstractPlanningObject implements Standstill 
         this.nextVisit = nextVisit;
     }
 
-    @Override
     public PlanningVehicle getVehicle() {
         return vehicle;
     }
@@ -87,32 +101,36 @@ public class PlanningVisit extends AbstractPlanningObject implements Standstill 
     // ************************************************************************
 
     /**
-     * @return a positive number, the distance multiplied by 1000 to avoid floating point arithmetic rounding errors
+     * Distance from the previous standstill to this visit. This is used to calculate the travel cost of a chain
+     * beginning with a vehicle (at a depot) and ending with the {@link #isLast() last} visit.
+     * The chain ends with a visit, not a depot so the cost of returning from the last visit back to the depot
+     * has to be added in a separate step using {@link #distanceToDepot()}.
+     * @return distance from previous standstill to this visit
      */
-    public long getDistanceFromPreviousStandstill() {
+    public long distanceFromPreviousStandstill() {
         if (previousStandstill == null) {
             throw new IllegalStateException(
                     "This method must not be called when the previousStandstill ("
                             + previousStandstill + ") is not initialized yet."
             );
         }
-        return getDistanceFrom(previousStandstill);
+        return previousStandstill.getLocation().distanceTo(location);
     }
 
     /**
-     * @param standstill never null
-     * @return a positive number, the distance multiplied by 1000 to avoid floating point arithmetic rounding errors
+     * Distance from this visit back to the depot.
+     * @return distance from this visit back its vehicle's depot
      */
-    public long getDistanceFrom(Standstill standstill) {
-        return standstill.getLocation().getDistanceTo(location);
+    public long distanceToDepot() {
+        return location.distanceTo(vehicle.getLocation());
     }
 
     /**
-     * @param standstill never null
-     * @return a positive number, the distance multiplied by 1000 to avoid floating point arithmetic rounding errors
+     * Whether this visit is the last in a chain.
+     * @return true, if this visit has no {@link #getNextVisit() next} visit
      */
-    public long getDistanceTo(Standstill standstill) {
-        return location.getDistanceTo(standstill.getLocation());
+    public boolean isLast() {
+        return nextVisit == null;
     }
 
     @Override
