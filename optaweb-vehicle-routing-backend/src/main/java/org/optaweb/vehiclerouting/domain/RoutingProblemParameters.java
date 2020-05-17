@@ -21,20 +21,19 @@ package org.optaweb.vehiclerouting.domain;
  */
 public class RoutingProblemParameters {
 
-   
     private String demoContext;
     private String demoComplexity;
     private int demoHorizon;
     private String demoInitialDate;
     private String demoElucidation;
-    
+
     /**
-     * Create routing problem parameters.
-     * @param demoContext business context , ie type of vehicle (PSLV, RSV)
-     * @param democomplexity business complexity case, if is basic, advanced, multicriteria
-     * @param demoHorizon horizon consider to calculate schedule quality parameters (days)
-     * @param demoInitialDate initial date of schedule problem (string) ("dd/mm/yy")
-     * @param demoElucidation explanation of business case
+     *Create routing problem parameters.
+     *@param demoContext business context , ie type of vehicle (PSLV, RSV)
+     *@param democomplexity business complexity case, if is basic, advanced, multicriteria
+     *@param demoHorizon horizon consider to calculate schedule quality parameters (days)
+     *@param demoInitialDate initial date of schedule problem (string) ("dd/mm/yy")
+     *@param demoElucidation explanation of business case
      */
     public RoutingProblemParameters(final String demoContext, final String demoComplexity) {
         this.demoContext = demoContext;
@@ -56,8 +55,6 @@ public class RoutingProblemParameters {
         this.demoContext = demoContext;
     }
 
-   
-   
     /**
      * demoComplexity.
      * @return demoComplexity
@@ -82,7 +79,6 @@ public class RoutingProblemParameters {
         this.demoHorizon = demoHorizon;
     }
 
-
     /**
      * initial date.
      * @return String
@@ -95,7 +91,6 @@ public class RoutingProblemParameters {
         this.demoInitialDate = demoInitialDate;
     }
 
-    
     /**
      * multiline text clarification about case.
      * @return String
@@ -107,7 +102,6 @@ public class RoutingProblemParameters {
     public void setElucidation(final String demoElucidation) {
         this.demoElucidation= demoElucidation;
     }
-
 
     @Override
     public String toString() {

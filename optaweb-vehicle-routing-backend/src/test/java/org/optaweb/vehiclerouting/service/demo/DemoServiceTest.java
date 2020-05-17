@@ -79,7 +79,6 @@ class DemoServiceTest {
 
     private final RoutingProblem routingProblem = new RoutingProblem(problemName, vehicles, depot, visits, null);
 
-
     @Test
     void demos_should_return_routing_problems() {
         // arrange

@@ -25,7 +25,6 @@ class DataSetTelb extends DataSet {
 
     /**
      * Data set TelbParameters (parameters of study case).
-     * 
      * @return data set parameters
      */
     public DataSetParameters getTelbParameters() {

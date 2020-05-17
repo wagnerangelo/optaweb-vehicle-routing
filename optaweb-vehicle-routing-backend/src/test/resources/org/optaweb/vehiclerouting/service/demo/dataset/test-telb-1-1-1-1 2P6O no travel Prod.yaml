@@ -21,6 +21,13 @@ visits:
   - lng: 2.883333
     lat: 50.85
     label: "Ypres"
+vehicles:
+  - name: "vehicle 1"
+    capacity: 10
+  - name: "vehicle 2"
+    capacity: 12
+  - name: "vehicle 3"
+    capacity: 1000000
 telbParameters:
   context: "PLSV"
   complexity: "Basic"
@@ -31,7 +38,7 @@ telbParameters:
     \n
     \n
     Caso básico com 2 poços, 6 operações, sem predecessora.\n
-    2 PLSVs, um poço tem potencial de 100 000 bpd e outro 50000 bpd.\n 
+    2 PLSVs, um poço tem potencial de 100 000 bpd e outro 50000 bpd.\n
     \n
     A produção é avaliada num horizonte de 1000 dias.\n
     \n
@@ -39,4 +46,4 @@ telbParameters:
     \n
     A solução ótima espera 145450 000 barris.
 
-  
+

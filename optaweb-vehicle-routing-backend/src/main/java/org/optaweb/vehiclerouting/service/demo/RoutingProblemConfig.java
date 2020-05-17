@@ -105,7 +105,7 @@ class RoutingProblemConfig {
                         } catch (Exception e1) {
                             logger.error("cant read reader {}",reader.toString(), e1);
                             return null;
-                        }                        
+                        }
                     })
                     .filter(Objects::nonNull)
                     .collect(Collectors.toList());

@@ -82,6 +82,7 @@ public class RoutingProblem {
     public RoutingProblemParameters getRoutingProblemParameters() {
         return routingProblemParameters;
     }
+
     /**
      * Vehicles that are part of the problem definition.
      * @return vehicles

@@ -38,8 +38,6 @@ class DataSetParameters {
     private String demoInitialDate;
     @JsonProperty(value = "elucidation")
     private String demoElucidation;
-    
-    
 
     private DataSetParameters() {
         // for unmarshalling
@@ -62,8 +60,6 @@ class DataSetParameters {
         this.demoContext = demoContext;
     }
 
-   
-   
     /**
      * demoComplexity.
      * @return demoComplexity
@@ -88,7 +84,6 @@ class DataSetParameters {
         this.demoHorizon = demoHorizon;
     }
 
-
     /**
      * initial date.
      * @return String
@@ -101,7 +96,6 @@ class DataSetParameters {
         this.demoInitialDate = demoInitialDate;
     }
 
-    
     /**
      * multiline text clarification about case.
      * @return String
@@ -113,7 +107,6 @@ class DataSetParameters {
     public void setElucidation(final String demoElucidation) {
         this.demoElucidation= demoElucidation;
     }
-
 
     @Override
     public String toString() {

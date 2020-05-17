@@ -83,7 +83,6 @@ class DataSetMarshallerTest {
         assertThat(((DataSetTelb) dataSet).getTelbParameters().getDemoComplexity()).isEqualTo("Basic");
     }
 
-
     @Test
     void unmarshal_data_set_with_parameters_1_1_1_1() throws IOException {
         DataSet dataSet = null;
