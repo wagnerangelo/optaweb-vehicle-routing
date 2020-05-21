@@ -149,10 +149,16 @@ public class DataSetMarshaller {
 
     static RoutingProblem toDomain(DataSetTelb dataSet) {
         try {
+            RoutingProblemParameters routingProblemParameters;
+            if (dataSet.getTelbParameters() != null) {
+                routingProblemParameters = new RoutingProblemParameters(Optional.ofNullable(dataSet.getTelbParameters().getDemoContext()).orElse("contextDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoComplexity()).orElse("conplexityDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoElucidation()).orElse(""));
+            } else  {
+                routingProblemParameters = new RoutingProblemParameters("contextDemo","conplexityDemo","");
+            }
 
             return new RoutingProblem(Optional.ofNullable(dataSet.getName()).orElse(""),
             dataSet.getVehicles().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),Optional.ofNullable(dataSet.getDepot()).map(DataSetMarshaller::toDomain).orElse(null),
-            dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),  new RoutingProblemParameters(dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoContext( ) : "contextDemo", dataSet.getTelbParameters() != null ? dataSet.getTelbParameters().getDemoComplexity() : "conplexityDemo"));
+            dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()), routingProblemParameters);
         } catch (Exception e){
             System.out.println("cant do to domain: ");
             throw new IllegalStateException("Failed to do RoutingProblem toDomaim method (" + dataSet.getName() + ")", e);

@@ -21,18 +21,36 @@ import {
 import { CodeBranchIcon } from '@patternfly/react-icons';
 
 function mapStateToProps(state) {
-    const { serverInfo } = state  
+    const { serverInfo } = state
     return { demoProblems: serverInfo.demos }
+}
+
+function textToHtml(html)
+{
+    let arr = html.split(/<br\s*\/?>/i);
+    return arr.reduce((el, a) => el.concat(a, <br />), []);
 }
 
 export class ExpandableDataList extends React.Component {
   constructor(props) {
     super(props);
+    var isOpenItemsVar = [{name: " ", isOpen: false}];
+    props.demoProblems.map(demoProblem => {
+      var isOpenItemVar = {name: demoProblem.name, isOpen: false};
+      isOpenItemsVar.push(isOpenItemVar);
+    });
+    console.log(isOpenItemsVar);
     this.state = {
       expanded: ['ex-toggle1', 'ex-toggle3'],
       isOpen1: false,
       isOpen2: false,
-      isOpen3: false
+      isOpen3: false,
+      isOpenItems: isOpenItemsVar
+    };
+
+    this.onToggleItemList = (isOpenItem) => {
+      var isOpenItemsVar = this.state.isOpenItems;
+      this.setState(isOpenItemsVar);
     };
 
     this.onToggle1 = isOpen1 => {
@@ -59,11 +77,35 @@ export class ExpandableDataList extends React.Component {
       }));
     };
 
+    this.handleClick= (demoName) => {
+
+      this.props.handleDemoLoadClick(demoName);
+    }
+
+    function search(nameKey, myArray){
+      for (var i=0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+              return myArray[i];
+          }
+      }
+    }
+
+    function togleItem(nameKey, myArray){
+      for (var i=0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+              myArray[i] = [{name: nameKey, isOpen: !myArray[i].isOpen }]
+          }
+      }
+      return myArray;
+    }
+
     this.onSelect3 = event => {
       this.setState(prevState => ({
         isOpen3: !prevState.isOpen3
       }));
     };
+    this.handleClick = this.handleClick.bind(this);
+
   }
 
   render() {
@@ -85,11 +127,21 @@ export class ExpandableDataList extends React.Component {
         index >= 0 ? [...expanded.slice(0, index), ...expanded.slice(index + 1, expanded.length)] : [...expanded, id];
       this.setState(() => ({ expanded: newExpanded }));
     };
+
+
+    function search(nameKey, myArray){
+      for (var i=0; i < myArray.length; i++) {
+          if (myArray[i].name === nameKey) {
+              return myArray[i];
+          }
+      }
+    }
+
     return (
-       
       <DataList aria-label="Expandable data list example">
-        {demoProblems.map(demoProblem =>
-                  <DataListItem aria-labelledby={demoProblem.name +"Item"} isExpanded={this.state.expanded.includes(demoProblem.name + "Toggle")}>
+        {demoProblems.map(demoProblem => {
+           return (
+                 <DataListItem aria-labelledby={demoProblem.name +"Item"} isExpanded={this.state.expanded.includes(demoProblem.name + "Toggle")}>
                   <DataListItemRow>
                     <DataListToggle
                       onClick={() => toggle(demoProblem.name + "Toggle")}
@@ -105,10 +157,10 @@ export class ExpandableDataList extends React.Component {
                         <DataListCell width={5} key="primary content">
                           <div style={previewPlaceholder} id="ex-item1">
                             <b>
-                              {demoProblem.name} 
-                            </b>  
+                              {demoProblem.name}
+                            </b>
                           </div>
-                          
+
                           <Badge key={1} isRead>{demoProblem.routingProblemParameters.demoContext}</Badge>
                           {' '}
                           <Badge key={2} isRead>{demoProblem.routingProblemParameters.demoComplexity}</Badge>
@@ -120,25 +172,23 @@ export class ExpandableDataList extends React.Component {
                             <h7>
                               <p>Wagner</p>
                               <p>Carrijo</p>
-                            </h7>                            
+                            </h7>
                           </div>
                         </DataListCell>,
-                       
+
                       ]}
                     />
                     <DataListAction aria-labelledby={demoProblem.name +"Action"} id={demoProblem.name +"Action"} aria-label={demoProblem.name +"Action"} >
-                      <Dropdown
-                        isPlain
-                        position={DropdownPosition.right}
-                        isOpen={this.state.isOpen1}
-                        onSelect={this.onSelect1}
-                        toggle={<KebabToggle onToggle={this.onToggle1} />}
-                        dropdownItems={[
-                          <DropdownItem key={demoProblem.name +"Action"} component="button">
-                            Open
-                          </DropdownItem>
-                        ]}
-                      />
+                      {console.log("que loucura")}
+                      <Button
+                        id={demoProblem.name +"DropdownDemo"}
+                        aria-label={demoProblem.name +"DropdownDemo"}
+                        onClick={() => this.handleClick(demoProblem.name)}
+                      >
+                        Open
+                      </Button>
+
+
                     </DataListAction>
                   </DataListItemRow>
                   <DataListContent
@@ -147,14 +197,15 @@ export class ExpandableDataList extends React.Component {
                     isHidden={!this.state.expanded.includes(demoProblem.name +"Toggle")}
                   >
                     <p>
-                      { demoProblem.routingProblemParameters.demoElucidation }                      
+                      {textToHtml(demoProblem.routingProblemParameters.demoElucidation.replace(/\n/g,"<br />"))}
                     </p>
                     <p>
                       { "Initial Date: "+ demoProblem.routingProblemParameters.demoInitialDate }
                     </p>
                   </DataListContent>
                 </DataListItem>
-        )} 
+                )
+              })}
 
         <DataListItem aria-labelledby="ex-item2" isExpanded={this.state.expanded.includes('ex-toggle2')}>
           <DataListItemRow>
@@ -169,7 +220,7 @@ export class ExpandableDataList extends React.Component {
                 <DataListCell isIcon key="icon">
                   <CodeBranchIcon />
                 </DataListCell>,
-                
+
                 <DataListCell width={5} key="secondary content">
                      <div style={previewPlaceholder} >
                       <b id="width-ex3-item1">width 5</b>
@@ -179,7 +230,7 @@ export class ExpandableDataList extends React.Component {
                 <DataListCell width={1}  key="secondary content 2" >
                   <span>Lorem ipsum dolor sit amet.</span>
                 </DataListCell>,
-                
+
               ]}
             />
             <DataListAction aria-labelledby="ex-item2 ex-action2" id="ex-action2" aria-label="Actions">
@@ -220,13 +271,13 @@ export class ExpandableDataList extends React.Component {
               id="ex-toggle3"
               aria-controls="ex-expand3"
             />
-            <DataListItemCells 
+            <DataListItemCells
               dataListCells={[
                 <DataListCell isIcon key="icon">
                   <CodeBranchIcon />
                 </DataListCell>,
                 <DataListCell key="tertiary content" pfe-img-src>
-                  
+
                   <div id="ex-item3">Tertiary content</div>
                   <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
                 </DataListCell>,
@@ -234,7 +285,7 @@ export class ExpandableDataList extends React.Component {
                   <span>Lorem ipsum dolor sit amet.</span>
                 </DataListCell>,
                 <DataListCell key="secondary content 2">
-                     
+
                   <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</span>
                 </DataListCell>
               ]}

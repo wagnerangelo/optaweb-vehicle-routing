@@ -43,6 +43,14 @@ public class RoutingProblemParameters {
         this.demoElucidation = "explanation";
     }
 
+    public RoutingProblemParameters(final String demoContext, final String demoComplexity, final String demoElucidation) {
+        this.demoContext = demoContext;
+        this.demoComplexity = demoComplexity;
+        this.demoHorizon = 90;
+        this.demoInitialDate = "01/01/2021";
+        this.demoElucidation = demoElucidation;
+    }
+
     /**
      * demoContext.
      * @return demoContext

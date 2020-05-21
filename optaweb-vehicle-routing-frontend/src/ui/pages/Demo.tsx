@@ -170,7 +170,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
     return (
       <div>
          {(depot === null && (
-           <div> 
+           <div>
               <Grid gutter="md">
                 <GridItem span={2} >
                   <MockFilterSidePanelExample demoProblems={demoProblems}/>
@@ -200,21 +200,21 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                         Clear
                       </Button>
                     )}
-                  <ExpandableDataList/>
+                  <ExpandableDataList handleDemoLoadClick={this.handleDemoLoadClick}/>
                 </GridItem>
               </Grid>
            </div>
           )) || (
-            <div> 
+            <div>
             <Grid gutter="md">
               <GridItem span={2} rowSpan={3}>
 
                 {(depot === null && (
                 <MockFilterSidePanelExample demoProblems={demoProblems}/>
                 )) || (
-                <PropertiesSidePanelWithItemsTsx demoProblems={demoProblems} demoSelectedName={demoSelectedName}/>     
+                <PropertiesSidePanelWithItemsTsx demoProblems={demoProblems} demoSelectedName={demoSelectedName}/>
                 )}
-              
+
               </GridItem>
               <GridItem span={6} rowSpan={3}>
                 <Button
@@ -251,7 +251,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
               <GridItem span={4}>
                 <TimelineChart/>
               </GridItem>
-              <GridItem span={4}>        
+              <GridItem span={4}>
                 <Split gutter={GutterSize.md} style={{ overflowY: 'auto' }}>
                   <SplitItem
                     isFilled={false}
@@ -291,15 +291,15 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                   </SplitItem>
                 </Split>
               </GridItem>
-              
-            
+
+
             </Grid>
             <Split gutter={GutterSize.md} style={{ overflowY: 'auto' }}>
               <SplitItem
                 isFilled={false}
                 style={{ display: 'flex', flexDirection: 'column' }}
               >
-            
+
               </SplitItem>
               <SplitItem
                 isFilled={false}
@@ -364,17 +364,17 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                     </Grid>
                   </SplitItem>
                   <SplitItem isFilled={false}>
-      
+
                   </SplitItem>
                 </Split>
-                
+
               </SplitItem>
             </Split>
          </div>
         )}
-   
+
       </div>
-  
+
     );
   }
 }

@@ -135,6 +135,25 @@
       <artifactId>optaplanner-test</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <!-- TELB Dependecies-->
+
+
+    <!-- https://mvnrepository.com/artifact/junit/junit -->
+    <dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <scope>test</scope>
+    </dependency>
+
+
+    <!-- https://mvnrepository.com/artifact/org.json/json -->
+    <dependency>
+        <groupId>org.json</groupId>
+        <artifactId>json</artifactId>
+    </dependency>
+
+
   </dependencies>
 
   <build>
