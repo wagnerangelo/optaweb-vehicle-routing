@@ -50,6 +50,7 @@ import { PropertiesSidePanelWithItemsTsx } from './demoPage/PropertiesSidePanelW
 import { MockFilterSidePanelExample } from './demoPage/MockFilterSidePanelExample';
 import TimelineChart from 'ui/components/TimelineChart';
 import ExpandableDataList from './demoPage/ExpandableDataList';
+import { CaseParameterExpandable } from 'ui/components/cases/CaseParameterExpandable';
 
 export const ID_CLEAR_BUTTON = 'clear-button';
 export const ID_EXPORT_BUTTON = 'export-button';
@@ -176,30 +177,6 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                   <MockFilterSidePanelExample demoProblems={demoProblems}/>
                 </GridItem>
                 <GridItem span={10}>
-                  <Button
-                      id={ID_EXPORT_BUTTON}
-                      isDisabled={!depot || isDemoLoading}
-                      style={{ marginBottom: 16, marginLeft: 16 }}
-                      onClick={exportDataSet}
-                    >
-                      Export
-                    </Button>
-                    {(depot === null && (
-                      <DemoDropdown
-                        demos={demoNames}
-                        onSelect={this.handleDemoLoadClick}
-                      />
-                    )) || (
-                      <Button
-                        id={ID_CLEAR_BUTTON}
-                        isDisabled={isDemoLoading}
-                        style={{ marginBottom: 16, marginLeft: 16 }}
-                        onClick={clearHandler}
-                        data-cy="demo-clear-button"
-                      >
-                        Clear
-                      </Button>
-                    )}
                   <ExpandableDataList handleDemoLoadClick={this.handleDemoLoadClick}/>
                 </GridItem>
               </Grid>
@@ -208,13 +185,7 @@ export class Demo extends React.Component<DemoProps, DemoState> {
             <div>
             <Grid gutter="md">
               <GridItem span={2} rowSpan={3}>
-
-                {(depot === null && (
-                <MockFilterSidePanelExample demoProblems={demoProblems}/>
-                )) || (
                 <PropertiesSidePanelWithItemsTsx demoProblems={demoProblems} demoSelectedName={demoSelectedName}/>
-                )}
-
               </GridItem>
               <GridItem span={6} rowSpan={3}>
                 <Button
@@ -225,23 +196,16 @@ export class Demo extends React.Component<DemoProps, DemoState> {
                   >
                     Export
                   </Button>
-                  {(depot === null && (
-                    <DemoDropdown
-                      demos={demoNames}
-                      onSelect={this.handleDemoLoadClick}
-                    />
-                  )) || (
-                    <Button
-                      id={ID_CLEAR_BUTTON}
-                      isDisabled={isDemoLoading}
-                      style={{ marginBottom: 16, marginLeft: 16 }}
-                      onClick={clearHandler}
-                      data-cy="demo-clear-button"
-                    >
-                      Clear
-                    </Button>
-                  )}
-                <ExpandableDataList/>
+                  <Button
+                    id={ID_CLEAR_BUTTON}
+                    isDisabled={isDemoLoading}
+                    style={{ marginBottom: 16, marginLeft: 16 }}
+                    onClick={clearHandler}
+                    data-cy="demo-clear-button"
+                  >
+                    Clear
+                  </Button>
+                  <CaseParameterExpandable/>
 
 
               </GridItem>

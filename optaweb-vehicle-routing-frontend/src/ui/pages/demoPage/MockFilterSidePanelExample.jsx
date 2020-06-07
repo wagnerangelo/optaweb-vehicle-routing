@@ -6,11 +6,11 @@ import { TextInput } from '@patternfly/react-core';
 import { uniqBy, groupBy ,map ,reduce, keys } from 'lodash';
 
 function mapStateToProps(state) {
-  const { serverInfo } = state  
+  const { serverInfo } = state
   return { demoProblems: serverInfo.demos }
 }
 
-export class MockFilterSidePanelExample extends React.Component {  
+export class MockFilterSidePanelExample extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -61,26 +61,26 @@ export class MockFilterSidePanelExample extends React.Component {
         rating: false
       }
     };
-    
+
     this.onShowAllToggle = id => {
       const showAllCategories = { ...this.state.showAllCategories };
       showAllCategories[id] = !showAllCategories[id];
       this.setState({ showAllCategories });
     };
-  
+
     this.onFilterChange = (id, value) => {
       const activeFilters = { ...this.state.activeFilters };
       activeFilters[id] = value;
       this.setState({ activeFilters });
     };
-  
+
     this.getStars = count => {
       const stars = [];
-  
+
       for (let i = 0; i < count; i++) {
         stars.push(<StarIcon key={i} />);
       }
-  
+
       return (
         <span>
           <span className="sr-only">{`${count} stars`}</span>
@@ -91,48 +91,48 @@ export class MockFilterSidePanelExample extends React.Component {
     };
 
   }
-  
+
   render() {
     const { activeFilters, showAllCategories } = this.state;
     const { demoProblems} = this.props;
 
     function isEqualValue(a,b) {
       if (a == b) return true;
-      
+
       return false;
     }
 
-    
+
     const filterStatus = (field) => {
       switch(field) {
         case 'contextPLSV':
-          return this.state.activeFilters.contextPLSV;            
+          return this.state.activeFilters.contextPLSV;
         case 'contextRSV':
-          return this.state.activeFilters.contextRSV;     
+          return this.state.activeFilters.contextRSV;
         case 'complexityBasic':
-          return this.state.activeFilters.complexityBasic;            
+          return this.state.activeFilters.complexityBasic;
         case 'complexityLow':
-          return this.state.activeFilters.complexityLow;              
+          return this.state.activeFilters.complexityLow;
         case 'complexityMedium':
-          return this.state.activeFilters.complexityMedium;            
+          return this.state.activeFilters.complexityMedium;
         case 'complexityHigh':
-          return this.state.activeFilters.complexityHigh;              
+          return this.state.activeFilters.complexityHigh;
         default:
           return undefined;
       }
     }
-    
+
     function setActiveFilter(a,b) {
       if (a == b) return true;
-      
+
       return false;
     }
 
     const maxShowCount = 5;
     const leeway = 2;
-    
+
     //Context
-    const demoContextUniqs = uniqBy(demoProblems,'routingProblemParameters.demoContext');    
+    const demoContextUniqs = uniqBy(demoProblems,'routingProblemParameters.demoContext');
     var group = groupBy(demoProblems,'routingProblemParameters.demoContext')
    // console.log("resultado do group: "+ JSON.stringify(group));
     var demoContextGroupeds = map(keys(group), function(e) {
@@ -144,7 +144,7 @@ export class MockFilterSidePanelExample extends React.Component {
     //console.log("demoContextUniqs"+ JSON.stringify(demoContextUniqs));
 
     //Complexity
-    const demoComplexityUniqs = uniqBy(demoProblems,'routingProblemParameters.demoComplexity');    
+    const demoComplexityUniqs = uniqBy(demoProblems,'routingProblemParameters.demoComplexity');
     var group = groupBy(demoProblems,'routingProblemParameters.demoComplexity')
    // console.log("resultado do group: "+ JSON.stringify(group));
     var demoComplexityGroupeds = map(keys(group), function(e) {
@@ -158,9 +158,9 @@ export class MockFilterSidePanelExample extends React.Component {
 
 
     return (
-     <div style={{ width: '205px', border: '1px solid grey', paddingTop: '20px' }}>   
+     <div style={{ width: '205px', border: '1px solid grey', paddingTop: '20px' }}>
       <FilterSidePanel id="filter-panel">
-        <FilterSidePanelCategory key="contextCategory"> 
+        <FilterSidePanelCategory key="contextCategory">
           <TextInput type="text" id="filter-text-input" placeholder="Filter by name" aria-label="filter text input" />
         </FilterSidePanelCategory>
           <FilterSidePanelCategory
@@ -171,17 +171,17 @@ export class MockFilterSidePanelExample extends React.Component {
             showAll={showAllCategories.context}
             onShowAllToggle={() => this.onShowAllToggle('context')}
           >
-            {demoContextUniqs.map(demoContextElement =>                       
-              <FilterSidePanelCategoryItem                       
+            {demoContextUniqs.map(demoContextElement =>
+              <FilterSidePanelCategoryItem
                 key={'context'+ demoContextElement.routingProblemParameters.demoContext}
                 count={demoContextGroupeds.find(demoContextGroup => isEqualValue(demoContextGroup.Group, demoContextElement.routingProblemParameters.demoContext)).sum}
                 checked={filterStatus('context'+ demoContextElement.routingProblemParameters.demoContext)}
                 onClick={e => this.onFilterChange('context'+ demoContextElement.routingProblemParameters.demoContext, e.target.checked)}
               >
               {demoContextElement.routingProblemParameters.demoContext}
-              </FilterSidePanelCategoryItem>          
-            )}  
-            {(demoContextUniqs === []) ? <FilterSidePanelCategoryItem>No Options</FilterSidePanelCategoryItem>: null}                
+              </FilterSidePanelCategoryItem>
+            )}
+            {(demoContextUniqs === []) ? <FilterSidePanelCategoryItem>No Options</FilterSidePanelCategoryItem>: null}
         </FilterSidePanelCategory>
         <FilterSidePanelCategory
           key="complexity"
@@ -191,69 +191,21 @@ export class MockFilterSidePanelExample extends React.Component {
           showAll={showAllCategories.complexity}
           onShowAllToggle={() => this.onShowAllToggle('complexity')}
         >
-           {demoComplexityUniqs.map(demoComplexityElement =>                       
-              <FilterSidePanelCategoryItem                       
+           {demoComplexityUniqs.map(demoComplexityElement =>
+              <FilterSidePanelCategoryItem
                 key={'complexity'+ demoComplexityElement.routingProblemParameters.demoComplexity}
                 count={demoComplexityGroupeds.find(demoComplexityGroup => isEqualValue(demoComplexityGroup.Group, demoComplexityElement.routingProblemParameters.demoComplexity)).sum}
                 checked={filterStatus('complexity'+ demoComplexityElement.routingProblemParameters.demoComplexity)}
                 onClick={e => this.onFilterChange('complexity'+ demoComplexityElement.routingProblemParameters.demoComplexity, e.target.checked)}
               >
               {demoComplexityElement.routingProblemParameters.demoComplexity}
-              </FilterSidePanelCategoryItem>          
-            )}  
-            {(demoComplexityUniqs === []) ? <FilterSidePanelCategoryItem>No Options</FilterSidePanelCategoryItem>: null}           
-          <FilterSidePanelCategoryItem
-            key="pp"
-            icon={<CcPaypalIcon />}
-            checked={activeFilters.paymentPaypal}
-            onClick={e => this.onFilterChange('paymentPaypal', e.target.checked)}
-          >
-            PayPal
-          </FilterSidePanelCategoryItem>
-          <FilterSidePanelCategoryItem
-            key="discover"
-            icon={<CcDiscoverIcon />}
-            checked={activeFilters.paymentDiscover}
-            onClick={e => this.onFilterChange('paymentDiscover', e.target.checked)}
-          >
-            Discover
-          </FilterSidePanelCategoryItem>
-          <FilterSidePanelCategoryItem
-            key="visa"
-            icon={<CcVisaIcon />}
-            checked={activeFilters.paymentVisa}
-            onClick={e => this.onFilterChange('paymentVisa', e.target.checked)}
-          >
-            Visa
-          </FilterSidePanelCategoryItem>
-          <FilterSidePanelCategoryItem
-            key="mc"
-            icon={<CcMastercardIcon />}
-            checked={activeFilters.paymentMastercard}
-            onClick={e => this.onFilterChange('paymentMastercard', e.target.checked)}
-          >
-            Mastercard
-          </FilterSidePanelCategoryItem>
-          <FilterSidePanelCategoryItem
-            key="amex"
-            icon={<CcAmexIcon />}
-            checked={activeFilters.paymentAmex}
-            onClick={e => this.onFilterChange('paymentAmex', e.target.checked)}
-          >
-            American Express
-          </FilterSidePanelCategoryItem>
-          <FilterSidePanelCategoryItem
-            key="dc"
-            icon={<CcDinersClubIcon />}
-            checked={activeFilters.paymentDinersClub}
-            onClick={e => this.onFilterChange('paymentDinersClub', e.target.checked)}
-          >
-            {"Diner's Club"}
-          </FilterSidePanelCategoryItem>
+              </FilterSidePanelCategoryItem>
+            )}
+            {(demoComplexityUniqs === []) ? <FilterSidePanelCategoryItem>No Options</FilterSidePanelCategoryItem>: null}
         </FilterSidePanelCategory>
         <FilterSidePanelCategory
           key="cat5"
-          title="Fuel Mileage"
+          title="Number of Operations"
           maxShowCount={maxShowCount}
           leeway={leeway}
           showAll={showAllCategories.mileage}
@@ -261,27 +213,27 @@ export class MockFilterSidePanelExample extends React.Component {
         >
           <FilterSidePanelCategoryItem
             key="gt50"
-            count={3}
+            count={10}
             checked={activeFilters.mileage50}
             onClick={e => this.onFilterChange('mileage50', e.target.checked)}
           >
-            50+
+            0 - 6
           </FilterSidePanelCategoryItem>
           <FilterSidePanelCategoryItem
-            key="4050"
-            count={7}
+            key="1230"
+            count={5}
             checked={activeFilters.mileage40}
             onClick={e => this.onFilterChange('mileage40', e.target.checked)}
           >
-            40-50
+            12-30
           </FilterSidePanelCategoryItem>
           <FilterSidePanelCategoryItem
-            key="3040"
+            key="30100"
             count={9}
             checked={activeFilters.mileage30}
             onClick={e => this.onFilterChange('mileage30', e.target.checked)}
           >
-            30-40
+            30-100
           </FilterSidePanelCategoryItem>
           <FilterSidePanelCategoryItem
             key="2030"
@@ -289,7 +241,7 @@ export class MockFilterSidePanelExample extends React.Component {
             checked={activeFilters.mileage20}
             onClick={e => this.onFilterChange('mileage20', e.target.checked)}
           >
-            20-30
+            101-999
           </FilterSidePanelCategoryItem>
           <FilterSidePanelCategoryItem
             key="gt20"
@@ -297,7 +249,7 @@ export class MockFilterSidePanelExample extends React.Component {
             checked={activeFilters.mileage10}
             onClick={e => this.onFilterChange('mileage10', e.target.checked)}
           >
-            {'< 20'}
+            1000 - 10000
           </FilterSidePanelCategoryItem>
         </FilterSidePanelCategory>
         <FilterSidePanelCategory

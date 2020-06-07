@@ -4,7 +4,7 @@ import { OkIcon, ExternalLinkAltIcon, GlobeIcon } from '@patternfly/react-icons'
 import { Demo as DemoProblem, RoutingProblemParameters} from 'store/server/types';
 
 interface DemoParameterProps {
-  demoSelectedName: string| null, 
+  demoSelectedName: string| null,
   demoProblems:DemoProblem[]
 }
 export const PropertiesSidePanelWithItemsTsx: React.FC<DemoParameterProps>  = ({demoProblems, demoSelectedName}) => {
@@ -18,36 +18,34 @@ export const PropertiesSidePanelWithItemsTsx: React.FC<DemoParameterProps>  = ({
   };
   if (demoProblem) {
     demoParameters = demoProblem.routingProblemParameters;
-  } 
+  }
   return (
-      <div style={{ display: 'flex', padding: '15px', border: '1px solid grey' }}>       
+      <div style={{ display: 'flex', padding: '15px', border: '1px solid grey' }}>
       <PropertiesSidePanel>
-        <PropertyItem label="Operator Version" value="0.9.8 (latest)" />
+        <PropertyItem label="Persistence Data Version" value="0.9.8 (latest)" />
         <PropertyItem
-          label="Certified Level"
+          label="Homologation Status"
           value={
             <span>
-              <OkIcon style={{color: '#3f9c35'}} /> 
-              {demoParameters.demoContext}
+              <OkIcon style={{color: '#3f9c35'}} />
+              Aproved
             </span>
           }
         />
-        <PropertyItem label="Provider" value="Red Hat, Inc" />
-        <PropertyItem label="Health Index" value="A" />
+        <PropertyItem label="Context" value={demoParameters.demoContext} />
+        <PropertyItem label="Complexity" value={demoParameters.demoComplexity} />
         <PropertyItem
           label="Repository"
           value={
-            <a href="https://quay.io/repository/redhat/prometheus-operator">
-              https://quay.io/repository
-              /redhat/prometheus-operator
+            <a href="http:....">
             </a>
           }
         />
         <PropertyItem
-          label="Container Image"
+          label="Operation Number"
           value={
             <a href="#">
-              0.22.2 <ExternalLinkAltIcon />
+              6 <ExternalLinkAltIcon />
             </a>
           }
         />
@@ -55,11 +53,11 @@ export const PropertiesSidePanelWithItemsTsx: React.FC<DemoParameterProps>  = ({
           label="Created At"
           value={
             <span>
-              <GlobeIcon /> Aug 23, 1:58pm
+              <GlobeIcon /> dez/2018
             </span>
           }
         />
-        <PropertyItem label="Support" value={<a href="#">Red Hat</a>} />
+        <PropertyItem label="Iniciative" value={<a href="#">TELB</a>} />
       </PropertiesSidePanel>
     </div>
 )};
