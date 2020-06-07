@@ -18,7 +18,7 @@ import Timeline, {
   DateHeader
 } from 'react-calendar-timeline/lib'
 
-/* 
+/*
 
 import Timeline, {
   TimelineHeaders,
@@ -55,7 +55,7 @@ interface StateProps {
     groups: any[];
     items: any[],
     defaultTimeStart: any,
-    defaultTimeEnd: any,    
+    defaultTimeEnd: any,
 }
 
 interface StateInterface {
@@ -64,7 +64,7 @@ interface StateInterface {
   visibleTimeStart: Number,
   visibleTimeEnd: Number
 }
-  
+
 interface DispatchProps {
     addVehicleHandler: typeof routeOperations.addVehicle;
     removeVehicleHandler: typeof routeOperations.deleteVehicle;
@@ -91,22 +91,22 @@ export interface HeaderContext {
   intervals: any
 }
 export interface HeaderDataInput {
-  headerContext: HeaderContext, 
+  headerContext: HeaderContext,
   getRootProps: any
-  getIntervalProps: any, 
+  getIntervalProps: any,
   showPeriod: any,
-  data: any 
+  data: any
 }
 export interface IntervalRendererInput {
-  getIntervalProps: any, 
-  intervalContext: any, 
+  getIntervalProps: any,
+  intervalContext: any,
   data: any
 }
 
 export interface CustomMakerStyleInput {
   styles: any
 }
-  //end of workaround 
+  //end of workaround
 
 
 export class TimelineChart extends React.Component<Props,StateInterface> {
@@ -117,7 +117,7 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
       format: false,
       showHeaders: false,
       visibleTimeStart: Number(moment().startOf("day").toDate()),
-      visibleTimeEnd: Number( moment().startOf("day").add(360, "day").toDate()),        
+      visibleTimeEnd: Number( moment().startOf("day").add(360, "day").toDate()),
     }
   }
 
@@ -127,36 +127,44 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
   };
 
   handleCanvasClick = (groupId: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Canvas clicked', groupId, moment(time).format())
+      //TODO
+    //  console.log('Canvas clicked', groupId, moment(time).format())
   }
 
   handleCanvasDoubleClick = (groupId: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Canvas double clicked', groupId, moment(time).format())
+
+    //TODO
+    //console.log('Canvas double clicked', groupId, moment(time).format())
   }
 
   handleCanvasContextMenu = (group: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Canvas context menu', group, moment(time).format())
+     //TODO
+    //   console.log('Canvas context menu', group, moment(time).format())
   }
 
   handleItemClick = (itemId: string, _: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Clicked: ' + itemId, moment(time).format())
+     //TODO
+    //   console.log('Clicked: ' + itemId, moment(time).format())
   }
 
   handleItemSelect = (itemId: string, _: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Selected: ' + itemId, moment(time).format())
+      //TODO
+    //  console.log('Selected: ' + itemId, moment(time).format())
   }
 
   handleItemDoubleClick = (itemId: string, _: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Double Click: ' + itemId, moment(time).format())
+       //TODO
+    // console.log('Double Click: ' + itemId, moment(time).format())
   }
 
   handleItemContextMenu = (itemId: string, _: any, time: string | number | void | moment.Moment | Date | moment.MomentInputObject | (string | number)[] | undefined) => {
-    console.log('Context Menu: ' + itemId, moment(time).format())
+      //TODO
+    //  console.log('Context Menu: ' + itemId, moment(time).format())
   }
 
   //TODO FAZER A ACTIONS PARA FAZER O DISPATCH, NÃO BASTA O SETSTATE.
 
-/* 
+/*
   handleItemMove = (itemId: any, dragTime: number, newGroupOrder: string | number) => {
     const { items, groups } = this.props
 
@@ -218,21 +226,21 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
 
     return time
   }
-/* 
+/*
   handleClickChangeHeaders = () => {
     this.setState(state => ({
       showHeaders: !state.showHeaders
     }))
   } */
-  
+
   render() {
     const { groups, items, defaultTimeStart, defaultTimeEnd } = this.props;
     const { format, showHeaders } = this.state;
     console.log("timelineChartProps - render - this.props.timestart:"+ this.props.defaultTimeStart);
     console.log("timelineChartProps - render - timestart:"+ defaultTimeStart);
     return (
-    
-          
+
+
       <Timeline
         groups={groups}
         items={items}
@@ -245,7 +253,7 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
         itemsSorted
         itemTouchSendsClick={false}
         stackItems
-        itemHeightRatio={0.75}        
+        itemHeightRatio={0.75}
         onCanvasClick={this.handleCanvasClick}
         onCanvasDoubleClick={this.handleCanvasDoubleClick}
         onCanvasContextMenu={this.handleCanvasContextMenu}
@@ -295,9 +303,9 @@ export class TimelineChart extends React.Component<Props,StateInterface> {
           <CursorMarker />
         </TimelineMarkers>
       </Timeline>
-    
 
-    );     
+
+    );
   }
 }
 
