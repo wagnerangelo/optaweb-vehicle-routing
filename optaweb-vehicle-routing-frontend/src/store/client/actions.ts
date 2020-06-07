@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Viewport } from 'react-leaflet';
+//import { Viewport } from 'react-leaflet';
 import { ActionFactory } from '../types';
 import { ActionType, ResetViewportAction, UpdateViewportAction, UserViewport } from './types';
 import moment from "moment";

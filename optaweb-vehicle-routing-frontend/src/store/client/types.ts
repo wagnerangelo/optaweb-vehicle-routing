@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-import { Viewport as LeafletViewport } from 'react-leaflet';
+//import { Viewport as LeafletViewport } from 'react-leaflet';
 import { Action } from 'redux';
 
 export enum ActionType {
