@@ -152,6 +152,12 @@ public class DataSetMarshaller {
             RoutingProblemParameters routingProblemParameters;
             if (dataSet.getTelbParameters() != null) {
                 routingProblemParameters = new RoutingProblemParameters(Optional.ofNullable(dataSet.getTelbParameters().getDemoContext()).orElse("contextDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoComplexity()).orElse("conplexityDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoElucidation()).orElse(""));
+                routingProblemParameters.setIsloadingVesselCase(dataSet.getTelbParameters().getIsloadingVesselCase());
+                routingProblemParameters.setIsloadingVesselCase(dataSet.getTelbParameters().getIsTravelTimeCase());
+                routingProblemParameters.setBarrelPrice(Optional.ofNullable(dataSet.getTelbParameters().getBarrelPrice()).orElse(new Double(25)));
+                routingProblemParameters.setCheckEarlyDate(Optional.ofNullable(dataSet.getTelbParameters().getCheckEarlyDate()).orElse(false));
+                routingProblemParameters.setUpdateIncludingOrder(Optional.ofNullable(dataSet.getTelbParameters().getUpdateIncludingOrder()).orElse(false));
+                routingProblemParameters.setBestSolutionKnowed(Optional.ofNullable(dataSet.getTelbParameters().getBestSolutionKnowed()).orElse("no best solution"));
             } else  {
                 routingProblemParameters = new RoutingProblemParameters("contextDemo","conplexityDemo","");
             }

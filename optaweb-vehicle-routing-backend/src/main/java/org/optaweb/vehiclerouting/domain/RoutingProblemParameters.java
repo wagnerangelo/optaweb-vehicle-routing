@@ -26,6 +26,14 @@ public class RoutingProblemParameters {
     private int demoHorizon;
     private String demoInitialDate;
     private String demoElucidation;
+    private Boolean isloadingVesselCase;
+    private Boolean isTravelTimeCase;
+    private Double barrelPrice;
+    private Boolean checkEarlyDate;
+    private Boolean updateIncludingOrder;
+    private String bestSolutionKnowed;
+
+
 
     /**
      *Create routing problem parameters.
@@ -41,6 +49,12 @@ public class RoutingProblemParameters {
         this.demoHorizon = 90;
         this.demoInitialDate = "01/01/2021";
         this.demoElucidation = "explanation";
+        this.isloadingVesselCase = null;
+        this.isTravelTimeCase = null;
+        this.barrelPrice = null;
+        this.checkEarlyDate = null;
+        this.updateIncludingOrder = null;
+        this.bestSolutionKnowed = null;
     }
 
     public RoutingProblemParameters(final String demoContext, final String demoComplexity, final String demoElucidation) {
@@ -49,6 +63,12 @@ public class RoutingProblemParameters {
         this.demoHorizon = 90;
         this.demoInitialDate = "01/01/2021";
         this.demoElucidation = demoElucidation;
+        this.isloadingVesselCase = null;
+        this.isTravelTimeCase = null;
+        this.barrelPrice = null;
+        this.checkEarlyDate = null;
+        this.updateIncludingOrder = null;
+        this.bestSolutionKnowed = null;
     }
 
     /**
@@ -116,5 +136,53 @@ public class RoutingProblemParameters {
         return "DataParameters{" +
                 "demoContext" + demoContext + '\'' +
                 ", demoComplexity=" + demoComplexity;
+    }
+
+    public Boolean getIsloadingVesselCase() {
+        return isloadingVesselCase;
+    }
+
+    public void setIsloadingVesselCase(Boolean isloadingVesselCase) {
+        this.isloadingVesselCase = isloadingVesselCase;
+    }
+
+    public Boolean getIsTravelTimeCase() {
+        return isTravelTimeCase;
+    }
+
+    public void setIsTravelTimeCase(Boolean isTravelTimeCase) {
+        this.isTravelTimeCase = isTravelTimeCase;
+    }
+
+    public Double getBarrelPrice() {
+        return barrelPrice;
+    }
+
+    public void setBarrelPrice(Double barrelPrice) {
+        this.barrelPrice = barrelPrice;
+    }
+
+    public Boolean getCheckEarlyDate() {
+        return checkEarlyDate;
+    }
+
+    public void setCheckEarlyDate(Boolean checkEarlyDate) {
+        this.checkEarlyDate = checkEarlyDate;
+    }
+
+    public Boolean getUpdateIncludingOrder() {
+        return updateIncludingOrder;
+    }
+
+    public void setUpdateIncludingOrder(Boolean updateIncludingOrder) {
+        this.updateIncludingOrder = updateIncludingOrder;
+    }
+
+    public String getBestSolutionKnowed() {
+        return bestSolutionKnowed;
+    }
+
+    public void setBestSolutionKnowed(String bestSolutionKnowed) {
+        this.bestSolutionKnowed = bestSolutionKnowed;
     }
 }

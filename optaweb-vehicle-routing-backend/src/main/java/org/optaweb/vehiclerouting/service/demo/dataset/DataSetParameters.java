@@ -17,6 +17,7 @@
 package org.optaweb.vehiclerouting.service.demo.dataset;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
   /**
      * Create dataSet demo parameters.
@@ -25,7 +26,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
      * @param demoHorizon horizon consider to calculate schedule quality parameters (days)
      * @param demoInitialDate initial date of schedule problem (string) ("dd/mm/yy")
      * @param demoElucidation explanation of business case
+     * @param isloadingVesselCase used when study case consider loading vessel on port - pickup on porte before delivery
+     * @param isTravelTimeCase used when study case consider travel time sailing between locations
+     * @param barrelPrice unit US$ per barrel to calculate de montary value of outcome
+     * @param checkEarlyDate used to confirm early Date of operation. Sometimes userData don't consider early date based on complex predecessors tree
      */
+@JsonIgnoreProperties(ignoreUnknown = true)
 class DataSetParameters {
 
     @JsonProperty(value = "context")
@@ -38,6 +44,18 @@ class DataSetParameters {
     private String demoInitialDate;
     @JsonProperty(value = "elucidation")
     private String demoElucidation;
+    @JsonProperty(value = "isloadingVesselCase")
+    private Boolean isloadingVesselCase;
+    @JsonProperty(value = "isTravelTimeCase")
+    private Boolean isTravelTimeCase;
+    @JsonProperty(value = "barrelPrice")
+    private Double barrelPrice;
+    @JsonProperty(value = "checkEarlyDate")
+    private Boolean checkEarlyDate;
+    @JsonProperty(value = "updateIncludingOrder")
+    private Boolean updateIncludingOrder;
+    @JsonProperty(value = "bestSolutionKnowed")
+    private String bestSolutionKnowed;
 
     private DataSetParameters() {
         // for unmarshalling
@@ -96,16 +114,17 @@ class DataSetParameters {
         this.demoInitialDate = demoInitialDate;
     }
 
+    public void setDemoElucidation(String demoElucidation) {
+        this.demoElucidation = demoElucidation;
+    }
+
     /**
      * multiline text clarification about case.
      * @return String
      */
+
     public String getDemoElucidation() {
         return demoElucidation;
-    }
-
-    public void setElucidation(final String demoElucidation) {
-        this.demoElucidation= demoElucidation;
     }
 
     @Override
@@ -113,5 +132,53 @@ class DataSetParameters {
         return "DataParameters{" +
                 "demoContext" + demoContext + '\'' +
                 ", demoComplexity=" + demoComplexity;
+    }
+
+    public Boolean getIsloadingVesselCase() {
+        return isloadingVesselCase;
+    }
+
+    public void setIsloadingVesselCase(Boolean isloadingVesselCase) {
+        this.isloadingVesselCase = isloadingVesselCase;
+    }
+
+    public Boolean getIsTravelTimeCase() {
+        return isTravelTimeCase;
+    }
+
+    public void setIsTravelTimeCase(Boolean isTravelTimeCase) {
+        this.isTravelTimeCase = isTravelTimeCase;
+    }
+
+    public Double getBarrelPrice() {
+        return barrelPrice;
+    }
+
+    public void setBarrelPrice(Double barrelPrice) {
+        this.barrelPrice = barrelPrice;
+    }
+
+    public Boolean getCheckEarlyDate() {
+        return checkEarlyDate;
+    }
+
+    public void setCheckEarlyDate(Boolean checkEarlyDate) {
+        this.checkEarlyDate = checkEarlyDate;
+    }
+
+    public Boolean getUpdateIncludingOrder() {
+        return updateIncludingOrder;
+    }
+
+    public void setUpdateIncludingOrder(Boolean updateIncludingOrder) {
+        this.updateIncludingOrder = updateIncludingOrder;
+    }
+
+    public String getBestSolutionKnowed() {
+        return bestSolutionKnowed;
+    }
+
+    public void setBestSolutionKnowed(String bestSolutionKnowed) {
+        this.bestSolutionKnowed = bestSolutionKnowed;
     }
 }
