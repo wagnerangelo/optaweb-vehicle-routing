@@ -137,10 +137,28 @@ export class ExpandableDataList extends React.Component {
       }
     }
 
+
+
     return (
       <DataList aria-label="Expandable data list example">
         {demoProblems.map(demoProblem => {
-           return (
+           var isPickupAatPortCaseXML;
+           if (demoProblem.routingProblemParameters.isloadingVesselCase) {
+             isPickupAatPortCaseXML =
+               <Badge key={4} isRead>{"Pickup at Port"}</Badge>;
+           } else {
+             isPickupAatPortCaseXML =
+               <Badge key={4} isRead>{"No Pickup at Port"}</Badge>;
+           }
+           var isTravelTimeCaseXML;
+           if (demoProblem.routingProblemParameters.isTravelTimeCase) {
+            isTravelTimeCaseXML =
+              <Badge key={4} isRead>{"Travel Duration"}</Badge>;
+          } else {
+            isTravelTimeCaseXML =
+              <Badge key={4} isRead>{"No Travel Duration"}</Badge>;
+          }
+          return (
               <DataListItem aria-labelledby={demoProblem.name +"Item"} isExpanded={this.state.expanded.includes(demoProblem.name + "Toggle")}>
               <DataListItemRow>
                 <DataListToggle
@@ -166,6 +184,8 @@ export class ExpandableDataList extends React.Component {
                       <Badge key={2} isRead>{demoProblem.routingProblemParameters.demoComplexity}</Badge>
                       {' '}
                       <Badge key={3} isRead>{"Hozizon:"+ demoProblem.routingProblemParameters.demoHorizon + " days"}</Badge>
+                      {isPickupAatPortCaseXML}
+                      {isTravelTimeCaseXML}
                     </DataListCell>,
                     <DataListCell key="secondary content">
                       <div>
@@ -201,6 +221,14 @@ export class ExpandableDataList extends React.Component {
                 </p>
                 <p>
                   { "Initial Date: "+ demoProblem.routingProblemParameters.demoInitialDate }
+                  <br/>
+                  {"Context: " +  demoProblem.routingProblemParameters.demoContext}
+                  <br/>
+                  {"Complexity: " +  demoProblem.routingProblemParameters.demoComplexity}
+                  <br/>
+                  {"Horizon: " +  demoProblem.routingProblemParameters.demoHorizon + " days"}
+                  <br/>
+                  {"Consider Travel Duration between locations:" +  demoProblem.routingProblemParameters.isTravelTimeCase}
                 </p>
               </DataListContent>
             </DataListItem>
