@@ -28,6 +28,7 @@ import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.LocationData;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
 import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
+import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
 import org.optaweb.vehiclerouting.domain.VehicleData;
 import org.optaweb.vehiclerouting.domain.VehicleFactory;
 import org.springframework.stereotype.Component;
@@ -162,9 +163,11 @@ public class DataSetMarshaller {
                 routingProblemParameters = new RoutingProblemParameters("contextDemo","conplexityDemo","");
             }
 
-            return new RoutingProblem(Optional.ofNullable(dataSet.getName()).orElse(""),
+            RoutingProblem routingProblem = new RoutingProblem(Optional.ofNullable(dataSet.getName()).orElse(""),
             dataSet.getVehicles().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),Optional.ofNullable(dataSet.getDepot()).map(DataSetMarshaller::toDomain).orElse(null),
             dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()), routingProblemParameters);
+
+            return routingProblem;
         } catch (Exception e){
             System.out.println("cant do to domain: ");
             throw new IllegalStateException("Failed to do RoutingProblem toDomaim method (" + dataSet.getName() + ")", e);
@@ -180,4 +183,5 @@ public class DataSetMarshaller {
     static VehicleData toDomain(DataSetVehicle dataSetVehicle) {
         return VehicleFactory.vehicleData(dataSetVehicle.name, dataSetVehicle.capacity);
     }
+
 }

@@ -1,0 +1,115 @@
+---
+name: "Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo REV C"
+depot:
+  label: "Brussels"
+  lat: 50.85
+  lng: 4.35
+visits:
+  - label: "Aalst"
+    lat: 50.933333
+    lng: 4.033333
+  - label: "Châtelet"
+    lat: 50.4
+    lng: 4.516667
+  - label: "La Louvière"
+    lat: 50.466667
+    lng: 4.183333
+  - label: "Sint-Niklaas"
+    lat: 51.166667
+    lng: 4.133333
+  # random order
+  - lng: 2.883333
+    lat: 50.85
+    label: "Ypres"
+vehicles:
+  - name: "PLSV 1"
+    capacity: 12000
+  - name: "PLSV 2"
+    capacity: 12000
+telbParameters:
+  context: "PLSV"
+  complexity: "Basic"
+  isloadingVesselCase: false
+  isTravelTimeCase: false
+  horizon: 1000
+  initialdate: "01/01/2021"
+  elucidation:  |
+    Caso: 1.1.1.1 - 2 Poços, sem carregamento, sem navegação, sem data mais cedo
+    Caso básico com 2 poços, 6 operações, sem predecessora.
+    2 PLSVs, um poço tem potencial de 100 000 bpd e outro 50000 bpd.
+    A produção é avaliada num horizonte de 1000 dias.
+    O solver deve alocar as 3 operações do poço de 100 000 bpd antes do de 50 000 bpd.
+    A solução ótima espera 145450 000 barris.
+  barrelPrice: 35
+  checkEarlyDate: true
+  updateIncludingOrder: true
+  bestSolutionKnowed: "solutiontest"
+offshoreTasksData:
+  - id: 1
+    dataSetlocation:
+      label: "Aalst"
+    demand: 6000
+    nextOffshoreTaskData: null
+    previousOffshoreTaskData: null
+    vessel: null
+    offshoreOperationType: "Operation"
+    locked: false
+    operationName: "PO Poço1"
+    well:
+      name: "Poço1"
+    project:
+      name: "Project1"
+    priority: 1000
+    construtiveEuristicOrder: 1
+    graphLevel: 0
+    invertedGraphosLevel: 0
+    investedRootId: 0
+    sucessorList: null
+    predecessorList: null
+    cronowebVehicle: null
+    cronowebStartTime: null
+    lineType: "PO"
+    viableVehicles: null
+    recommendedSubPoolVehicles: null
+    numberOfMapedPredecessors: null
+    nodeMaped: false
+    readyTime: 0
+    serviceDuration: 10
+    billofPlsvMaterialDeltaEntering: null
+    isconflitobavitcurtoprazo: null
+    readyTimeOriginal: 0
+    readyTimePredecessora: 0
+    OutcomeData:
+      id: 6001
+      vehiclecaminhocrítico: null
+      indexInTaskType: "Produção de óleo"
+      locked: null
+      outcomeName: "Entrega P1 Produzindo"
+      well:
+        name: "Poço1"
+      project:
+        name: "Project1"
+      potencialEntrega: 50000
+      outcomeTime: null
+      dueTime: 0
+      leadTime: 0
+      readyTimeOriginal: 0
+      readyTime: 0
+      readyTimePredecessora: 0
+      listaPredecessoras: null
+      criticalPathLastTask: null
+      outcomeListPredecessor: null
+      outcomeListSucessor: null
+      graphLevel: 0
+      criticalPathLastOutcome: null
+      outcomeTimeOutcomePredecessor: null
+      outcomeTimeComposite: null
+      conflictPullinPostProcDays: 0
+      conflictCVDPostProcDays: 0
+      arrivalTimePublished: 0
+      arrivalTime: 0
+      billofPlsvMaterialAtStartOperation: null
+      criticalPathTask: null
+      criticalPathTaskEndTime: null
+      dockingBerth: null
+

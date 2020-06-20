@@ -118,6 +118,28 @@ class DataSetMarshallerTest {
     }
 
     @Test
+    void unmarshal_data_set_with_OffshoreTaksData() throws IOException {
+        DataSet dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-telb-1-1-1-1 2P6O no travel Prod REVC.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo REV C");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Aalst", "Châtelet", "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+
+    }
+
+    @Test
     void marshal_data_set() {
         DataSet dataSet = new DataSet();
         String name = "Test data set";

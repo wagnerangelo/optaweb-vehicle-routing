@@ -31,6 +31,11 @@ public class RoutingProblem {
     private final LocationData depot;
     private final List<LocationData> visits;
     private final RoutingProblemParameters routingProblemParameters;
+    private List<TimeWindowedOffshoreTask> offshoreTasks;
+    private List<Well> wells;
+    private List<Project> projects;
+    private List<FlexiblePipe> flexiblePipeList;
+    private List<Outcome> outcomes;
 
     /**
      * Create routing problem instance.
@@ -52,7 +57,11 @@ public class RoutingProblem {
         this.depot = depot;
         this.visits = new ArrayList<>(Objects.requireNonNull(visits));
         this.routingProblemParameters = routingProblemParameters;
-
+        this.offshoreTasks = new  ArrayList<TimeWindowedOffshoreTask>();
+        this.wells = new ArrayList<Well>();
+        this.projects = new ArrayList<Project>();
+        this.flexiblePipeList = new ArrayList<FlexiblePipe>();
+        this.outcomes = new ArrayList<Outcome>();
     }
 
     /**
@@ -89,5 +98,45 @@ public class RoutingProblem {
      */
     public List<VehicleData> vehicles() {
         return vehicles;
+    }
+
+    public List<TimeWindowedOffshoreTask> getOffshoreTasks() {
+        return offshoreTasks;
+    }
+
+    public void setOffshoreTasks(List<TimeWindowedOffshoreTask> offshoreTasks) {
+        this.offshoreTasks = offshoreTasks;
+    }
+
+    public List<Well> getWells() {
+        return wells;
+    }
+
+    public List<Project> getProjects() {
+        return projects;
+    }
+
+    public void setWells(List<Well> wells) {
+        this.wells = wells;
+    }
+
+    public void setProjects(List<Project> projects) {
+        this.projects = projects;
+    }
+
+    public List<FlexiblePipe> getFlexiblePipeList() {
+        return flexiblePipeList;
+    }
+
+    public void setFlexiblePipeList(List<FlexiblePipe> flexiblePipeList) {
+        this.flexiblePipeList = flexiblePipeList;
+    }
+
+    public List<Outcome> getOutcomes() {
+        return outcomes;
+    }
+
+    public void setOutcomes(List<Outcome> outcomes) {
+        this.outcomes = outcomes;
     }
 }

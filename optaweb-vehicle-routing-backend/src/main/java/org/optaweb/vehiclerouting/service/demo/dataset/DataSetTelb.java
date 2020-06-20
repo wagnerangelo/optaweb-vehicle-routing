@@ -16,12 +16,15 @@
 
 package org.optaweb.vehiclerouting.service.demo.dataset;
 
+import java.util.List;
+
 /**
  * Data set representation used for marshalling and unmarshalling to Telb Cases.
  */
 class DataSetTelb extends DataSet {
 
     private DataSetParameters telbParameters;
+    private List<TimeWindowedOffshoreTaskData> offshoreTasksData;
 
     /**
      * Data set TelbParameters (parameters of study case).
@@ -31,7 +34,15 @@ class DataSetTelb extends DataSet {
         return telbParameters;
     }
 
-    public void setTelbParameters(DataSetParameters telbParameters) {
+    public void setTelbParameters(final DataSetParameters telbParameters) {
         this.telbParameters = telbParameters;
+    }
+
+    public List<TimeWindowedOffshoreTaskData> getOffshoreTasksData() {
+        return offshoreTasksData;
+    }
+
+    public void setOffshoreTasksData(final List<TimeWindowedOffshoreTaskData> offshoreTasksData) {
+        this.offshoreTasksData = offshoreTasksData;
     }
 }
