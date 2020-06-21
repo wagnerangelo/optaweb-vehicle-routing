@@ -97,7 +97,7 @@ class VehicleRepositoryImplTest {
         // arrange
         VehicleEntity savedEntity = mockVehicleEntity(testVehicle());
         when(crudRepository.save(vehicleEntityCaptor.capture())).thenReturn(savedEntity);
-        int savedCapacity = 1;
+        //int savedCapacity = 1;
 
         VehicleData vehicleData = VehicleFactory.vehicleData("x", 1);
 

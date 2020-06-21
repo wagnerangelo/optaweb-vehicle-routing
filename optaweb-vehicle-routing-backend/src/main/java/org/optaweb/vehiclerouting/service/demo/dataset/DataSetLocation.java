@@ -29,7 +29,7 @@ class DataSetLocation {
     @JsonProperty(value = "lng")
     private double longitude;
 
-    private DataSetLocation() {
+    public DataSetLocation() {
         // for unmarshalling
     }
 

@@ -43,6 +43,8 @@ public class OutcomeFactory {
         }
 
         Outcome outcomeCandidate = new Outcome( id, name,well);
+        //Here we choose, at simpleOutocome define the potential of well equal to potential of outcome
+        outcomeCandidate.setPotencialEntrega(well.getPotential());
 
         if (confirmedNewId(outcomeCandidate,routingProblem)) {
             routingProblem.getOutcomes().add(outcomeCandidate);

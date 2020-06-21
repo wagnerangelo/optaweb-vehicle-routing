@@ -18,6 +18,11 @@ package org.optaweb.vehiclerouting.plugin.routing;
 
 public class RoutingEngineException extends RuntimeException {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
+
     RoutingEngineException(String message, Throwable cause) {
         super(message, cause);
     }

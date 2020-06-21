@@ -27,6 +27,10 @@ import javax.persistence.Embeddable;
 @Embeddable
 class DistanceKey implements Serializable {
 
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
     // TODO make it a foreign key to LocationEntity
     private Long fromId;
     private Long toId;

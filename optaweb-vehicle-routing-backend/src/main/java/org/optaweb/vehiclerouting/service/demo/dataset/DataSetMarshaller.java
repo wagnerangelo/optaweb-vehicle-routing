@@ -28,7 +28,7 @@ import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.LocationData;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
 import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
-import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
+//import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
 import org.optaweb.vehiclerouting.domain.VehicleData;
 import org.optaweb.vehiclerouting.domain.VehicleFactory;
 import org.springframework.stereotype.Component;

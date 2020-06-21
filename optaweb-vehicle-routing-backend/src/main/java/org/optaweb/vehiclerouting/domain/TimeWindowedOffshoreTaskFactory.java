@@ -41,51 +41,61 @@ public class TimeWindowedOffshoreTaskFactory {
      * @param outcome
      * @return new TimeWindowedOffshoreTask
      */
-
-
     public static TimeWindowedOffshoreTask createSimpleTask(long id, String operationName, Location location, String lineType, String wellName, long potential, long serviceDuration, RoutingProblem routingProblem) {
+
 
         if (routingProblem == null) {
             throw new NullPointerException("routingProblem is null, Can't create task, without a routingProblem associated");
         }
-        logger.info("wellId = id*100000 + hashcode/100000");
-        logger.info("Part of wellId = id*100000 :"+ id*1000);
-        logger.info(" hashcode/100000:"+ wellName.hashCode()/10000);
-        Well well = WellFactory.createSimpleWell(id*1000 + wellName.hashCode()/10000,wellName,potential,location,routingProblem);
+        long wellId = id*10000000 + hashCode_Limited_999999(wellName);
+        logger.info("wellId = (id*10000000 + + hashCode_Limited_999999(wellName)): "+wellId);
+        Well well = WellFactory.createSimpleWell(wellId,wellName,potential,location,routingProblem);
 
         String outcomeName = "Outcome of "+ wellName;
-        logger.info("oucomeId = id*100000 + hashcode/100000");
-        logger.info("Part of outocmeId = id*100000 :"+ id*1000);
-        logger.info(" hashcode/100000:"+ outcomeName.hashCode()/10000);
-        Outcome outcome_without_predecessors = OutcomeFactory.createSimpleOutcome_without_predecessors(id*1000 + outcomeName.hashCode()/10000, outcomeName,  well,  routingProblem);
+        long outcomeId = id*10000000 + hashCode_Limited_999999(outcomeName);
+        logger.info("oucomeId = (id*10000000 + hashCode_Limited_999999(outcomeName)): "+outcomeId);
+        Outcome outcome_without_predecessors = OutcomeFactory.createSimpleOutcome_without_predecessors(outcomeId, outcomeName,  well,  routingProblem);
 
-        TimeWindowedOffshoreTask taskCandidate =  new TimeWindowedOffshoreTask(id, location,  outcomeName,  well, null, lineType, 0, serviceDuration, null, null, 0, 0,  outcome_without_predecessors, 0, 0, 0, null,null,null,null,null);
+        TimeWindowedOffshoreTask taskCandidate =  new TimeWindowedOffshoreTask(id, location,  operationName,  well, null, lineType, 0, serviceDuration, null, null, 0, 0,  outcome_without_predecessors, 0, 0, 0, null,null,null,null,null);
 
 
-    if (confirmedNewId(taskCandidate,routingProblem)) {
-        routingProblem.getOffshoreTasks().add(taskCandidate);
-        return taskCandidate;
-    } else {
-        return getTask(taskCandidate, routingProblem);
+        if (confirmedNewId(taskCandidate,routingProblem)) {
+            routingProblem.getOffshoreTasks().add(taskCandidate);
+            return taskCandidate;
+        } else {
+            return getTask(taskCandidate, routingProblem);
+        }
     }
-}
 
-private static boolean confirmedNewId(TimeWindowedOffshoreTask task, RoutingProblem routingProblem) {
-    if (routingProblem.getOffshoreTasks().stream().filter(taskObject -> ((Long) taskObject.getId()).equals(task.getId())).findFirst().isPresent()) {
-        logger.info("Task with id: {} already on model", task.getId());
-        return false;
-    } else {
-        return true;
+    private static boolean confirmedNewId(TimeWindowedOffshoreTask task, RoutingProblem routingProblem) {
+        if (routingProblem.getOffshoreTasks().stream().filter(taskObject -> ((Long) taskObject.getId()).equals(task.getId())).findFirst().isPresent()) {
+            logger.info("Task with id: {} already on model", task.getId());
+            return false;
+        } else {
+            return true;
+        }
     }
-}
 
-private static TimeWindowedOffshoreTask getTask(TimeWindowedOffshoreTask taskCandidate, RoutingProblem routingProblem) {
-    TimeWindowedOffshoreTask taskAlreadyExist = routingProblem.getOffshoreTasks().stream().filter(taskObject -> ((Long) taskObject.getId()).equals(taskCandidate.getId())).findFirst().get();
+    private static TimeWindowedOffshoreTask getTask(TimeWindowedOffshoreTask taskCandidate, RoutingProblem routingProblem) {
+        TimeWindowedOffshoreTask taskAlreadyExist = routingProblem.getOffshoreTasks().stream().filter(taskObject -> ((Long) taskObject.getId()).equals(taskCandidate.getId())).findFirst().get();
 
-    if (!taskAlreadyExist.getOperationName().equals(taskCandidate.getOperationName())) {
-        logger.warn("Task, with id: {} already on model, have, at least, two diferent names: name 1: " + taskAlreadyExist.getOperationName() + " , name2: " + taskCandidate.getOperationName(), taskCandidate.getId());
+        if (!taskAlreadyExist.getOperationName().equals(taskCandidate.getOperationName())) {
+            logger.warn("Task, with id: {} already on model, have, at least, two diferent names: name 1: " + taskAlreadyExist.getOperationName() + " , name2: " + taskCandidate.getOperationName(), taskCandidate.getId());
+        }
+        return taskAlreadyExist;
     }
-    return taskAlreadyExist;
-}
 
+    private static long hashCode_Limited_999999(String string) {
+        int n = string.hashCode();
+        logger.info("string: "+string);
+        logger.info("string.hashCode: "+string.hashCode());
+        while (n > 999999) {
+            logger.info("n=" + n);
+            n = n % (int) Math.pow(10, (int) Math.log10(n));
+        }
+        logger.info(" hashCode_Limited_999999: "+n);
+
+        return Integer.valueOf(n).longValue();
+
+    }
 }

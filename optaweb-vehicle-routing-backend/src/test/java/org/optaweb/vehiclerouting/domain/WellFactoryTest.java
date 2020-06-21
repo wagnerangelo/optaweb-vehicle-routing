@@ -88,14 +88,14 @@ class WellFactoryTest {
         RoutingProblem routingProblem = new RoutingProblem(
             "Test Problem", new ArrayList<VehicleData>(), new LocationData(new Coordinates(BigDecimal.valueOf(1 ),BigDecimal.valueOf(1)), "Coordenada do Poço1"), new ArrayList<LocationData>(), new RoutingProblemParameters("PLSV","Basic"));
         Well well = WellFactory.createSimpleWell(id,name,potential,location,routingProblem);
-
-
+        assertThat(well.getName()).isEqualTo(name);
 
         long id2 = 2;
         String name2 = "Poço2";
         Long potential2 = 100000L;
         Location location2 = null;
         Well well2 = WellFactory.createSimpleWell(id2,name2,potential2,location2,routingProblem);
+        assertThat(well2.getName()).isEqualTo(name2);
 
         assertThat(routingProblem.getWells().size()).isEqualTo(2);
         assertThat(routingProblem.getWells().stream()
@@ -108,6 +108,8 @@ class WellFactoryTest {
         Long potential3 = 100000L;
         Location location3 = null;
         Well well3 = WellFactory.createSimpleWell(id3_value2,name3,potential3,location3,routingProblem);
+        //pay attention well3 should be discarted
+        assertThat(well3.getName()).isEqualTo(name2);
 
         assertThat(routingProblem.getWells().size()).isEqualTo(2);
         assertThat(routingProblem.getWells().stream()

@@ -57,7 +57,7 @@ class DataSetParameters {
     @JsonProperty(value = "bestSolutionKnowed")
     private String bestSolutionKnowed;
 
-    private DataSetParameters() {
+    public DataSetParameters() {
         // for unmarshalling
     }
 
