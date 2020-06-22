@@ -79,7 +79,7 @@ offshoreTasksData:
     isconflitobavitcurtoprazo: null
     readyTimeOriginal: 0
     readyTimePredecessora: 0
-    OutcomeData:
+    outcome:
       id: 6001
       vehiclecaminhocrítico: null
       indexInTaskType: "Produção de óleo"
@@ -104,12 +104,12 @@ offshoreTasksData:
       criticalPathLastOutcome: null
       outcomeTimeOutcomePredecessor: null
       outcomeTimeComposite: null
-      conflictPullinPostProcDays: 0
-      conflictCVDPostProcDays: 0
-      arrivalTimePublished: 0
-      arrivalTime: 0
-      billofPlsvMaterialAtStartOperation: null
-      criticalPathTask: null
-      criticalPathTaskEndTime: null
-      dockingBerth: null
+    conflictPullinPostProcDays: 0
+    conflictCVDPostProcDays: 0
+    arrivalTimePublished: 0
+    arrivalTime: 0
+    billofPlsvMaterialAtStartOperation: null
+    criticalPathTask: null
+    criticalPathTaskEndTime: null
+    dockingBerth: null
 

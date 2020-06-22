@@ -1,22 +1,39 @@
 package org.optaweb.vehiclerouting.service.demo.dataset;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class TimeWindowedOffshoreTaskData extends OffshoreTaskData   {
-
+    @JsonProperty(value = "readyTime")
     private long readyTime;
+    @JsonProperty(value = "serviceDuration")
     private long serviceDuration;
+    @JsonProperty(value = "billofPlsvMaterialDeltaEntering")
     private BillofPlsvMaterialData billofPlsvMaterialDeltaEntering;
+    @JsonProperty(value = "isconflitobavitcurtoprazo")
     private Boolean isconflitobavitcurtoprazo;
+    @JsonProperty(value = "readyTimeOriginal")
     private long readyTimeOriginal;
+    @JsonProperty(value = "readyTimePredecessora")
     private long readyTimePredecessora;
-    private OutcomeData entrega;
+    @JsonProperty(value = "outcome")
+    private OutcomeData outcome;
+    @JsonProperty(value = "conflictPullinPostProcDays")
     private long conflictPullinPostProcDays;
+    @JsonProperty(value = "conflictCVDPostProcDays")
     private long conflictCVDPostProcDays;
+    @JsonProperty(value = "arrivalTimePublished")
     private long arrivalTimePublished;
+    @JsonProperty(value = "arrivalTime")
     private Long arrivalTime;
+    @JsonProperty(value = "billofPlsvMaterialAtStartOperation")
     private BillofPlsvMaterialData billofPlsvMaterialAtStartOperation;
-	private TimeWindowedOffshoreTaskData  criticalPathTask;
+    @JsonProperty(value = "criticalPathTask")
+	private TimeWindowedOffshoreTaskData criticalPathTask;
+    @JsonProperty(value = "criticalPathTaskEndTime")
     private Long criticalPathTaskEndTime;
+    @JsonProperty(value = "dockingBerthData")
     private DockingBerthData dockingBerthData;
 
     public long getReadyTime() {
@@ -67,12 +84,12 @@ public class TimeWindowedOffshoreTaskData extends OffshoreTaskData   {
         this.readyTimePredecessora = readyTimePredecessora;
     }
 
-    public OutcomeData getEntrega() {
-        return entrega;
+    public OutcomeData getOutcome() {
+        return outcome;
     }
 
-    public void setEntrega(OutcomeData entrega) {
-        this.entrega = entrega;
+    public void setOutcome(OutcomeData outcome) {
+        this.outcome = outcome;
     }
 
     public long getConflictPullinPostProcDays() {

@@ -26,6 +26,8 @@ import java.util.List;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.junit.internal.runners.model.EachTestNotifier;
 import org.junit.jupiter.api.Test;
 import org.optaweb.vehiclerouting.domain.Coordinates;
 import org.optaweb.vehiclerouting.domain.LocationData;
@@ -119,7 +121,7 @@ class DataSetMarshallerTest {
 
     @Test
     void unmarshal_data_set_with_OffshoreTaksData() throws IOException {
-        DataSet dataSet = null;
+        DataSetTelb dataSet = null;
         try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-telb-1-1-1-1 2P6O no travel Prod REVC.yaml")) {
             dataSet = new DataSetMarshaller()
                     .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
@@ -136,8 +138,22 @@ class DataSetMarshallerTest {
                         tuple("PLSV 1", 12000),
                         tuple("PLSV 2", 12000)
                 );
-
-    }
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+        for (TimeWindowedOffshoreTaskData taskData : dataSet.getOffshoreTasksData()) {
+                System.out.println("Task name: " + taskData.getOperationName());
+                System.out.println("duration: " + taskData.getServiceDuration());
+                System.out.println("Well().getName(): " + taskData.getWell().getName());
+                System.out.println("taskData.getOutcome().getId(): " + taskData.getOutcome().getId());
+                System.out.println("taskData.getOutcome().getOutcomeName(): " + taskData.getOutcome().getOutcomeName());
+                System.out.println("taskData.getOutcome().getOutcomePotential()): " + taskData.getOutcome().getOutcomePotential());
+                assertThat(taskData.getOperationName()).isEqualTo("PO Poço1");
+        }
+}
 
     @Test
     void marshal_data_set() {

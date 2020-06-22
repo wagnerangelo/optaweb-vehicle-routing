@@ -2,29 +2,55 @@ package org.optaweb.vehiclerouting.service.demo.dataset;
 
 import java.util.ArrayList;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class OutcomeData {
 
-	private long id;
+    @JsonProperty(value = "id")
+    private long id;
+    @JsonProperty(value = "vehiclecaminhocrítico")
     private DataSetVehicle vehiclecaminhocrítico;
+    @JsonProperty(value = "indexInTaskType")
     private String indexInTaskType;
+    @JsonProperty(value = "locked")
     private boolean locked;
+    @JsonProperty(value = "outcomeName")
     private String outcomeName;
+    @JsonProperty(value = "well")
     private WellData well;
+    @JsonProperty(value = "project")
     private Project project;
- 	private Long potencialEntrega;
+    @JsonProperty(value = "outcomePotential")
+ 	private Long outcomePotential;
+     @JsonProperty(value = "outcomeTime")
     private Long outcomeTime;
+    @JsonProperty(value = "dueTime")
     private long dueTime;
+    @JsonProperty(value = "leadTime")
     private long leadTime;
+    @JsonProperty(value = "readyTimeOriginal")
     private long readyTimeOriginal;
+    @JsonProperty(value = "readyTime")
     private Long readyTime;
+    @JsonProperty(value = "readyTimePredecessora")
     private long readyTimePredecessora;
+    @JsonProperty(value = "listaPredecessoras")
 	private ArrayList<TimeWindowedOffshoreTaskData> listaPredecessoras;
+    @JsonProperty(value = "criticalPathLastTask")
 	private TimeWindowedOffshoreTaskData criticalPathLastTask;
+    @JsonProperty(value = "outcomeListPredecessor")
 	private ArrayList<OutcomeData> outcomeListPredecessor;
+    @JsonProperty(value = "outcomeListSucessor")
 	private ArrayList<OutcomeData> outcomeListSucessor;
+    @JsonProperty(value = "graphLevel")
 	private int graphLevel;
+    @JsonProperty(value = "criticalPathLastOutcome")
 	private OutcomeData criticalPathLastOutcome;
+    @JsonProperty(value = "outcomeTimeOutcomePredecessor")
 	private Long outcomeTimeOutcomePredecessor;
+    @JsonProperty(value = "outcomeTimeComposite")
 	private Long outcomeTimeComposite;
 
     public DataSetVehicle getVehiclecaminhocrítico() {
@@ -75,12 +101,12 @@ public class OutcomeData {
         this.project = project;
     }
 
-    public Long getPotencialEntrega() {
-        return potencialEntrega;
+    public Long getOutcomePotential() {
+        return outcomePotential;
     }
 
-    public void setPotencialEntrega(Long potencialEntrega) {
-        this.potencialEntrega = potencialEntrega;
+    public void setOutcomePotential(Long outcomePotential) {
+        this.outcomePotential = outcomePotential;
     }
 
     public Long getOutcomeTime() {

@@ -25,9 +25,12 @@ import java.io.Reader;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.optaweb.vehiclerouting.domain.Coordinates;
+import org.optaweb.vehiclerouting.domain.Location;
 import org.optaweb.vehiclerouting.domain.LocationData;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
 import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
+import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
+import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTaskFactory;
 //import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
 import org.optaweb.vehiclerouting.domain.VehicleData;
 import org.optaweb.vehiclerouting.domain.VehicleFactory;
@@ -96,25 +99,6 @@ public class DataSetMarshaller {
         }
         return dataset;
     }
-/*
-    DataSetTelb unmarshalToDataSetTelb(Reader reader) {
-        DataSetTelb datasetTelb = null;
-        try {
-            System.out.println("trying datasetTelb");
-            datasetTelb = mapper.readValue(reader, DataSetTelb.class);
-        } catch (IOException e1) {
-            throw new IllegalStateException("Can't read demo data set Telb", e1);
-        } finally {
-            System.out.println("finaly trying datasetTelb");
-            if (datasetTelb == null) {
-                System.out.println("datasetTelb is null");
-            } else {
-                System.out.println("datasetTelb:" + datasetTelb.toString());
-            }
-        }
-        return datasetTelb;
-
-    } */
 
     String marshal(DataSet dataSet) {
         try {
@@ -166,6 +150,35 @@ public class DataSetMarshaller {
             RoutingProblem routingProblem = new RoutingProblem(Optional.ofNullable(dataSet.getName()).orElse(""),
             dataSet.getVehicles().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()),Optional.ofNullable(dataSet.getDepot()).map(DataSetMarshaller::toDomain).orElse(null),
             dataSet.getVisits().stream().map(DataSetMarshaller::toDomain).collect(Collectors.toList()), routingProblemParameters);
+
+            if (dataSet.getOffshoreTasksData() != null) {
+                if (!dataSet.getOffshoreTasksData().isEmpty()) {
+                    for (TimeWindowedOffshoreTaskData taskData : dataSet.getOffshoreTasksData()) {
+                        System.out.println("taskData.getId(): "+ taskData.getId());
+                        System.out.println("taskData.getOperationName(): "+ taskData.getOperationName());
+                        System.out.println("taskData.getDataSetlocation().toString(): "+ taskData.getDataSetlocation().toString());
+                        System.out.println("taskData.getLineType(): "+  taskData.getLineType());
+                        System.out.println("taskData.getEntrega().getPotencialEntrega(): "+ taskData.getOutcome().getOutcomePotential());
+                        System.out.println("taskData.getServiceDuration(): "+ taskData.getServiceDuration());
+
+                        TimeWindowedOffshoreTask timeWindowedOffshoreTask = TimeWindowedOffshoreTaskFactory.createSimpleTask(taskData.getId(), taskData.getOperationName(), (Location) toDomain(taskData.getDataSetlocation()), taskData.getLineType(), taskData.getWell().getName(),taskData.getOutcome().getOutcomePotential(), taskData.getServiceDuration(), routingProblem);
+                        System.out.println("Task name: "+timeWindowedOffshoreTask.getOperationName() + "  Created");
+
+                    }
+
+                    routingProblemParameters = new RoutingProblemParameters(Optional.ofNullable(dataSet.getTelbParameters().getDemoContext()).orElse("contextDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoComplexity()).orElse("conplexityDemo"), Optional.ofNullable(dataSet.getTelbParameters().getDemoElucidation()).orElse(""));
+                    routingProblemParameters.setIsloadingVesselCase(dataSet.getTelbParameters().getIsloadingVesselCase());
+                    routingProblemParameters.setIsloadingVesselCase(dataSet.getTelbParameters().getIsTravelTimeCase());
+                    routingProblemParameters.setBarrelPrice(Optional.ofNullable(dataSet.getTelbParameters().getBarrelPrice()).orElse(new Double(25)));
+                    routingProblemParameters.setCheckEarlyDate(Optional.ofNullable(dataSet.getTelbParameters().getCheckEarlyDate()).orElse(false));
+                    routingProblemParameters.setUpdateIncludingOrder(Optional.ofNullable(dataSet.getTelbParameters().getUpdateIncludingOrder()).orElse(false));
+                    routingProblemParameters.setBestSolutionKnowed(Optional.ofNullable(dataSet.getTelbParameters().getBestSolutionKnowed()).orElse("no best solution"));
+                } else  {
+                    System.out.println("Empty tasks");
+                }
+            } else  {
+                System.out.println("getOffshoreTasksData() = null");
+            }
 
             return routingProblem;
         } catch (Exception e){
