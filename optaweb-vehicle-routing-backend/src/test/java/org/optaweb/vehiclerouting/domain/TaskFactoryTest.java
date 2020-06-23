@@ -54,7 +54,7 @@ class TaskFactoryTest {
         assertThat(task.getLineType()).isEqualTo(lineType);
         assertThat(task.getWell().getName()).isEqualTo(wellName);
         assertThat(task.getWell().getPotential()).isEqualTo(potential);
-        assertThat(task.getOutcome().getPotencialEntrega()).isEqualTo(potential);
+        assertThat(task.getOutcome().getPotential()).isEqualTo(potential);
         assertThat(task.getServiceDuration()).isEqualTo(serviceDuration);
     }
 
@@ -88,7 +88,7 @@ class TaskFactoryTest {
         assertThat(task.getLineType()).isEqualTo(lineType);
         assertThat(task.getWell().getName()).isEqualTo(wellName);
         assertThat(task.getWell().getPotential()).isEqualTo(potential);
-        assertThat(task.getOutcome().getPotencialEntrega()).isEqualTo(potential);
+        assertThat(task.getOutcome().getPotential()).isEqualTo(potential);
         assertThat(task.getServiceDuration()).isEqualTo(serviceDuration);
 
     }

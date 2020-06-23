@@ -19,7 +19,6 @@ package org.optaweb.vehiclerouting.domain;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.assertj.core.api.Assertions.assertThatNullPointerException;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -29,10 +28,10 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-class WellFactoryTest {
+class OutcomeFactoryTest {
 
     @Test
-    void createWell() {
+    void createOutcome() {
 
         RoutingProblem routingProblem = new RoutingProblem(
             "Test Problem", new ArrayList<VehicleData>(), new LocationData(new Coordinates(BigDecimal.valueOf(1 ),BigDecimal.valueOf(1)), "Coordenada do Poço1"), new ArrayList<LocationData>(), new RoutingProblemParameters("PLSV","Basic"));
@@ -43,43 +42,23 @@ class WellFactoryTest {
         Location location = null;
 
         Well well = WellFactory.createSimpleWell(id,name,potential,location,routingProblem);
-
-
-        assertThat(well.getId()).isEqualTo(id);
-        assertThat(well.getName()).isEqualTo(name);
-        assertThat(well.getPotential()).isEqualTo(potential);
-
-    }
-
-    @Test
-    void createWell_routingProblem_must_not_be_null()  {
-
-
-        RoutingProblem routingProblem = null;
-
-        long id = 1;
-        String name = "Poço1";
-        Long potential = 100000L;
-        Location location = null;
-
-        assertThatNullPointerException().isThrownBy(() -> WellFactory.createSimpleWell(id,name,potential,location,routingProblem));
-
-        //now Creating with routingProblem
-        RoutingProblem routingProblem2 = new RoutingProblem(
-            "Test Problem", new ArrayList<VehicleData>(), new LocationData(new Coordinates(BigDecimal.valueOf(1 ),BigDecimal.valueOf(1)), "Coordenada do Poço1"), new ArrayList<LocationData>(), new RoutingProblemParameters("PLSV","Basic"));
-
-        Well well = WellFactory.createSimpleWell(id,name,potential,location,routingProblem2);
-
-
-        assertThat(well.getId()).isEqualTo(id);
-        assertThat(well.getName()).isEqualTo(name);
-        assertThat(well.getPotential()).isEqualTo(potential);
-
+        Outcome outcome = OutcomeFactory.createSimpleOutcome_without_predecessors(id, name, well, routingProblem);
+        assertThat(outcome.getId()).isEqualTo(id);
+        assertThat(outcome.getOutcomeName()).isEqualTo(name);
+        System.out.println("outcome.getPotential()"+outcome.getPotential());
+        assertThat(outcome.getPotential()).isEqualTo(potential);
 
     }
 
     @Test
-    void create_3_Well_2_wich_have_same_id_must_be_1_Object() {
+    void createOucome_routingProblem_must_not_be_null()  {
+
+        //not necessary because well cant be created without routingProblem.
+
+    }
+
+    @Test
+    void create_3_Outcomes_wich_2_have_same_id_must_be_1_Object() {
 
         long id = 1;
         String name = "Poço1";
@@ -88,17 +67,19 @@ class WellFactoryTest {
         RoutingProblem routingProblem = new RoutingProblem(
             "Test Problem", new ArrayList<VehicleData>(), new LocationData(new Coordinates(BigDecimal.valueOf(1 ),BigDecimal.valueOf(1)), "Coordenada do Poço1"), new ArrayList<LocationData>(), new RoutingProblemParameters("PLSV","Basic"));
         Well well = WellFactory.createSimpleWell(id,name,potential,location,routingProblem);
-        assertThat(well.getName()).isEqualTo(name);
+        Outcome outcome = OutcomeFactory.createSimpleOutcome_without_predecessors(id, name, well, routingProblem);
+        assertThat(outcome.getOutcomeName()).isEqualTo(name);
 
         long id2 = 2;
         String name2 = "Poço2";
         Long potential2 = 100000L;
         Location location2 = null;
         Well well2 = WellFactory.createSimpleWell(id2,name2,potential2,location2,routingProblem);
-        assertThat(well2.getName()).isEqualTo(name2);
+        Outcome outcome2 = OutcomeFactory.createSimpleOutcome_without_predecessors(id2, name2, well2, routingProblem);
+        assertThat(outcome2.getOutcomeName()).isEqualTo(name2);
 
-        assertThat(routingProblem.getWells().size()).isEqualTo(2);
-        assertThat(routingProblem.getWells().stream()
+        assertThat(routingProblem.getOutcomes().size()).isEqualTo(2);
+        assertThat(routingProblem.getOutcomes().stream()
         .filter( distinctByKey(w -> w.getId()))
         .collect( Collectors.toList()).size()).isEqualTo(2);
 
@@ -108,11 +89,12 @@ class WellFactoryTest {
         Long potential3 = 100000L;
         Location location3 = null;
         Well well3 = WellFactory.createSimpleWell(id3_value2,name3,potential3,location3,routingProblem);
+        Outcome outcome3 = OutcomeFactory.createSimpleOutcome_without_predecessors(id3_value2, name3, well3, routingProblem);
         //pay attention well3 should be discarted
-        assertThat(well3.getName()).isEqualTo(name2);
+        assertThat(outcome3.getOutcomeName()).isEqualTo(name2);
 
-        assertThat(routingProblem.getWells().size()).isEqualTo(2);
-        assertThat(routingProblem.getWells().stream()
+        assertThat(routingProblem.getOutcomes().size()).isEqualTo(2);
+        assertThat(routingProblem.getOutcomes().stream()
         .filter( distinctByKey(w -> w.getId()))
         .collect( Collectors.toList()).size()).isEqualTo(2);
 

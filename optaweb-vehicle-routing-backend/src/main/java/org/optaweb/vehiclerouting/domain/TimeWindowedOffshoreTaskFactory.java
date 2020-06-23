@@ -41,15 +41,21 @@ public class TimeWindowedOffshoreTaskFactory {
      * @param outcome
      * @return new TimeWindowedOffshoreTask
      */
-    public static TimeWindowedOffshoreTask createSimpleTask(long id, String operationName, Location location, String lineType, String wellName, long potential, long serviceDuration, RoutingProblem routingProblem) {
+    public static TimeWindowedOffshoreTask createSimpleTask(long id, String operationName, LocationData locationData, String lineType, String wellName, long potential, long serviceDuration, RoutingProblem routingProblem) {
 
 
         if (routingProblem == null) {
             throw new NullPointerException("routingProblem is null, Can't create task, without a routingProblem associated");
         }
+        String locationName = "Location: "+ wellName;
+        long locationId = id*10000000 + hashCode_Limited_999999(locationName);
+        logger.info("locationId = (id*10000000 + + hashCode_Limited_999999(locationName)): "+locationId);
+        Location location = new Location(locationId, locationData.coordinates(), locationName);
+
         long wellId = id*10000000 + hashCode_Limited_999999(wellName);
         logger.info("wellId = (id*10000000 + + hashCode_Limited_999999(wellName)): "+wellId);
         Well well = WellFactory.createSimpleWell(wellId,wellName,potential,location,routingProblem);
+
 
         String outcomeName = "Outcome of "+ wellName;
         long outcomeId = id*10000000 + hashCode_Limited_999999(outcomeName);

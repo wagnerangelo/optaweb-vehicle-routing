@@ -11,7 +11,7 @@ public class Outcome {
     private String outcomeName;
     private Well well;
     private Project project;
- 	private Long potencialEntrega;
+ 	private Long potential;
     private Long outcomeTime;
     private long dueTime;
     private long leadTime;
@@ -35,7 +35,7 @@ public class Outcome {
 
 
     public Outcome(long id, Vehicle vehiclecaminhocrítico, String indexInTaskType, boolean locked, String outcomeName,
-            Well well, Project project, Long potencialEntrega, Long outcomeTime, long dueTime, long leadTime,
+            Well well, Project project, Long potential, Long outcomeTime, long dueTime, long leadTime,
             long readyTimeOriginal, Long readyTime, long readyTimePredecessora,
             ArrayList<TimeWindowedOffshoreTask> listaPredecessoras, TimeWindowedOffshoreTask criticalPathLastTask,
             ArrayList<Outcome> outcomeListPredecessor, ArrayList<Outcome> outcomeListSucessor, int graphLevel,
@@ -45,7 +45,7 @@ public class Outcome {
         this.indexInTaskType = indexInTaskType;
         this.locked = locked;
         this.project = project;
-        this.potencialEntrega = potencialEntrega;
+        this.potential = potential;
         this.outcomeTime = outcomeTime;
         this.dueTime = dueTime;
         this.leadTime = leadTime;
@@ -118,12 +118,12 @@ public class Outcome {
         this.project = project;
     }
 
-    public Long getPotencialEntrega() {
-        return potencialEntrega;
+    public Long getPotential() {
+        return potential;
     }
 
-    public void setPotencialEntrega(Long potencialEntrega) {
-        this.potencialEntrega = potencialEntrega;
+    public void setPotential(Long potential) {
+        this.potential = potential;
     }
 
     public Long getOutcomeTime() {

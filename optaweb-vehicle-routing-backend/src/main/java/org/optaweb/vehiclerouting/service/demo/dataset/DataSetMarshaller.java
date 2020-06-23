@@ -161,7 +161,17 @@ public class DataSetMarshaller {
                         System.out.println("taskData.getEntrega().getPotencialEntrega(): "+ taskData.getOutcome().getOutcomePotential());
                         System.out.println("taskData.getServiceDuration(): "+ taskData.getServiceDuration());
 
-                        TimeWindowedOffshoreTask timeWindowedOffshoreTask = TimeWindowedOffshoreTaskFactory.createSimpleTask(taskData.getId(), taskData.getOperationName(), (Location) toDomain(taskData.getDataSetlocation()), taskData.getLineType(), taskData.getWell().getName(),taskData.getOutcome().getOutcomePotential(), taskData.getServiceDuration(), routingProblem);
+                        LocationData locationData = toDomain(taskData.getDataSetlocation());
+                        System.out.println("taskData.getDataSetlocation()"+ taskData.getDataSetlocation().toString());
+
+                        Long potential = taskData.getOutcome().getOutcomePotential();
+                        if (potential == null) {
+                            potential = taskData.getWell().getPotencial();
+                        }
+                        if (potential == null) {
+                            potential = 0L;
+                        }
+                        TimeWindowedOffshoreTask timeWindowedOffshoreTask = TimeWindowedOffshoreTaskFactory.createSimpleTask(taskData.getId(), taskData.getOperationName(), locationData, taskData.getLineType(), taskData.getWell().getName(), potential, taskData.getServiceDuration(), routingProblem);
                         System.out.println("Task name: "+timeWindowedOffshoreTask.getOperationName() + "  Created");
 
                     }

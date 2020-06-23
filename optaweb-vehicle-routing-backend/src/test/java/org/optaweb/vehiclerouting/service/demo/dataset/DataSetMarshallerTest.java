@@ -153,8 +153,52 @@ class DataSetMarshallerTest {
                 System.out.println("taskData.getOutcome().getOutcomePotential()): " + taskData.getOutcome().getOutcomePotential());
                 assertThat(taskData.getOperationName()).isEqualTo("PO Poço1");
         }
-}
+    }
 
+
+    @Test
+    void convert_yaml_toDomain_telb() throws IOException {
+        DataSetTelb dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("test-telb-1-1-1-1 2P6O no travel Prod REVC.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo REV C");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Aalst", "Châtelet", "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+        for (TimeWindowedOffshoreTaskData taskData : dataSet.getOffshoreTasksData()) {
+                System.out.println("dataSet. Task name: " + taskData.getOperationName());
+                System.out.println("dataSet. duration: " + taskData.getServiceDuration());
+                System.out.println("dataSet. Well().getName(): " + taskData.getWell().getName());
+                System.out.println("dataSet. taskData.getOutcome().getId(): " + taskData.getOutcome().getId());
+                System.out.println("dataSet. taskData.getOutcome().getOutcomeName(): " + taskData.getOutcome().getOutcomeName());
+                System.out.println("dataSet. taskData.getOutcome().getOutcomePotential()): " + taskData.getOutcome().getOutcomePotential());
+                assertThat(taskData.getOperationName()).isEqualTo("PO Poço1");
+        }
+
+        // data set -> domain
+        RoutingProblem routingProblem = toDomain(dataSet);
+        assertThat(routingProblem.name()).isEqualTo("Telb 1.1.1.1 2 Poços, sem carregamento, sem navegação, sem data mais cedo REV C");
+        assertThat(routingProblem.getOffshoreTasks()).extracting(task -> task.getOperationName(),task -> task.getServiceDuration())
+        .containsExactlyInAnyOrder(
+                tuple("PO Poço1", 10L)
+        );
+    }
     @Test
     void marshal_data_set() {
         DataSet dataSet = new DataSet();
