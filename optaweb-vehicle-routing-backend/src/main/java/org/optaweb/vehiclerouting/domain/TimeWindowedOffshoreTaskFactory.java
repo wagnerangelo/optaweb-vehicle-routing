@@ -50,7 +50,7 @@ public class TimeWindowedOffshoreTaskFactory {
         String locationName = "Location: "+ wellName;
         long locationId = id*10000000 + hashCode_Limited_999999(locationName);
         logger.info("locationId = (id*10000000 + + hashCode_Limited_999999(locationName)): "+locationId);
-        Location location = new Location(locationId, locationData.coordinates(), locationName);
+        Location location = LocationFactory.createSimpleLocation(id, wellName,  locationData, routingProblem);
 
         long wellId = id*10000000 + hashCode_Limited_999999(wellName);
         logger.info("wellId = (id*10000000 + + hashCode_Limited_999999(wellName)): "+wellId);

@@ -1,0 +1,27 @@
+---
+name: "Teste3"
+depot:
+  label: "BANIT"
+  lat: -22.8
+  lng: -43.11
+visits:
+  - label: "Búzios"
+    lat: -25.63
+    lng: -42.72
+  - label: "Marlim Sul"
+    lat: -22.62
+    lng: -40.17
+vehicles:
+  - name: "vehicle 1"
+    capacity: 10
+  - name: "vehicle 2"
+    capacity: 12
+  - name: "vehicle 3"
+    capacity: 1000000
+telbParameters:
+  context: "RSV"
+  complexity: "Basic"
+  horizon: 180
+  initialdate: "01/01/2021"
+  elucidation:  |
+    Caso: 2.1.1.1 -a ser definido

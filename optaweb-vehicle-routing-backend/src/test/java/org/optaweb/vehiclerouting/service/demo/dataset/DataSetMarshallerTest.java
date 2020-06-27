@@ -199,6 +199,125 @@ class DataSetMarshallerTest {
                 tuple("PO Poço1", 10L)
         );
     }
+
+
+    @Test
+    void convert_yaml_toDomain_telb_teste1() throws IOException {
+        DataSetTelb dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("teste1.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Teste1");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Aalst", "Châtelet", "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+        assertThat(dataSet.getOffshoreTasksData()).isNull();
+
+        // data set -> domain
+        RoutingProblem routingProblem = toDomain(dataSet);
+        assertThat(routingProblem.name()).isEqualTo("Teste1");
+    }
+
+
+    @Test
+    void convert_yaml_toDomain_telb_teste2() throws IOException {
+        DataSetTelb dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("teste2.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Teste2");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Búzios", "Marlim Sul");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("vehicle 1", 10),
+                        tuple("vehicle 2", 12),
+                        tuple("vehicle 3", 1000000)
+                );
+        assertThat(dataSet.getOffshoreTasksData()).isNull();
+
+        // data set -> domain
+        RoutingProblem routingProblem = toDomain(dataSet);
+        assertThat(routingProblem.name()).isEqualTo("Teste2");
+    }
+
+
+    @Test
+    void convert_yaml_toDomain_telb_teste3() throws IOException {
+        DataSetTelb dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("teste3.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Teste3");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Búzios", "Marlim Sul");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("vehicle 1", 10),
+                        tuple("vehicle 2", 12),
+                        tuple("vehicle 3", 1000000)
+                );
+        assertThat(dataSet.getOffshoreTasksData()).isNull();
+
+        // data set -> domain
+        RoutingProblem routingProblem = toDomain(dataSet);
+        assertThat(routingProblem.name()).isEqualTo("Teste3");
+    }
+
+
+    @Test
+    void convert_yaml_toDomain_telb_teste4() throws IOException {
+        DataSetTelb dataSet = null;
+        try (InputStream inputStream = DataSetMarshallerTest.class.getResourceAsStream("teste4.yaml")) {
+            dataSet = new DataSetMarshaller()
+                    .unmarshalToDataSet(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        }
+        assertThat(dataSet).isNotNull();
+        assertThat(dataSet.getName()).isEqualTo("Teste4");
+
+        assertThat(dataSet.getVisits())
+                .extracting("label")
+                .containsExactlyInAnyOrder("Aalst", "Châtelet", "La Louvière", "Sint-Niklaas", "Ypres");
+        assertThat(dataSet.getVehicles())
+                .extracting(dataSetVehicle -> dataSetVehicle.name, dataSetVehicle -> dataSetVehicle.capacity)
+                .containsExactlyInAnyOrder(
+                        tuple("PLSV 1", 12000),
+                        tuple("PLSV 2", 12000)
+                );
+        for (TimeWindowedOffshoreTaskData taskData : dataSet.getOffshoreTasksData()) {
+                System.out.println("dataSet. Task name: " + taskData.getOperationName());
+                System.out.println("dataSet. duration: " + taskData.getServiceDuration());
+                System.out.println("dataSet. Well().getName(): " + taskData.getWell().getName());
+                System.out.println("dataSet. taskData.getOutcome().getId(): " + taskData.getOutcome().getId());
+                System.out.println("dataSet. taskData.getOutcome().getOutcomeName(): " + taskData.getOutcome().getOutcomeName());
+                System.out.println("dataSet. taskData.getOutcome().getOutcomePotential()): " + taskData.getOutcome().getOutcomePotential());
+                assertThat(taskData.getOperationName()).isEqualTo("PO Poço1");
+        }
+
+        // data set -> domain
+        RoutingProblem routingProblem = toDomain(dataSet);
+        assertThat(routingProblem.name()).isEqualTo("Teste4");
+    }
+
     @Test
     void marshal_data_set() {
         DataSet dataSet = new DataSet();

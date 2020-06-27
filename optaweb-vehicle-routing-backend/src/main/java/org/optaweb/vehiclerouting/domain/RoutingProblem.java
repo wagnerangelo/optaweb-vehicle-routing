@@ -36,6 +36,7 @@ public class RoutingProblem {
     private List<Project> projects;
     private List<FlexiblePipe> flexiblePipeList;
     private List<Outcome> outcomes;
+    private List<Location> locations;
 
     /**
      * Create routing problem instance.
@@ -62,6 +63,7 @@ public class RoutingProblem {
         this.projects = new ArrayList<Project>();
         this.flexiblePipeList = new ArrayList<FlexiblePipe>();
         this.outcomes = new ArrayList<Outcome>();
+        this.locations = new ArrayList<Location>();
     }
 
     /**
@@ -138,5 +140,13 @@ public class RoutingProblem {
 
     public void setOutcomes(List<Outcome> outcomes) {
         this.outcomes = outcomes;
+    }
+
+    public List<Location> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<Location> locations) {
+        this.locations = locations;
     }
 }

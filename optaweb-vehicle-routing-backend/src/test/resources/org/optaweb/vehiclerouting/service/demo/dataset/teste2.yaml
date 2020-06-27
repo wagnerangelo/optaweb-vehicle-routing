@@ -1,0 +1,38 @@
+---
+name: "Teste2"
+depot:
+  label: "BANIT"
+  lat: -22.8
+  lng: -43.11
+visits:
+  - label: "Búzios"
+    lat: -25.63
+    lng: -42.72
+  - label: "Marlim Sul"
+    lat: -22.62
+    lng: -40.17
+vehicles:
+  - name: "vehicle 1"
+    capacity: 10
+  - name: "vehicle 2"
+    capacity: 12
+  - name: "vehicle 3"
+    capacity: 1000000
+telbParameters:
+  context: "PLSV"
+  complexity: "Basic"
+  isloadingVesselCase: false
+  isTravelTimeCase: false
+  horizon: 1000
+  initialdate: "01/01/2021"
+  elucidation:  |
+    Caso: 1.1.1.1 - 2 Poços, sem carregamento, sem navegação, sem data mais cedo
+    Caso básico com 2 poços, 6 operações, sem predecessora.
+    2 PLSVs, um poço tem potencial de 100 000 bpd e outro 50000 bpd.
+    A produção é avaliada num horizonte de 1000 dias.
+    O solver deve alocar as 3 operações do poço de 100 000 bpd antes do de 50 000 bpd.
+    A solução ótima espera 145450 000 barris.
+  barrelPrice: 35
+  checkEarlyDate: true
+  updateIncludingOrder: true
+  bestSolutionKnowed: "solutiontest"

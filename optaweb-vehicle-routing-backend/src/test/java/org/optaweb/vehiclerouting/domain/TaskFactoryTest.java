@@ -50,7 +50,9 @@ class TaskFactoryTest {
 
         assertThat(task.getId()).isEqualTo(id);
         assertThat(task.getOperationName()).isEqualTo(operationName);
-        assertThat(task.getlocation()).isEqualTo(location);
+
+        assertThat(task.getlocation()).isNotNull();
+
         assertThat(task.getLineType()).isEqualTo(lineType);
         assertThat(task.getWell().getName()).isEqualTo(wellName);
         assertThat(task.getWell().getPotential()).isEqualTo(potential);
@@ -84,7 +86,9 @@ class TaskFactoryTest {
 
         assertThat(task.getId()).isEqualTo(id);
         assertThat(task.getOperationName()).isEqualTo(operationName);
-        assertThat(task.getlocation()).isEqualTo(location);
+
+        assertThat(task.getlocation()).isNotNull();
+
         assertThat(task.getLineType()).isEqualTo(lineType);
         assertThat(task.getWell().getName()).isEqualTo(wellName);
         assertThat(task.getWell().getPotential()).isEqualTo(potential);
