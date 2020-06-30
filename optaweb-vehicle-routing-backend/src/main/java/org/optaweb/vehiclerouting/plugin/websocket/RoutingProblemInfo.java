@@ -16,10 +16,16 @@
 
 package org.optaweb.vehiclerouting.plugin.websocket;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
+import org.optaweb.vehiclerouting.domain.Location;
+import org.optaweb.vehiclerouting.domain.Project;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
 import org.optaweb.vehiclerouting.domain.RoutingProblemParameters;
+import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
+import org.optaweb.vehiclerouting.domain.Well;
 
 /**
  * Information about a {@link RoutingProblem routing problem instance}.
@@ -29,11 +35,21 @@ class RoutingProblemInfo {
     private final String name;
     private final int visits;
     private final RoutingProblemParameters routingProblemParameters;
+    private final List<PortableLocation> portableLocations;
+    private final List<PortableProject> portableProjects;
+    private final List<PortableWell> portableWells;
+    private final List<PortableOffshoreTask> portableOffshoreTask;
 
-    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters) {
+    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters, List<Location> locations, List<Project> projects, List<Well> wells, List<TimeWindowedOffshoreTask> list) {
         this.name = Objects.requireNonNull(name);
         this.visits = visits;
         this.routingProblemParameters = routingProblemParameters;
+        this.portableLocations = locations.stream().map(location -> new PortableLocation(location.id(), location.coordinates().latitude(), location.coordinates().longitude(), location.description())).collect(Collectors.toList());
+        this.portableProjects = projects.stream().map(project -> PortableProject.fromProject(project)).collect(Collectors.toList());
+        this.portableWells = wells.stream().map(well -> PortableWell.fromWell(well)).collect(Collectors.toList());
+        this.portableOffshoreTask = list.stream().map(offshoreTask -> PortableOffshoreTask.createFromOffshoreTask(offshoreTask)).collect(Collectors.toList());
+
+
     }
 
     /**
@@ -54,5 +70,21 @@ class RoutingProblemInfo {
 
     public RoutingProblemParameters getRoutingProblemParameters() {
         return routingProblemParameters;
+    }
+
+     public List<PortableLocation> getPortableLocations() {
+        return portableLocations;
+    }
+
+    public List<PortableProject> getPortableProjects() {
+        return portableProjects;
+    }
+
+    public List<PortableWell> getPortableWells() {
+        return portableWells;
+    }
+
+    public List<PortableOffshoreTask> getPortableOffshoreTask() {
+        return portableOffshoreTask;
     }
 }

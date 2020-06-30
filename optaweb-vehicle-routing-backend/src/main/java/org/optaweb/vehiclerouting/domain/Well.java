@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-class Well implements WellInterface  {
+public class Well implements WellInterface  {
 
 	@JsonProperty(value = "id")
 	private long id;

@@ -63,6 +63,7 @@ public class LocationFactory {
 
         if (confirmedNewId( wellName, locationCandidate,routingProblem)) {
             routingProblem.visits().add(locationCandidate);
+            routingProblem.getLocations().add(locationCandidate);
             return locationCandidate;
         } else {
             return getLocation(wellName, locationCandidate, routingProblem);

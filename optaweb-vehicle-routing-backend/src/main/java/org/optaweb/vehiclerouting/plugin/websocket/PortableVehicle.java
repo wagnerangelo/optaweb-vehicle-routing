@@ -30,8 +30,12 @@ class PortableVehicle {
     private final int capacity;
 
     static PortableVehicle fromVehicle(Vehicle vehicle) {
-        Objects.requireNonNull(vehicle, "vehicle must not be null");
-        return new PortableVehicle(vehicle.id(), vehicle.name(), vehicle.capacity());
+       // Objects.requireNonNull(vehicle, "vehicle must not be null");
+       if (vehicle != null) {
+          return new PortableVehicle(vehicle.id(), vehicle.name(), vehicle.capacity());
+       } else {
+          return null;
+       }
     }
 
     PortableVehicle(long id, String name, int capacity) {

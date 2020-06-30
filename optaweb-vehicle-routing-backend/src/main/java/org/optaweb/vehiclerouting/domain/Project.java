@@ -1,7 +1,7 @@
 package org.optaweb.vehiclerouting.domain;
 
 
-class Project implements ProjectInterface {
+public class Project implements ProjectInterface {
 
 	private String name;
 
