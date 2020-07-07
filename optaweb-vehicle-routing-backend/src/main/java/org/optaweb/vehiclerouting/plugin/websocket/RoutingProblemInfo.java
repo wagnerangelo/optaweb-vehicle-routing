@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.optaweb.vehiclerouting.domain.FlexiblePipe;
 import org.optaweb.vehiclerouting.domain.Location;
 import org.optaweb.vehiclerouting.domain.Project;
 import org.optaweb.vehiclerouting.domain.RoutingProblem;
@@ -38,17 +39,19 @@ class RoutingProblemInfo {
     private final List<PortableLocation> portableLocations;
     private final List<PortableProject> portableProjects;
     private final List<PortableWell> portableWells;
-    private final List<PortableOffshoreTask> portableOffshoreTask;
+    private final List<PortableFlexiblePipe> portableFlexiblePipes;
 
-    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters, List<Location> locations, List<Project> projects, List<Well> wells, List<TimeWindowedOffshoreTask> list) {
+    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters, List<Location> locations, List<Project> projects, List<Well> wells,  List<FlexiblePipe> flexiblePipes) {
         this.name = Objects.requireNonNull(name);
         this.visits = visits;
         this.routingProblemParameters = routingProblemParameters;
         this.portableLocations = locations.stream().map(location -> new PortableLocation(location.id(), location.coordinates().latitude(), location.coordinates().longitude(), location.description())).collect(Collectors.toList());
         this.portableProjects = projects.stream().map(project -> PortableProject.fromProject(project)).collect(Collectors.toList());
         this.portableWells = wells.stream().map(well -> PortableWell.fromWell(well)).collect(Collectors.toList());
-        this.portableOffshoreTask = list.stream().map(offshoreTask -> PortableOffshoreTask.createFromOffshoreTask(offshoreTask)).collect(Collectors.toList());
-
+        this.portableFlexiblePipes = flexiblePipes.stream().map(flexiblePipe -> PortableFlexiblePipe.createFrom(flexiblePipe)).collect(Collectors.toList());
+       /*  list.stream().map(twOffshoreTask -> PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(
+                twOffshoreTask)).collect(Collectors.toList());
+ */
 
     }
 
@@ -84,7 +87,7 @@ class RoutingProblemInfo {
         return portableWells;
     }
 
-    public List<PortableOffshoreTask> getPortableOffshoreTask() {
-        return portableOffshoreTask;
+    public List<PortableFlexiblePipe> getPortableFlexiblePipes() {
+        return portableFlexiblePipes;
     }
 }

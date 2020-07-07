@@ -17,12 +17,8 @@
 package org.optaweb.vehiclerouting.plugin.websocket;
 
 import java.util.List;
-import java.util.stream.Collectors;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
-
-import org.optaweb.vehiclerouting.domain.OffshoreTask;
 
 public class PortableOffshoreTask {
     @JsonProperty(value = "id")
@@ -58,9 +54,9 @@ public class PortableOffshoreTask {
     @JsonProperty(value = "investedRootId")
     private final Long investedRootId;
     @JsonProperty(value = "portableSucessorList")
-    private final List<PortableOffshoreTask> portableSucessorList;
+    private final List<PortableTimeWindowedOffshoreTask> portableSucessorList;
     @JsonProperty(value = "portablePredecessorList")
-    private final List<PortableOffshoreTask> portablePredecessorList;
+    private final List<PortableTimeWindowedOffshoreTask> portablePredecessorList;
     @JsonProperty(value = "portableCronowebVehicle")
     private final PortableVehicle portableCronowebVehicle;
     @JsonProperty(value = "cronowebStartTime")
@@ -82,8 +78,8 @@ public class PortableOffshoreTask {
             PortableVehicle portableVessel, String offshoreOperationType, boolean locked, String operationName,
             PortableWell portableWell, PortableProject project, Long priority, int construtiveEuristicOrder,
             Integer graphLevel, Integer invertedGraphosLevel, Long investedRootId,
-            List<PortableOffshoreTask> portableSuccessorList,
-            List<PortableOffshoreTask> portablePredecessorList, PortableVehicle portableCronowebVehicle,
+            List<PortableTimeWindowedOffshoreTask> portableSuccessorList,
+            List<PortableTimeWindowedOffshoreTask> portablePredecessorList2, PortableVehicle portableCronowebVehicle,
             double cronowebStartTime, String lineType, List<PortableVehicle> portableViableVehicles,
             List<PortableVehicle> portableRecommendedSubPoolVehicles, int numberOfMapedPredecessors,
             boolean nodeMaped) {
@@ -104,7 +100,7 @@ public class PortableOffshoreTask {
         this.invertedGraphosLevel = invertedGraphosLevel;
         this.investedRootId = investedRootId;
         this.portableSucessorList = portableSuccessorList;
-        this.portablePredecessorList = portablePredecessorList;
+        this.portablePredecessorList = portablePredecessorList2;
         this.portableCronowebVehicle = portableCronowebVehicle;
         this.cronowebStartTime = cronowebStartTime;
         this.lineType = lineType;
@@ -113,32 +109,6 @@ public class PortableOffshoreTask {
         this.numberOfMapedPredecessors = numberOfMapedPredecessors;
         this.nodeMaped = nodeMaped;
     }
-
-    static PortableOffshoreTask createFromOffshoreTask(OffshoreTask offshoreTask){
-        if (offshoreTask != null) {
-            List<PortableOffshoreTask> portableSuccessorList = null;
-            if (offshoreTask.getSucessorList() != null) {
-                portableSuccessorList = offshoreTask.getSucessorList().stream().map(offshoreSucessorTask -> PortableOffshoreTask.createFromOffshoreTask(offshoreSucessorTask)).collect(Collectors.toList());
-            }
-            List<PortableOffshoreTask> portablePredecessorList = null;
-            if (offshoreTask.getPredecessorList() != null) {
-                 portablePredecessorList = offshoreTask.getPredecessorList().stream().map(offshorePredecessorTask -> PortableOffshoreTask.createFromOffshoreTask(offshorePredecessorTask)).collect(Collectors.toList());
-            }
-            List<PortableVehicle> portableViableVehicles = null;
-            if (offshoreTask.getViableVehicles() != null ) {
-                portableViableVehicles = offshoreTask.getViableVehicles().stream().map(viableVehicle -> PortableVehicle.fromVehicle(viableVehicle)).collect(Collectors.toList());
-            }
-            List<PortableVehicle> portableRecommendedSubPoolVehicles = null;
-            if (offshoreTask.getRecommendedSubPoolVehicles() != null ) {
-                portableRecommendedSubPoolVehicles = offshoreTask.getRecommendedSubPoolVehicles().stream().map(recommendedSubPoolVehicles -> PortableVehicle.fromVehicle(recommendedSubPoolVehicles)).collect(Collectors.toList());
-            }
-
-            return new PortableOffshoreTask(offshoreTask.getId(), PortableLocation.fromLocation(offshoreTask.getlocation()), offshoreTask.getDemand(), PortableOffshoreTask.createFromOffshoreTask(offshoreTask.getNextOffshoreTaskData()), PortableOffshoreTask.createFromOffshoreTask(offshoreTask.getPreviousOffshoreTaskData()), PortableVehicle.fromVehicle(offshoreTask.getVessel()), offshoreTask.getOffshoreOperationType(), offshoreTask.isLocked(), offshoreTask.getOperationName(), PortableWell.fromWell(offshoreTask.getWell()), PortableProject.fromProject(offshoreTask.getProject()), offshoreTask.getPriority(), offshoreTask.getConstrutiveEuristicOrder(), offshoreTask.getGraphLevel(), offshoreTask.getInvertedGraphosLevel(), offshoreTask.getInvestedRootId(), portableSuccessorList, portablePredecessorList, PortableVehicle.fromVehicle(offshoreTask.getCronowebVehicle()), 0, null, portableViableVehicles, portableRecommendedSubPoolVehicles, 0 , false);
-        } else {
-            return null;
-        }
-    }
-
 
     public long getId() {
         return id;
@@ -204,11 +174,11 @@ public class PortableOffshoreTask {
         return investedRootId;
     }
 
-    public List<PortableOffshoreTask> getPortableSucessorList() {
+    public List<PortableTimeWindowedOffshoreTask> getPortableSucessorList() {
         return portableSucessorList;
     }
 
-    public List<PortableOffshoreTask> getPortablePredecessorList() {
+    public List<PortableTimeWindowedOffshoreTask> getPortablePredecessorList() {
         return portablePredecessorList;
     }
 

@@ -34,9 +34,9 @@ public class RoutingProblem {
     private List<TimeWindowedOffshoreTask> offshoreTasks;
     private List<Well> wells;
     private List<Project> projects;
-    private List<FlexiblePipe> flexiblePipeList;
     private List<Outcome> outcomes;
     private List<Location> locations;
+    private List<FlexiblePipe> flexiblePipes;
 
     /**
      * Create routing problem instance.
@@ -61,9 +61,9 @@ public class RoutingProblem {
         this.offshoreTasks = new  ArrayList<TimeWindowedOffshoreTask>();
         this.wells = new ArrayList<Well>();
         this.projects = new ArrayList<Project>();
-        this.flexiblePipeList = new ArrayList<FlexiblePipe>();
         this.outcomes = new ArrayList<Outcome>();
         this.locations = new ArrayList<Location>();
+        this.flexiblePipes = new ArrayList<FlexiblePipe>();
     }
 
     /**
@@ -126,14 +126,6 @@ public class RoutingProblem {
         this.projects = projects;
     }
 
-    public List<FlexiblePipe> getFlexiblePipeList() {
-        return flexiblePipeList;
-    }
-
-    public void setFlexiblePipeList(List<FlexiblePipe> flexiblePipeList) {
-        this.flexiblePipeList = flexiblePipeList;
-    }
-
     public List<Outcome> getOutcomes() {
         return outcomes;
     }
@@ -148,5 +140,13 @@ public class RoutingProblem {
 
     public void setLocations(List<Location> locations) {
         this.locations = locations;
+    }
+
+    public List<FlexiblePipe> getFlexiblePipes() {
+        return flexiblePipes;
+    }
+
+    public void setFlexiblePipes(List<FlexiblePipe> flexiblePipes) {
+        this.flexiblePipes = flexiblePipes;
     }
 }

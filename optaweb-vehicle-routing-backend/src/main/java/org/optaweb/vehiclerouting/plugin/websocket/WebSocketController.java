@@ -76,8 +76,7 @@ class WebSocketController {
                 .map(routingProblem -> new RoutingProblemInfo(
                         routingProblem.name(),
                         routingProblem.visits().size(),
-                        routingProblem.getRoutingProblemParameters(), routingProblem.getLocations(), routingProblem.getProjects(), routingProblem.getWells(), routingProblem.getOffshoreTasks()))
-                .collect(Collectors.toList());
+                        routingProblem.getRoutingProblemParameters(), routingProblem.getLocations(), routingProblem.getProjects(), routingProblem.getWells(), routingProblem.getFlexiblePipes())).collect(Collectors.toList());
         return new ServerInfo(portableBoundingBox, regionService.countryCodes(), demos);
     }
 

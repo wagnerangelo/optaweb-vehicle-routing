@@ -62,10 +62,7 @@ class PortableVehicleTest {
         assertThat(portableVehicle.getId()).isEqualTo(id);
         assertThat(portableVehicle.getName()).isEqualTo(name);
         assertThat(portableVehicle.getCapacity()).isEqualTo(capacity);
-
-        assertThatNullPointerException()
-                .isThrownBy(() -> PortableVehicle.fromVehicle(null))
-                .withMessageContaining("vehicle");
+        assertThat(PortableVehicle.fromVehicle(null)).isEqualTo(null);
     }
 
     @Test

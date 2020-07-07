@@ -8,7 +8,12 @@ public class FlexiblePipe implements FlexiblePipeInterface {
 
 	private long invoiceNumber;
 
-    public int getDiameter() {
+    public FlexiblePipe(int diameter, long length, long invoiceNumber) {
+        this.diameter = diameter;
+        this.length = length;
+        this.invoiceNumber = invoiceNumber;
+    }
+        public int getDiameter() {
         return diameter;
     }
 
@@ -31,5 +36,7 @@ public class FlexiblePipe implements FlexiblePipeInterface {
     public void setInvoiceNumber(long invoiceNumber) {
         this.invoiceNumber = invoiceNumber;
     }
+
+
 
 }
