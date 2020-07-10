@@ -88,4 +88,8 @@ class RoutingProblemInfo {
     public List<PortableFlexiblePipe> getPortableFlexiblePipes() {
         return portableFlexiblePipes;
     }
+
+    public List<PortableTimeWindowedOffshoreTask> getPortableTimeWindowedOffshoreTask() {
+        return portableTimeWindowedOffshoreTask;
+    }
 }
