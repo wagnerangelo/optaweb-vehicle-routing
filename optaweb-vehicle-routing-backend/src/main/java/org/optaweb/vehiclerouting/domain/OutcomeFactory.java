@@ -39,7 +39,7 @@ public class OutcomeFactory {
     public static Outcome createSimpleOutcome_without_predecessors(long id, String name, Well well, RoutingProblem routingProblem) {
 
         if (routingProblem == null) {
-            throw new NullPointerException("routingProblem is null, Can't create well, without a routingProblem associated");
+            throw new NullPointerException("routingProblem is null, Can't create outcome, without a routingProblem associated");
         }
 
         Outcome outcomeCandidate = new Outcome( id, name,well);

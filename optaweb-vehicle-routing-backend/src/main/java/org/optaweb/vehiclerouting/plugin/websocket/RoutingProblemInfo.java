@@ -40,8 +40,9 @@ class RoutingProblemInfo {
     private final List<PortableProject> portableProjects;
     private final List<PortableWell> portableWells;
     private final List<PortableFlexiblePipe> portableFlexiblePipes;
+    private final List<PortableTimeWindowedOffshoreTask> portableTimeWindowedOffshoreTask;
 
-    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters, List<Location> locations, List<Project> projects, List<Well> wells,  List<FlexiblePipe> flexiblePipes) {
+    RoutingProblemInfo(String name, int visits, RoutingProblemParameters routingProblemParameters, List<Location> locations, List<Project> projects, List<Well> wells,  List<FlexiblePipe> flexiblePipes, List<TimeWindowedOffshoreTask> timeWindowedOffshoreTask) {
         this.name = Objects.requireNonNull(name);
         this.visits = visits;
         this.routingProblemParameters = routingProblemParameters;
@@ -49,10 +50,7 @@ class RoutingProblemInfo {
         this.portableProjects = projects.stream().map(project -> PortableProject.fromProject(project)).collect(Collectors.toList());
         this.portableWells = wells.stream().map(well -> PortableWell.fromWell(well)).collect(Collectors.toList());
         this.portableFlexiblePipes = flexiblePipes.stream().map(flexiblePipe -> PortableFlexiblePipe.createFrom(flexiblePipe)).collect(Collectors.toList());
-       /*  list.stream().map(twOffshoreTask -> PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(
-                twOffshoreTask)).collect(Collectors.toList());
- */
-
+        this.portableTimeWindowedOffshoreTask = timeWindowedOffshoreTask.stream().map(twOffshoreTask -> PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(twOffshoreTask)).collect(Collectors.toList());
     }
 
     /**

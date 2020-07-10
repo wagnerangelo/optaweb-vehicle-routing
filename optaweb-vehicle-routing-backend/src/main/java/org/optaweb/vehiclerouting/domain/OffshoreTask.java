@@ -73,12 +73,29 @@ public class OffshoreTask {
         this.graphLevel = graphLevel;
         this.invertedGraphosLevel = invertedGraphosLevel;
         this.investedRootId = investedRootId;
-        this.sucessorList = sucessorList;
-        this.predecessorList = predecessorList;
+        if (sucessorList == null) {
+            this.sucessorList = new ArrayList<OffshoreTask>();
+        } else {
+            this.sucessorList = sucessorList;
+        }
+        if (predecessorList == null) {
+            this.predecessorList = new ArrayList<OffshoreTask>();
+        } else {
+            this.predecessorList = predecessorList;
+        }
         this.cronowebVehicle = cronowebVehicle;
         this.cronowebStartTime = cronowebStartTime;
-        this.viableVehicles = viableVehicles;
-        this.recommendedSubPoolVehicles = recommendedSubPoolVehicles;
+        if (viableVehicles == null) {
+            this.viableVehicles =  new ArrayList<Vehicle>();
+        } else {
+            this.viableVehicles = viableVehicles;
+        }
+        if (recommendedSubPoolVehicles == null) {
+            this.recommendedSubPoolVehicles = new ArrayList<Vehicle>();
+        } else {
+            this.recommendedSubPoolVehicles = recommendedSubPoolVehicles;
+        }
+
         this.numberOfMapedPredecessors = numberOfMapedPredecessors;
         this.nodeMaped = nodeMaped;
     }

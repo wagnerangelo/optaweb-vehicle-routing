@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.optaweb.vehiclerouting.domain.Outcome;
+import org.optaweb.vehiclerouting.domain.TimeWindowedOffshoreTask;
 public class PortableOutcome {
 
     @JsonProperty(value = "id")
@@ -87,20 +88,33 @@ public class PortableOutcome {
     }
 
     static PortableOutcome createFrom(Outcome outcome) {
-        return new PortableOutcome(outcome.getId(), PortableVehicle.fromVehicle(outcome.getVehiclecaminhocrítico()), outcome.getIndexInTaskType(), outcome.isLocked(), outcome.getOutcomeName(), PortableWell.fromWell(outcome.getWell()), PortableProject.fromProject(outcome.getProject()), outcome.getPotential(), outcome.getOutcomeTime(), outcome.getDueTime(), outcome.getLeadTime(), outcome.getReadyTimeOriginal(), outcome.getReadyTime(),
-        outcome.getReadyTimePredecessora(), outcome.getListaPredecessoras().stream().map(offshoreTask -> PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(
-                        offshoreTask)).collect(Collectors.toList()),
-                PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(outcome.getCriticalPathLastTask()),
-                outcome.getOutcomeListPredecessor().stream()
-                        .map(outcomePredecessor -> PortableOutcome.createFrom(outcomePredecessor))
-                        .collect(Collectors.toList()),
-                outcome.getOutcomeListSucessor().stream()
-                        .map(outcomeSuccessor -> PortableOutcome.createFrom(outcomeSuccessor))
-                        .collect(Collectors.toList()),
-                outcome.getGraphLevel(), PortableOutcome.createFrom(outcome.getCriticalPathLastOutcome()),
-                outcome.getOutcomeTimeOutcomePredecessor(), outcome.getOutcomeTimeComposite());
 
-
+        if (outcome == null) {
+            return null;
+        } else {
+            List<PortableTimeWindowedOffshoreTask> portableListaPredecessoras = null;
+            if (outcome.getListaPredecessoras() != null) {
+                portableListaPredecessoras = outcome.getListaPredecessoras().stream().map(offshoreTask -> PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(
+                    offshoreTask)).collect(Collectors.toList());
+            }
+            List<PortableOutcome> portableOutcomeListPredecessors = null;
+            if (outcome.getOutcomeListPredecessor() != null) {
+                portableOutcomeListPredecessors =outcome.getOutcomeListPredecessor().stream()
+                .map(outcomePredecessor -> PortableOutcome.createFrom(outcomePredecessor))
+                .collect(Collectors.toList());
+            }
+            List<PortableOutcome> portableOutcomeSuccessors = null;
+            if (outcome.getOutcomeListSucessor() != null) {
+                portableOutcomeSuccessors  = outcome.getOutcomeListSucessor().stream()
+                .map(outcomeSuccessor -> PortableOutcome.createFrom(outcomeSuccessor))
+                .collect(Collectors.toList());
+            }
+            return new PortableOutcome(outcome.getId(), PortableVehicle.fromVehicle(outcome.getVehiclecaminhocrítico()), outcome.getIndexInTaskType(), outcome.isLocked(), outcome.getOutcomeName(), PortableWell.fromWell(outcome.getWell()), PortableProject.fromProject(outcome.getProject()), outcome.getPotential(), outcome.getOutcomeTime(), outcome.getDueTime(), outcome.getLeadTime(), outcome.getReadyTimeOriginal(), outcome.getReadyTime(),
+            outcome.getReadyTimePredecessora(), portableListaPredecessoras ,
+                    PortableTimeWindowedOffshoreTask.createFromTimeWindowdOffshoreTask(outcome.getCriticalPathLastTask()),portableOutcomeListPredecessors,portableOutcomeSuccessors,
+                    outcome.getGraphLevel(), PortableOutcome.createFrom(outcome.getCriticalPathLastOutcome()),
+                    outcome.getOutcomeTimeOutcomePredecessor(), outcome.getOutcomeTimeComposite());
+        }
     }
 
     public long getId() {

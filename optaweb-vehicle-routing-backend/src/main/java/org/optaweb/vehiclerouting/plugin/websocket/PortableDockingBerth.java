@@ -16,7 +16,11 @@ public class PortableDockingBerth {
     }
 
     static PortableDockingBerth createFrom(DockingBerth dockingBerth) {
-        return new PortableDockingBerth(dockingBerth.getNroBerço());
+        if (dockingBerth == null) {
+            return null;
+        } else {
+            return new PortableDockingBerth(dockingBerth.getNroBerço());
+        }
     }
 
     public int getNroBerço() {
